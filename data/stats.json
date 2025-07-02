@@ -1,0 +1,94 @@
+{
+  "2025-07-01": {
+    "визитки": {
+      "1": {
+        "count": 22,
+        "last_used": "17:49:19",
+        "copies": 12
+      },
+      "6": {
+        "count": 1,
+        "last_used": "11:42:36",
+        "copies": 0
+      },
+      "2": {
+        "count": 11,
+        "last_used": "17:49:58",
+        "copies": 7
+      },
+      "4": {
+        "count": 1,
+        "last_used": "16:20:45",
+        "copies": 0
+      },
+      "5": {
+        "count": 1,
+        "last_used": "16:20:50",
+        "copies": 0
+      }
+    },
+    "футболки": {
+      "5": {
+        "count": 1,
+        "last_used": "11:42:42",
+        "copies": 0
+      },
+      "1": {
+        "count": 3,
+        "last_used": "18:56:18",
+        "copies": 2
+      },
+      "2": {
+        "count": 1,
+        "last_used": "18:56:48",
+        "copies": 1
+      },
+      "4": {
+        "count": 1,
+        "last_used": "18:57:13",
+        "copies": 0
+      },
+      "7": {
+        "count": 1,
+        "last_used": "18:57:18",
+        "copies": 0
+      },
+      "9": {
+        "count": 1,
+        "last_used": "18:57:29",
+        "copies": 0
+      }
+    },
+    "листовки": {
+      "1": {
+        "count": 1,
+        "last_used": "11:43:14",
+        "copies": 0
+      },
+      "3": {
+        "count": 2,
+        "last_used": "17:51:10",
+        "copies": 0
+      },
+      "5": {
+        "count": 1,
+        "last_used": "17:57:26",
+        "copies": 0
+      },
+      "7": {
+        "count": 1,
+        "last_used": "17:57:48",
+        "copies": 0
+      }
+    }
+  },
+  "2025-07-02": {
+    "футболки": {
+      "2": {
+        "count": 1,
+        "last_used": "09:19:00",
+        "copies": 0
+      }
+    }
+  }
+}
