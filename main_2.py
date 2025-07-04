@@ -1,13 +1,15 @@
 import asyncio
 import os
+
 from aiogram import Bot, Dispatcher
 from aiogram.filters import Command, StateFilter
 from aiogram.fsm.storage.memory import MemoryStorage
 
+import handlers
 from config import BOT_TOKEN, logger
 from models import UserStates
 from template_manager import TemplateManager
-import handlers
+
 
 # Инициализация бота
 bot = Bot(token=BOT_TOKEN)
@@ -16,11 +18,30 @@ dp = Dispatcher(storage=storage)
 
 # Глобальный менеджер шаблонов
 template_manager = TemplateManager()
+BOT_VERSION = "1.01"  # Увеличивайте эту версию при изменениях
 
 
 # Регистрация обработчиков
+# @dp.message(Command("start"))
+# async def cmd_start_wrapper(message, state):
+#     await handlers.cmd_start(message, state, template_manager)
 @dp.message(Command("start"))
 async def cmd_start_wrapper(message, state):
+    # Получаем данные пользователя
+    user_data = await state.get_data()
+    current_user_version = user_data.get('bot_version')
+
+    # Проверяем версию
+    if current_user_version != BOT_VERSION:
+        # Если версия отличается или отсутствует
+        await state.clear()  # Очищаем старые данные
+        await state.update_data(bot_version=BOT_VERSION)
+
+        # Опционально: уведомляем об обновлении
+        if current_user_version:  # Если это не первый запуск
+            await message.answer("🔄 Бот был обновлен! Загружаем новое меню...")
+
+    # Вызываем обычный обработчик start
     await handlers.cmd_start(message, state, template_manager)
 
 

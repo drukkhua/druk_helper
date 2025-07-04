@@ -28,6 +28,8 @@ def create_main_menu_keyboard(user_id: int, template_manager) -> InlineKeyboardM
                                      callback_data="category_футболки"))
     builder.row(InlineKeyboardButton(text="📄 Листівки" if lang == 'ukr' else "📄 Листовки",
                                      callback_data="category_листовки"))
+    builder.row(InlineKeyboardButton(text="🔖 Наліпки" if lang == 'ukr' else "🔖 Наклейки",
+                                     callback_data="category_наклейки"))
 
     # Дополнительные функции
     builder.row(InlineKeyboardButton(text="🔍 Пошук" if lang == 'ukr' else "🔍 Поиск",

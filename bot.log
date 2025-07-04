@@ -1972,3 +1972,474 @@ aiogram.exceptions.TelegramBadRequest: Telegram server says - Bad Request: messa
 2025-07-02 09:19:00,018 - stats - INFO - STATS: VIEW - футболки:2 by user 474735723
 2025-07-02 09:19:00,151 - aiogram.event - INFO - Update id=439468069 is handled. Duration 136 ms by bot id=7741896700
 2025-07-02 09:19:01,462 - aiogram.event - INFO - Update id=439468070 is handled. Duration 75 ms by bot id=7741896700
+2025-07-02 09:29:14,494 - aiogram.event - INFO - Update id=439468071 is handled. Duration 71 ms by bot id=7741896700
+2025-07-02 09:29:25,943 - aiogram.dispatcher - WARNING - Received SIGINT signal
+2025-07-02 09:29:25,944 - aiogram.dispatcher - INFO - Polling stopped for bot @druk_helper_bot id=7741896700 - 'Druk-Helper'
+2025-07-02 09:29:25,944 - aiogram.dispatcher - INFO - Polling stopped
+2025-07-02 09:29:33,522 - template_manager - INFO - Загружено шаблонов из ./data/visitki_templates.csv: 8
+2025-07-02 09:29:33,523 - template_manager - INFO - Загружено шаблонов из ./data/futbolki_templates.csv: 9
+2025-07-02 09:29:33,523 - template_manager - INFO - Загружено шаблонов из ./data/listovki_templates.csv: 9
+2025-07-02 09:29:33,523 - template_manager - INFO - Всего загружено шаблонов: 26
+2025-07-02 09:29:33,524 - config - INFO - Запуск бота...
+2025-07-02 09:29:33,524 - config - INFO - Загружены категории: ['визитки', 'футболки', 'листовки']
+2025-07-02 09:29:33,524 - aiogram.dispatcher - INFO - Start polling
+2025-07-02 09:29:33,702 - aiogram.dispatcher - INFO - Run polling for bot @druk_helper_bot id=7741896700 - 'Druk-Helper'
+2025-07-02 09:29:38,635 - aiogram.event - INFO - Update id=439468072 is handled. Duration 185 ms by bot id=7741896700
+2025-07-02 09:29:45,668 - aiogram.event - INFO - Update id=439468073 is handled. Duration 71 ms by bot id=7741896700
+2025-07-02 09:29:47,320 - aiogram.event - INFO - Update id=439468074 is handled. Duration 69 ms by bot id=7741896700
+2025-07-02 09:29:48,545 - aiogram.event - INFO - Update id=439468075 is handled. Duration 127 ms by bot id=7741896700
+2025-07-02 09:29:49,687 - aiogram.event - INFO - Update id=439468076 is handled. Duration 70 ms by bot id=7741896700
+2025-07-02 09:29:52,380 - stats - INFO - STATS: VIEW - визитки:1 by user 474735723
+2025-07-02 09:29:52,452 - aiogram.event - INFO - Update id=439468077 is handled. Duration 74 ms by bot id=7741896700
+2025-07-02 09:37:45,815 - aiogram.event - INFO - Update id=439468078 is handled. Duration 148 ms by bot id=7741896700
+2025-07-02 09:50:15,766 - aiogram.event - INFO - Update id=439468079 is handled. Duration 99 ms by bot id=7741896700
+2025-07-02 09:50:22,108 - stats - INFO - STATS: VIEW - визитки:1 by user 230995810
+2025-07-02 09:50:22,200 - aiogram.event - INFO - Update id=439468080 is handled. Duration 97 ms by bot id=7741896700
+2025-07-02 09:50:35,488 - aiogram.event - INFO - Update id=439468081 is handled. Duration 80 ms by bot id=7741896700
+2025-07-02 09:56:33,649 - aiogram.event - INFO - Update id=439468082 is handled. Duration 74 ms by bot id=7741896700
+2025-07-02 09:56:35,618 - stats - INFO - STATS: VIEW - визитки:3 by user 474735723
+2025-07-02 09:56:35,701 - aiogram.event - INFO - Update id=439468083 is handled. Duration 86 ms by bot id=7741896700
+2025-07-02 09:56:43,348 - aiogram.event - INFO - Update id=439468084 is handled. Duration 95 ms by bot id=7741896700
+2025-07-02 09:56:47,105 - aiogram.event - INFO - Update id=439468085 is handled. Duration 127 ms by bot id=7741896700
+2025-07-02 09:56:48,256 - stats - INFO - STATS: VIEW - визитки:3 by user 230995810
+2025-07-02 09:56:48,328 - aiogram.event - INFO - Update id=439468086 is handled. Duration 75 ms by bot id=7741896700
+2025-07-02 09:57:17,577 - aiogram.event - INFO - Update id=439468087 is handled. Duration 112 ms by bot id=7741896700
+2025-07-02 09:57:20,244 - stats - INFO - STATS: VIEW - визитки:4 by user 474735723
+2025-07-02 09:57:20,430 - aiogram.event - INFO - Update id=439468088 is handled. Duration 188 ms by bot id=7741896700
+2025-07-02 09:57:24,763 - aiogram.event - INFO - Update id=439468089 is handled. Duration 72 ms by bot id=7741896700
+2025-07-02 09:57:26,080 - stats - INFO - STATS: VIEW - визитки:4 by user 230995810
+2025-07-02 09:57:26,157 - aiogram.event - INFO - Update id=439468090 is handled. Duration 79 ms by bot id=7741896700
+2025-07-02 09:58:05,988 - aiogram.event - INFO - Update id=439468091 is handled. Duration 78 ms by bot id=7741896700
+2025-07-02 09:58:08,070 - aiogram.event - INFO - Update id=439468092 is handled. Duration 105 ms by bot id=7741896700
+2025-07-02 09:58:10,326 - aiogram.event - INFO - Update id=439468093 is handled. Duration 170 ms by bot id=7741896700
+2025-07-02 09:58:11,631 - stats - INFO - STATS: VIEW - визитки:8 by user 474735723
+2025-07-02 09:58:11,705 - aiogram.event - INFO - Update id=439468094 is handled. Duration 77 ms by bot id=7741896700
+2025-07-02 09:58:13,609 - aiogram.event - INFO - Update id=439468095 is handled. Duration 127 ms by bot id=7741896700
+2025-07-02 09:58:19,844 - stats - INFO - STATS: VIEW - визитки:8 by user 230995810
+2025-07-02 09:58:19,918 - aiogram.event - INFO - Update id=439468096 is handled. Duration 76 ms by bot id=7741896700
+2025-07-02 10:00:42,176 - aiogram.event - INFO - Update id=439468097 is handled. Duration 75 ms by bot id=7741896700
+2025-07-02 10:00:54,981 - stats - INFO - STATS: VIEW - визитки:7 by user 183411419
+2025-07-02 10:00:55,079 - aiogram.event - INFO - Update id=439468098 is handled. Duration 103 ms by bot id=7741896700
+2025-07-02 10:01:02,510 - aiogram.event - INFO - Update id=439468099 is handled. Duration 117 ms by bot id=7741896700
+2025-07-02 10:01:05,864 - stats - INFO - STATS: VIEW - визитки:1 by user 183411419
+2025-07-02 10:01:05,941 - aiogram.event - INFO - Update id=439468100 is handled. Duration 78 ms by bot id=7741896700
+2025-07-02 10:01:30,531 - aiogram.event - INFO - Update id=439468101 is handled. Duration 87 ms by bot id=7741896700
+2025-07-02 10:01:31,936 - aiogram.event - INFO - Update id=439468102 is handled. Duration 100 ms by bot id=7741896700
+2025-07-02 10:01:32,796 - aiogram.event - INFO - Update id=439468103 is handled. Duration 164 ms by bot id=7741896700
+2025-07-02 10:01:34,011 - aiogram.event - INFO - Update id=439468104 is handled. Duration 219 ms by bot id=7741896700
+2025-07-02 10:01:35,129 - stats - INFO - STATS: VIEW - визитки:1 by user 183411419
+2025-07-02 10:01:35,216 - aiogram.event - INFO - Update id=439468105 is handled. Duration 90 ms by bot id=7741896700
+2025-07-02 10:01:57,571 - stats - INFO - STATS: COPY - визитки:8 by user 474735723
+2025-07-02 10:01:57,866 - aiogram.event - INFO - Update id=439468106 is handled. Duration 297 ms by bot id=7741896700
+2025-07-02 10:40:32,287 - stats - INFO - STATS: VIEW - визитки:4 by user 474735723
+2025-07-02 10:40:32,482 - aiogram.event - INFO - Update id=439468107 is handled. Duration 199 ms by bot id=7741896700
+2025-07-02 13:25:48,174 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-02 13:25:48,178 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-02 13:25:59,503 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-02 13:36:56,141 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-02 13:36:56,143 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-02 13:37:07,366 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-02 13:52:40,977 - aiogram.event - INFO - Update id=439468108 is handled. Duration 194 ms by bot id=7741896700
+2025-07-02 13:52:42,751 - stats - INFO - STATS: VIEW - визитки:3 by user 230995810
+2025-07-02 13:52:42,842 - aiogram.event - INFO - Update id=439468109 is handled. Duration 94 ms by bot id=7741896700
+2025-07-02 13:53:05,682 - aiogram.event - INFO - Update id=439468110 is handled. Duration 83 ms by bot id=7741896700
+2025-07-02 13:53:07,272 - aiogram.event - INFO - Update id=439468111 is handled. Duration 150 ms by bot id=7741896700
+2025-07-02 13:53:08,389 - aiogram.event - INFO - Update id=439468112 is handled. Duration 302 ms by bot id=7741896700
+2025-07-02 13:53:10,747 - aiogram.event - INFO - Update id=439468113 is handled. Duration 172 ms by bot id=7741896700
+2025-07-02 13:53:12,104 - stats - INFO - STATS: VIEW - визитки:3 by user 230995810
+2025-07-02 13:53:12,199 - aiogram.event - INFO - Update id=439468114 is handled. Duration 96 ms by bot id=7741896700
+2025-07-02 13:53:30,509 - stats - INFO - STATS: COPY - визитки:3 by user 230995810
+2025-07-02 13:53:31,127 - aiogram.event - INFO - Update id=439468115 is handled. Duration 619 ms by bot id=7741896700
+2025-07-02 13:53:34,339 - aiogram.event - INFO - Update id=439468116 is handled. Duration 91 ms by bot id=7741896700
+2025-07-02 13:53:37,621 - stats - INFO - STATS: VIEW - визитки:3 by user 183411419
+2025-07-02 13:53:37,694 - aiogram.event - INFO - Update id=439468117 is handled. Duration 76 ms by bot id=7741896700
+2025-07-02 15:03:14,897 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - ServerDisconnectedError: Server disconnected
+2025-07-02 15:03:14,898 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-02 15:03:26,074 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-02 15:04:56,629 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - ServerDisconnectedError: Server disconnected
+2025-07-02 15:04:56,633 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-02 15:05:07,818 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-02 16:47:40,457 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-02 16:47:40,464 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-02 16:47:51,682 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-02 17:45:21,995 - aiogram.dispatcher - WARNING - Received SIGINT signal
+2025-07-02 17:45:21,999 - aiogram.dispatcher - INFO - Polling stopped for bot @druk_helper_bot id=7741896700 - 'Druk-Helper'
+2025-07-02 17:45:21,999 - aiogram.dispatcher - INFO - Polling stopped
+2025-07-02 17:45:23,930 - template_manager - INFO - Загружено шаблонов из ./converted-data/csv/vizitki_page_01.csv: 8
+2025-07-02 17:45:23,930 - template_manager - INFO - Загружено шаблонов из ./converted-data/csv/futbolki_page_02.csv: 9
+2025-07-02 17:45:23,931 - template_manager - INFO - Загружено шаблонов из ./converted-data/csv/listovki_page_03.csv: 8
+2025-07-02 17:45:23,931 - template_manager - INFO - Загружено шаблонов из ./converted-data/csv/nakleyki_page_04.csv: 8
+2025-07-02 17:45:23,931 - template_manager - INFO - Всего загружено шаблонов: 33
+2025-07-02 17:45:23,932 - config - INFO - Запуск бота...
+2025-07-02 17:45:23,932 - config - INFO - Загружены категории: ['визитки', 'футболки', 'листовки', 'наклейки']
+2025-07-02 17:45:23,932 - aiogram.dispatcher - INFO - Start polling
+2025-07-02 17:45:24,098 - aiogram.dispatcher - INFO - Run polling for bot @druk_helper_bot id=7741896700 - 'Druk-Helper'
+2025-07-02 17:45:37,294 - aiogram.event - INFO - Update id=439468118 is handled. Duration 530 ms by bot id=7741896700
+2025-07-02 17:47:12,233 - aiogram.event - INFO - Update id=439468119 is handled. Duration 84 ms by bot id=7741896700
+2025-07-02 17:47:26,907 - aiogram.dispatcher - WARNING - Received SIGINT signal
+2025-07-02 17:47:26,909 - aiogram.dispatcher - INFO - Polling stopped for bot @druk_helper_bot id=7741896700 - 'Druk-Helper'
+2025-07-02 17:47:26,910 - aiogram.dispatcher - INFO - Polling stopped
+2025-07-02 17:47:28,685 - template_manager - INFO - Загружено шаблонов из ./converted-data/csv/vizitki_page_01.csv: 8
+2025-07-02 17:47:28,685 - template_manager - INFO - Загружено шаблонов из ./converted-data/csv/futbolki_page_02.csv: 9
+2025-07-02 17:47:28,686 - template_manager - INFO - Загружено шаблонов из ./converted-data/csv/listovki_page_03.csv: 8
+2025-07-02 17:47:28,686 - template_manager - INFO - Загружено шаблонов из ./converted-data/csv/nakleyki_page_04.csv: 8
+2025-07-02 17:47:28,686 - template_manager - INFO - Всего загружено шаблонов: 33
+2025-07-02 17:47:28,686 - config - INFO - Запуск бота...
+2025-07-02 17:47:28,686 - config - INFO - Загружены категории: ['визитки', 'футболки', 'листовки', 'наклейки']
+2025-07-02 17:47:28,686 - aiogram.dispatcher - INFO - Start polling
+2025-07-02 17:47:28,893 - aiogram.dispatcher - INFO - Run polling for bot @druk_helper_bot id=7741896700 - 'Druk-Helper'
+2025-07-02 17:47:34,430 - aiogram.event - INFO - Update id=439468120 is handled. Duration 184 ms by bot id=7741896700
+2025-07-02 17:47:36,321 - aiogram.event - INFO - Update id=439468121 is handled. Duration 73 ms by bot id=7741896700
+2025-07-02 17:47:39,016 - stats - INFO - STATS: VIEW - наклейки:1 by user 474735723
+2025-07-02 17:47:39,086 - aiogram.event - INFO - Update id=439468122 is handled. Duration 73 ms by bot id=7741896700
+2025-07-02 17:48:16,684 - aiogram.event - INFO - Update id=439468123 is handled. Duration 84 ms by bot id=7741896700
+2025-07-02 17:48:18,037 - stats - INFO - STATS: VIEW - наклейки:2 by user 474735723
+2025-07-02 17:48:18,179 - aiogram.event - INFO - Update id=439468124 is handled. Duration 144 ms by bot id=7741896700
+2025-07-02 17:48:21,337 - aiogram.event - INFO - Update id=439468125 is handled. Duration 71 ms by bot id=7741896700
+2025-07-02 17:48:22,554 - aiogram.event - INFO - Update id=439468126 is handled. Duration 78 ms by bot id=7741896700
+2025-07-02 17:48:23,636 - aiogram.event - INFO - Update id=439468127 is handled. Duration 153 ms by bot id=7741896700
+2025-07-02 17:48:25,377 - aiogram.event - INFO - Update id=439468128 is handled. Duration 160 ms by bot id=7741896700
+2025-07-02 17:48:27,487 - stats - INFO - STATS: VIEW - наклейки:4 by user 474735723
+2025-07-02 17:48:27,619 - aiogram.event - INFO - Update id=439468129 is handled. Duration 133 ms by bot id=7741896700
+2025-07-02 17:48:28,990 - aiogram.event - INFO - Update id=439468130 is handled. Duration 69 ms by bot id=7741896700
+2025-07-02 17:49:25,061 - aiogram.dispatcher - WARNING - Received SIGINT signal
+2025-07-02 17:49:25,062 - aiogram.dispatcher - INFO - Polling stopped for bot @druk_helper_bot id=7741896700 - 'Druk-Helper'
+2025-07-02 17:49:25,063 - aiogram.dispatcher - INFO - Polling stopped
+2025-07-02 17:49:26,793 - template_manager - INFO - Загружено шаблонов из ./converted-data/csv/vizitki_page_01.csv: 8
+2025-07-02 17:49:26,794 - template_manager - INFO - Загружено шаблонов из ./converted-data/csv/futbolki_page_02.csv: 9
+2025-07-02 17:49:26,794 - template_manager - INFO - Загружено шаблонов из ./converted-data/csv/listovki_page_03.csv: 8
+2025-07-02 17:49:26,794 - template_manager - INFO - Загружено шаблонов из ./converted-data/csv/nakleyki_page_04.csv: 8
+2025-07-02 17:49:26,794 - template_manager - INFO - Всего загружено шаблонов: 33
+2025-07-02 17:49:26,795 - config - INFO - Запуск бота...
+2025-07-02 17:49:26,795 - config - INFO - Загружены категории: ['визитки', 'футболки', 'листовки', 'наклейки']
+2025-07-02 17:49:26,795 - aiogram.dispatcher - INFO - Start polling
+2025-07-02 17:49:26,975 - aiogram.dispatcher - INFO - Run polling for bot @druk_helper_bot id=7741896700 - 'Druk-Helper'
+2025-07-02 17:49:32,986 - aiogram.event - INFO - Update id=439468131 is handled. Duration 189 ms by bot id=7741896700
+2025-07-02 17:49:35,054 - aiogram.event - INFO - Update id=439468132 is handled. Duration 81 ms by bot id=7741896700
+2025-07-02 17:49:36,701 - stats - INFO - STATS: VIEW - наклейки:3 by user 474735723
+2025-07-02 17:49:36,773 - aiogram.event - INFO - Update id=439468133 is handled. Duration 75 ms by bot id=7741896700
+2025-07-02 17:49:44,353 - aiogram.event - INFO - Update id=439468134 is handled. Duration 153 ms by bot id=7741896700
+2025-07-02 17:49:45,723 - stats - INFO - STATS: VIEW - наклейки:4 by user 474735723
+2025-07-02 17:49:45,802 - aiogram.event - INFO - Update id=439468135 is handled. Duration 80 ms by bot id=7741896700
+2025-07-02 17:55:19,078 - aiogram.event - INFO - Update id=439468136 is handled. Duration 166 ms by bot id=7741896700
+2025-07-02 17:55:21,044 - stats - INFO - STATS: VIEW - наклейки:6 by user 474735723
+2025-07-02 17:55:21,274 - aiogram.event - INFO - Update id=439468137 is handled. Duration 233 ms by bot id=7741896700
+2025-07-02 17:55:22,762 - aiogram.event - INFO - Update id=439468138 is handled. Duration 72 ms by bot id=7741896700
+2025-07-02 18:11:43,453 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-02 18:11:43,456 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-02 18:11:54,703 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-02 18:12:24,380 - aiogram.event - INFO - Update id=439468139 is handled. Duration 174 ms by bot id=7741896700
+2025-07-02 18:12:29,873 - aiogram.event - INFO - Update id=439468140 is handled. Duration 102 ms by bot id=7741896700
+2025-07-02 18:12:31,634 - stats - INFO - STATS: VIEW - футболки:1 by user 474735723
+2025-07-02 18:12:31,714 - aiogram.event - INFO - Update id=439468141 is handled. Duration 81 ms by bot id=7741896700
+2025-07-02 18:12:34,341 - aiogram.event - INFO - Update id=439468142 is handled. Duration 69 ms by bot id=7741896700
+2025-07-02 18:12:35,593 - aiogram.event - INFO - Update id=439468143 is handled. Duration 95 ms by bot id=7741896700
+2025-07-02 18:12:36,891 - aiogram.event - INFO - Update id=439468144 is handled. Duration 229 ms by bot id=7741896700
+2025-07-02 18:12:38,659 - aiogram.event - INFO - Update id=439468145 is handled. Duration 178 ms by bot id=7741896700
+2025-07-02 18:12:40,954 - stats - INFO - STATS: VIEW - футболки:1 by user 474735723
+2025-07-02 18:12:41,051 - aiogram.event - INFO - Update id=439468146 is handled. Duration 98 ms by bot id=7741896700
+2025-07-02 18:12:42,955 - aiogram.event - INFO - Update id=439468147 is handled. Duration 70 ms by bot id=7741896700
+2025-07-02 18:12:43,854 - aiogram.event - INFO - Update id=439468148 is handled. Duration 71 ms by bot id=7741896700
+2025-07-02 18:12:45,061 - aiogram.event - INFO - Update id=439468149 is handled. Duration 285 ms by bot id=7741896700
+2025-07-02 18:12:46,896 - aiogram.event - INFO - Update id=439468150 is handled. Duration 109 ms by bot id=7741896700
+2025-07-02 18:12:50,601 - stats - INFO - STATS: VIEW - футболки:2 by user 474735723
+2025-07-02 18:12:50,705 - aiogram.event - INFO - Update id=439468151 is handled. Duration 107 ms by bot id=7741896700
+2025-07-02 18:12:59,625 - aiogram.event - INFO - Update id=439468152 is handled. Duration 73 ms by bot id=7741896700
+2025-07-02 18:13:01,191 - stats - INFO - STATS: VIEW - футболки:4 by user 474735723
+2025-07-02 18:13:01,359 - aiogram.event - INFO - Update id=439468153 is handled. Duration 171 ms by bot id=7741896700
+2025-07-02 18:13:04,935 - aiogram.event - INFO - Update id=439468154 is handled. Duration 77 ms by bot id=7741896700
+2025-07-02 18:13:08,332 - stats - INFO - STATS: VIEW - футболки:8 by user 474735723
+2025-07-02 18:13:08,462 - aiogram.event - INFO - Update id=439468155 is handled. Duration 132 ms by bot id=7741896700
+2025-07-02 18:15:50,376 - aiogram.event - INFO - Update id=439468156 is handled. Duration 71 ms by bot id=7741896700
+2025-07-02 18:15:51,604 - stats - INFO - STATS: VIEW - футболки:1 by user 474735723
+2025-07-02 18:15:51,684 - aiogram.event - INFO - Update id=439468157 is handled. Duration 82 ms by bot id=7741896700
+2025-07-02 18:16:14,788 - aiogram.event - INFO - Update id=439468158 is handled. Duration 235 ms by bot id=7741896700
+2025-07-02 18:16:15,992 - stats - INFO - STATS: VIEW - футболки:9 by user 474735723
+2025-07-02 18:16:16,125 - aiogram.event - INFO - Update id=439468159 is handled. Duration 135 ms by bot id=7741896700
+2025-07-02 18:16:19,346 - aiogram.event - INFO - Update id=439468160 is handled. Duration 90 ms by bot id=7741896700
+2025-07-02 18:16:20,437 - stats - INFO - STATS: VIEW - футболки:7 by user 474735723
+2025-07-02 18:16:20,508 - aiogram.event - INFO - Update id=439468161 is handled. Duration 71 ms by bot id=7741896700
+2025-07-02 18:16:25,148 - aiogram.event - INFO - Update id=439468162 is handled. Duration 72 ms by bot id=7741896700
+2025-07-02 18:16:26,278 - aiogram.event - INFO - Update id=439468163 is handled. Duration 115 ms by bot id=7741896700
+2025-07-02 18:16:27,832 - aiogram.event - INFO - Update id=439468164 is handled. Duration 103 ms by bot id=7741896700
+2025-07-02 18:16:29,134 - stats - INFO - STATS: VIEW - наклейки:5 by user 474735723
+2025-07-02 18:16:29,214 - aiogram.event - INFO - Update id=439468165 is handled. Duration 81 ms by bot id=7741896700
+2025-07-02 18:16:40,045 - aiogram.event - INFO - Update id=439468166 is handled. Duration 86 ms by bot id=7741896700
+2025-07-02 18:16:48,757 - stats - INFO - STATS: VIEW - наклейки:4 by user 474735723
+2025-07-02 18:16:48,935 - aiogram.event - INFO - Update id=439468167 is handled. Duration 179 ms by bot id=7741896700
+2025-07-02 18:19:59,747 - aiogram.event - INFO - Update id=439468168 is handled. Duration 73 ms by bot id=7741896700
+2025-07-02 18:20:03,188 - stats - INFO - STATS: VIEW - наклейки:3 by user 474735723
+2025-07-02 18:20:03,262 - aiogram.event - INFO - Update id=439468169 is handled. Duration 76 ms by bot id=7741896700
+2025-07-02 18:20:22,187 - aiogram.event - INFO - Update id=439468170 is handled. Duration 85 ms by bot id=7741896700
+2025-07-02 18:20:23,845 - stats - INFO - STATS: VIEW - наклейки:2 by user 474735723
+2025-07-02 18:20:23,926 - aiogram.event - INFO - Update id=439468171 is handled. Duration 82 ms by bot id=7741896700
+2025-07-02 18:20:25,739 - aiogram.event - INFO - Update id=439468172 is handled. Duration 84 ms by bot id=7741896700
+2025-07-02 18:57:08,830 - aiogram.dispatcher - WARNING - Received SIGINT signal
+2025-07-02 18:57:08,832 - aiogram.dispatcher - INFO - Polling stopped for bot @druk_helper_bot id=7741896700 - 'Druk-Helper'
+2025-07-02 18:57:08,832 - aiogram.dispatcher - INFO - Polling stopped
+2025-07-02 18:57:10,709 - template_manager - INFO - Загружено шаблонов из ./converted-data/csv/vizitki_page_01.csv: 8
+2025-07-02 18:57:10,710 - template_manager - INFO - Загружено шаблонов из ./converted-data/csv/futbolki_page_02.csv: 9
+2025-07-02 18:57:10,710 - template_manager - INFO - Загружено шаблонов из ./converted-data/csv/listovki_page_03.csv: 8
+2025-07-02 18:57:10,710 - template_manager - INFO - Загружено шаблонов из ./converted-data/csv/nakleyki_page_04.csv: 8
+2025-07-02 18:57:10,710 - template_manager - INFO - Всего загружено шаблонов: 33
+2025-07-02 18:57:10,711 - config - INFO - Запуск бота...
+2025-07-02 18:57:10,711 - config - INFO - Загружены категории: ['визитки', 'футболки', 'листовки', 'наклейки']
+2025-07-02 18:57:10,711 - aiogram.dispatcher - INFO - Start polling
+2025-07-02 18:57:10,884 - aiogram.dispatcher - INFO - Run polling for bot @druk_helper_bot id=7741896700 - 'Druk-Helper'
+2025-07-02 18:57:23,086 - stats - INFO - STATS: VIEW - наклейки:1 by user 474735723
+2025-07-02 18:57:23,302 - aiogram.event - INFO - Update id=439468173 is handled. Duration 218 ms by bot id=7741896700
+2025-07-02 18:57:25,091 - aiogram.event - INFO - Update id=439468174 is handled. Duration 75 ms by bot id=7741896700
+2025-07-02 18:57:26,166 - aiogram.event - INFO - Update id=439468175 is handled. Duration 95 ms by bot id=7741896700
+2025-07-02 18:57:27,828 - aiogram.event - INFO - Update id=439468176 is handled. Duration 100 ms by bot id=7741896700
+2025-07-02 18:57:31,647 - aiogram.event - INFO - Update id=439468177 is handled. Duration 84 ms by bot id=7741896700
+2025-07-02 18:57:37,631 - aiogram.event - INFO - Update id=439468178 is handled. Duration 65 ms by bot id=7741896700
+2025-07-02 18:57:39,464 - stats - INFO - STATS: VIEW - визитки:1 by user 474735723
+2025-07-02 18:57:39,544 - aiogram.event - INFO - Update id=439468179 is handled. Duration 83 ms by bot id=7741896700
+2025-07-02 18:57:41,112 - aiogram.event - INFO - Update id=439468180 is handled. Duration 73 ms by bot id=7741896700
+2025-07-02 18:57:45,969 - stats - INFO - STATS: VIEW - визитки:3 by user 474735723
+2025-07-02 18:57:46,246 - aiogram.event - INFO - Update id=439468181 is handled. Duration 281 ms by bot id=7741896700
+2025-07-02 19:00:48,546 - aiogram.dispatcher - WARNING - Received SIGINT signal
+2025-07-02 19:00:48,548 - aiogram.dispatcher - INFO - Polling stopped for bot @druk_helper_bot id=7741896700 - 'Druk-Helper'
+2025-07-02 19:00:48,548 - aiogram.dispatcher - INFO - Polling stopped
+2025-07-02 19:00:50,388 - template_manager - INFO - Загружено шаблонов из ./converted-data/csv/vizitki_page_01.csv: 8
+2025-07-02 19:00:50,389 - template_manager - INFO - Загружено шаблонов из ./converted-data/csv/futbolki_page_02.csv: 9
+2025-07-02 19:00:50,389 - template_manager - INFO - Загружено шаблонов из ./converted-data/csv/listovki_page_03.csv: 8
+2025-07-02 19:00:50,389 - template_manager - INFO - Загружено шаблонов из ./converted-data/csv/nakleyki_page_04.csv: 8
+2025-07-02 19:00:50,389 - template_manager - INFO - Всего загружено шаблонов: 33
+2025-07-02 19:00:50,390 - config - INFO - Запуск бота...
+2025-07-02 19:00:50,390 - config - INFO - Загружены категории: ['визитки', 'футболки', 'листовки', 'наклейки']
+2025-07-02 19:00:50,390 - aiogram.dispatcher - INFO - Start polling
+2025-07-02 19:00:50,552 - aiogram.dispatcher - INFO - Run polling for bot @druk_helper_bot id=7741896700 - 'Druk-Helper'
+2025-07-02 19:00:56,234 - aiogram.event - INFO - Update id=439468182 is handled. Duration 191 ms by bot id=7741896700
+2025-07-02 19:00:58,385 - aiogram.event - INFO - Update id=439468183 is handled. Duration 116 ms by bot id=7741896700
+2025-07-02 19:01:01,045 - stats - INFO - STATS: VIEW - визитки:2 by user 474735723
+2025-07-02 19:01:01,187 - aiogram.event - INFO - Update id=439468184 is handled. Duration 145 ms by bot id=7741896700
+2025-07-02 19:01:09,015 - aiogram.event - INFO - Update id=439468185 is handled. Duration 165 ms by bot id=7741896700
+2025-07-02 19:01:10,645 - stats - INFO - STATS: VIEW - визитки:2 by user 474735723
+2025-07-02 19:01:10,839 - aiogram.event - INFO - Update id=439468186 is handled. Duration 196 ms by bot id=7741896700
+2025-07-02 19:01:12,147 - aiogram.event - INFO - Update id=439468187 is handled. Duration 165 ms by bot id=7741896700
+2025-07-02 19:01:13,241 - stats - INFO - STATS: VIEW - визитки:4 by user 474735723
+2025-07-02 19:01:13,339 - aiogram.event - INFO - Update id=439468188 is handled. Duration 100 ms by bot id=7741896700
+2025-07-02 19:01:17,554 - aiogram.event - INFO - Update id=439468189 is handled. Duration 76 ms by bot id=7741896700
+2025-07-02 19:01:18,982 - stats - INFO - STATS: VIEW - визитки:3 by user 474735723
+2025-07-02 19:01:19,079 - aiogram.event - INFO - Update id=439468190 is handled. Duration 99 ms by bot id=7741896700
+2025-07-02 19:01:22,197 - aiogram.event - INFO - Update id=439468191 is handled. Duration 169 ms by bot id=7741896700
+2025-07-02 19:01:23,356 - stats - INFO - STATS: VIEW - визитки:6 by user 474735723
+2025-07-02 19:01:23,438 - aiogram.event - INFO - Update id=439468192 is handled. Duration 85 ms by bot id=7741896700
+2025-07-02 19:01:38,367 - aiogram.event - INFO - Update id=439468193 is handled. Duration 94 ms by bot id=7741896700
+2025-07-02 19:01:40,086 - stats - INFO - STATS: VIEW - визитки:7 by user 474735723
+2025-07-02 19:01:40,278 - aiogram.event - INFO - Update id=439468194 is handled. Duration 194 ms by bot id=7741896700
+2025-07-02 19:01:50,576 - aiogram.event - INFO - Update id=439468195 is handled. Duration 128 ms by bot id=7741896700
+2025-07-02 19:01:52,211 - stats - INFO - STATS: VIEW - визитки:8 by user 474735723
+2025-07-02 19:01:52,346 - aiogram.event - INFO - Update id=439468196 is handled. Duration 138 ms by bot id=7741896700
+2025-07-02 19:01:54,923 - aiogram.event - INFO - Update id=439468197 is handled. Duration 84 ms by bot id=7741896700
+2025-07-02 20:04:49,113 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-02 20:04:49,116 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-02 20:04:50,124 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - ClientConnectorError: Cannot connect to host api.telegram.org:443 ssl:default [Network is unreachable]
+2025-07-02 20:04:50,124 - aiogram.dispatcher - WARNING - Sleep for 1.209505 seconds and try again... (tryings = 1, bot id = 7741896700)
+2025-07-02 20:04:51,338 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - ClientConnectorError: Cannot connect to host api.telegram.org:443 ssl:default [Network is unreachable]
+2025-07-02 20:04:51,338 - aiogram.dispatcher - WARNING - Sleep for 1.447229 seconds and try again... (tryings = 2, bot id = 7741896700)
+2025-07-02 20:04:52,787 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - ClientConnectorError: Cannot connect to host api.telegram.org:443 ssl:default [Network is unreachable]
+2025-07-02 20:04:52,788 - aiogram.dispatcher - WARNING - Sleep for 1.860083 seconds and try again... (tryings = 3, bot id = 7741896700)
+2025-07-02 20:04:54,652 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - ClientConnectorError: Cannot connect to host api.telegram.org:443 ssl:default [Network is unreachable]
+2025-07-02 20:04:54,652 - aiogram.dispatcher - WARNING - Sleep for 2.364071 seconds and try again... (tryings = 4, bot id = 7741896700)
+2025-07-02 20:04:57,018 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - ClientConnectorError: Cannot connect to host api.telegram.org:443 ssl:default [Network is unreachable]
+2025-07-02 20:04:57,019 - aiogram.dispatcher - WARNING - Sleep for 2.919925 seconds and try again... (tryings = 5, bot id = 7741896700)
+2025-07-02 20:04:59,941 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - ClientConnectorError: Cannot connect to host api.telegram.org:443 ssl:default [Network is unreachable]
+2025-07-02 20:04:59,941 - aiogram.dispatcher - WARNING - Sleep for 3.965335 seconds and try again... (tryings = 6, bot id = 7741896700)
+2025-07-02 20:05:03,908 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - ClientConnectorError: Cannot connect to host api.telegram.org:443 ssl:default [Network is unreachable]
+2025-07-02 20:05:03,909 - aiogram.dispatcher - WARNING - Sleep for 4.946077 seconds and try again... (tryings = 7, bot id = 7741896700)
+2025-07-02 20:05:08,859 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - ClientConnectorError: Cannot connect to host api.telegram.org:443 ssl:default [Network is unreachable]
+2025-07-02 20:05:08,859 - aiogram.dispatcher - WARNING - Sleep for 4.947847 seconds and try again... (tryings = 8, bot id = 7741896700)
+2025-07-02 20:05:13,810 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - ClientConnectorError: Cannot connect to host api.telegram.org:443 ssl:default [Network is unreachable]
+2025-07-02 20:05:13,812 - aiogram.dispatcher - WARNING - Sleep for 5.131294 seconds and try again... (tryings = 9, bot id = 7741896700)
+2025-07-02 20:16:51,596 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - ClientConnectorError: Cannot connect to host api.telegram.org:443 ssl:default [Network is unreachable]
+2025-07-02 20:16:51,596 - aiogram.dispatcher - WARNING - Sleep for 4.901373 seconds and try again... (tryings = 10, bot id = 7741896700)
+2025-07-02 20:17:07,701 - aiogram.dispatcher - INFO - Connection established (tryings = 11, bot id = 7741896700)
+2025-07-02 20:49:43,641 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-02 20:49:43,644 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-02 20:49:54,808 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-02 21:21:59,505 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-02 21:21:59,507 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-02 21:22:10,778 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-02 22:52:04,450 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-02 22:52:04,453 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-02 22:52:15,753 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-03 00:09:36,168 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-03 00:09:36,169 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-03 00:09:47,438 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-03 01:26:21,592 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-03 01:26:21,596 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-03 01:26:32,832 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-03 02:52:56,385 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-03 02:52:56,387 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-03 02:53:07,606 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-03 04:27:16,127 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-03 04:27:16,136 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-03 04:27:27,296 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-03 04:34:45,090 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-03 04:34:45,092 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-03 04:34:56,252 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-03 04:51:32,114 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-03 04:51:32,115 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-03 04:51:43,269 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-03 04:58:24,284 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramServerError: Telegram server says - Bad Gateway
+2025-07-03 04:58:24,286 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-03 04:58:46,219 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-03 06:09:15,735 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-03 06:09:15,740 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-03 06:09:26,896 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-03 06:34:59,821 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-03 06:34:59,827 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-03 06:35:11,420 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-03 07:07:21,668 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-03 07:07:21,671 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-03 07:07:32,844 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-03 07:32:00,755 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-03 07:32:00,757 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-03 07:32:11,918 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-03 08:52:03,617 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-03 08:52:03,619 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-03 08:52:14,891 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-03 09:09:10,520 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-03 09:09:10,521 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-03 09:17:58,658 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-03 09:17:58,664 - aiogram.dispatcher - WARNING - Sleep for 1.271672 seconds and try again... (tryings = 1, bot id = 7741896700)
+2025-07-03 09:18:10,115 - aiogram.dispatcher - INFO - Connection established (tryings = 2, bot id = 7741896700)
+2025-07-03 09:21:50,746 - aiogram.event - INFO - Update id=439468198 is handled. Duration 189 ms by bot id=7741896700
+2025-07-03 09:21:54,069 - aiogram.event - INFO - Update id=439468199 is handled. Duration 76 ms by bot id=7741896700
+2025-07-03 09:21:55,585 - stats - INFO - STATS: VIEW - наклейки:5 by user 474735723
+2025-07-03 09:21:55,661 - aiogram.event - INFO - Update id=439468200 is handled. Duration 79 ms by bot id=7741896700
+2025-07-03 09:21:58,529 - aiogram.event - INFO - Update id=439468201 is handled. Duration 74 ms by bot id=7741896700
+2025-07-03 09:22:00,581 - aiogram.event - INFO - Update id=439468202 is handled. Duration 66 ms by bot id=7741896700
+2025-07-03 09:22:01,568 - aiogram.event - INFO - Update id=439468203 is handled. Duration 124 ms by bot id=7741896700
+2025-07-03 09:22:02,772 - aiogram.event - INFO - Update id=439468204 is handled. Duration 70 ms by bot id=7741896700
+2025-07-03 09:22:04,205 - stats - INFO - STATS: VIEW - наклейки:6 by user 474735723
+2025-07-03 09:22:04,274 - aiogram.event - INFO - Update id=439468205 is handled. Duration 69 ms by bot id=7741896700
+2025-07-03 09:40:25,320 - aiogram.event - INFO - Update id=439468206 is handled. Duration 103 ms by bot id=7741896700
+2025-07-03 09:40:28,021 - aiogram.event - INFO - Update id=439468207 is handled. Duration 154 ms by bot id=7741896700
+2025-07-03 09:40:34,098 - stats - INFO - STATS: VIEW - наклейки:6 by user 230995810
+2025-07-03 09:40:34,190 - aiogram.event - INFO - Update id=439468208 is handled. Duration 97 ms by bot id=7741896700
+2025-07-03 09:41:02,735 - aiogram.event - INFO - Update id=439468209 is handled. Duration 91 ms by bot id=7741896700
+2025-07-03 09:41:19,747 - stats - INFO - STATS: VIEW - наклейки:5 by user 230995810
+2025-07-03 09:41:19,968 - aiogram.event - INFO - Update id=439468210 is handled. Duration 234 ms by bot id=7741896700
+2025-07-03 10:59:12,221 - aiogram.event - INFO - Update id=439468211 is handled. Duration 176 ms by bot id=7741896700
+2025-07-03 10:59:16,328 - aiogram.event - INFO - Update id=439468212 is handled. Duration 105 ms by bot id=7741896700
+2025-07-03 10:59:17,704 - aiogram.event - INFO - Update id=439468213 is handled. Duration 142 ms by bot id=7741896700
+2025-07-03 10:59:34,835 - aiogram.event - INFO - Update id=439468214 is handled. Duration 105 ms by bot id=7741896700
+2025-07-03 10:59:37,144 - stats - INFO - STATS: VIEW - визитки:4 by user 474735723
+2025-07-03 10:59:37,253 - aiogram.event - INFO - Update id=439468215 is handled. Duration 112 ms by bot id=7741896700
+2025-07-03 10:59:40,797 - stats - INFO - STATS: COPY - визитки:4 by user 474735723
+2025-07-03 10:59:41,124 - aiogram.event - INFO - Update id=439468216 is handled. Duration 328 ms by bot id=7741896700
+2025-07-03 12:57:13,723 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-03 12:57:13,728 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-03 12:57:24,921 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-03 13:14:10,656 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-03 13:14:10,658 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-03 13:24:42,480 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-03 14:07:16,937 - aiogram.event - INFO - Update id=439468217 is handled. Duration 240 ms by bot id=7741896700
+2025-07-03 14:07:18,460 - aiogram.event - INFO - Update id=439468218 is handled. Duration 83 ms by bot id=7741896700
+2025-07-03 14:07:20,023 - aiogram.event - INFO - Update id=439468219 is handled. Duration 107 ms by bot id=7741896700
+2025-07-03 14:07:22,464 - stats - INFO - STATS: VIEW - футболки:1 by user 230995810
+2025-07-03 14:07:22,558 - aiogram.event - INFO - Update id=439468220 is handled. Duration 99 ms by bot id=7741896700
+2025-07-03 14:07:28,526 - stats - INFO - STATS: COPY - футболки:1 by user 230995810
+2025-07-03 14:07:28,902 - aiogram.event - INFO - Update id=439468221 is handled. Duration 379 ms by bot id=7741896700
+2025-07-03 14:49:12,775 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-03 14:49:12,777 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-03 14:49:24,270 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-03 15:37:19,788 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-03 15:37:19,789 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-03 15:37:30,944 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-03 16:10:01,660 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-03 16:10:01,661 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-03 16:10:13,046 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-03 16:42:18,958 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-03 16:42:18,960 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-03 16:42:30,509 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-03 17:45:04,079 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-03 17:45:04,084 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-03 17:45:15,570 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-03 18:17:04,698 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-03 18:17:04,701 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-03 18:17:15,874 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-03 18:41:43,207 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-03 18:41:43,210 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-03 18:41:54,472 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-03 18:58:40,176 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-03 18:58:40,179 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-03 18:58:51,339 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-03 20:14:21,992 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-03 20:14:21,995 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-03 20:14:33,171 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-03 20:30:39,502 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-03 20:30:39,506 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-03 20:30:50,668 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-04 00:26:15,087 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-04 00:26:15,094 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-04 00:26:26,258 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-04 01:15:16,375 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-04 01:15:16,384 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-04 01:15:27,554 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-04 01:41:09,115 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-04 01:41:09,118 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-04 01:41:20,356 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-04 02:00:57,618 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-04 02:00:57,621 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-04 02:01:08,783 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-04 03:13:49,662 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-04 03:13:49,664 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-04 03:14:00,917 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-04 04:32:19,353 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-04 04:32:19,356 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-04 04:32:30,518 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-04 04:59:54,437 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-04 04:59:54,440 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-04 05:00:05,657 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-04 06:23:46,994 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-04 06:23:46,996 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-04 06:23:58,156 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-04 08:44:38,885 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-04 08:44:38,893 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-04 08:44:50,122 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-04 09:38:06,263 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-04 09:38:06,266 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-04 09:38:17,427 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-04 10:30:29,806 - aiogram.event - INFO - Update id=439468222 is handled. Duration 259 ms by bot id=7741896700
+2025-07-04 10:30:31,771 - aiogram.event - INFO - Update id=439468223 is handled. Duration 147 ms by bot id=7741896700
+2025-07-04 10:30:32,710 - aiogram.event - INFO - Update id=439468224 is handled. Duration 155 ms by bot id=7741896700
+2025-07-04 10:30:34,728 - stats - INFO - STATS: VIEW - наклейки:5 by user 230995810
+2025-07-04 10:30:34,800 - aiogram.event - INFO - Update id=439468225 is handled. Duration 79 ms by bot id=7741896700
+2025-07-04 10:31:33,826 - aiogram.event - INFO - Update id=439468226 is handled. Duration 71 ms by bot id=7741896700
+2025-07-04 10:31:35,404 - aiogram.event - INFO - Update id=439468227 is handled. Duration 89 ms by bot id=7741896700
+2025-07-04 10:31:36,357 - aiogram.event - INFO - Update id=439468228 is handled. Duration 122 ms by bot id=7741896700
+2025-07-04 10:31:37,728 - aiogram.event - INFO - Update id=439468229 is handled. Duration 133 ms by bot id=7741896700
+2025-07-04 10:31:42,696 - stats - INFO - STATS: VIEW - наклейки:5 by user 230995810
+2025-07-04 10:31:42,784 - aiogram.event - INFO - Update id=439468230 is handled. Duration 91 ms by bot id=7741896700
+2025-07-04 10:32:58,595 - aiogram.event - INFO - Update id=439468231 is handled. Duration 90 ms by bot id=7741896700
+2025-07-04 10:33:08,648 - stats - INFO - STATS: VIEW - наклейки:7 by user 230995810
+2025-07-04 10:33:08,815 - aiogram.event - INFO - Update id=439468232 is handled. Duration 169 ms by bot id=7741896700
+2025-07-04 10:33:11,748 - aiogram.event - INFO - Update id=439468233 is handled. Duration 103 ms by bot id=7741896700
+2025-07-04 10:33:14,836 - stats - INFO - STATS: VIEW - наклейки:1 by user 230995810
+2025-07-04 10:33:14,908 - aiogram.event - INFO - Update id=439468234 is handled. Duration 74 ms by bot id=7741896700
+2025-07-04 10:47:10,599 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-04 10:47:10,601 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-04 10:47:21,777 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-04 11:58:17,643 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - ServerDisconnectedError: Server disconnected
+2025-07-04 11:58:17,648 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-04 11:58:28,842 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-04 11:58:28,844 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - ServerDisconnectedError: Server disconnected
+2025-07-04 11:58:28,845 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-04 11:58:39,994 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-04 13:09:15,026 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-04 13:09:15,031 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-04 13:09:26,204 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-04 14:24:09,104 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-04 14:24:09,107 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-04 14:24:20,301 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-04 14:53:41,137 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2025-07-04 14:53:41,144 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 7741896700)
+2025-07-04 14:53:52,547 - aiogram.dispatcher - INFO - Connection established (tryings = 1, bot id = 7741896700)
+2025-07-04 14:58:31,850 - aiogram.event - INFO - Update id=439468235 is handled. Duration 258 ms by bot id=7741896700
+2025-07-04 14:58:33,942 - aiogram.event - INFO - Update id=439468236 is handled. Duration 73 ms by bot id=7741896700
+2025-07-04 14:58:34,984 - stats - INFO - STATS: VIEW - наклейки:1 by user 474735723
+2025-07-04 14:58:35,102 - aiogram.event - INFO - Update id=439468237 is handled. Duration 122 ms by bot id=7741896700

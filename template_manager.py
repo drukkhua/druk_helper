@@ -19,9 +19,10 @@ class TemplateManager:
     def load_templates(self):
         """Загружает шаблоны из CSV файлов"""
         csv_files = {
-            'визитки': './data/visitki_templates.csv',
-            'футболки': './data/futbolki_templates.csv',
-            'листовки': './data/listovki_templates.csv'
+            'визитки': './converted-data/csv/vizitki_page_01.csv',
+            'футболки': './converted-data/csv/futbolki_page_02.csv',
+            'листовки': './converted-data/csv/listovki_page_03.csv',
+            'наклейки': './converted-data/csv/nakleyki_page_04.csv',
         }
 
         for category, csv_path in csv_files.items():
@@ -65,7 +66,8 @@ class TemplateManager:
         lang = self.get_user_language(user_id)
         text = template.answer_ukr if lang == 'ukr' else template.answer_rus
         # ✅ Заменяем \n на реальные переносы строк
-        return text.replace('\\n', '\n')
+        # return text.replace('\\n', '\n')
+        return text
 
     def search_templates(self, query: str) -> List[Template]:
         """Поиск шаблонов по ключевым словам"""

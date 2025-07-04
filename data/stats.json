@@ -85,8 +85,149 @@
   "2025-07-02": {
     "футболки": {
       "2": {
+        "count": 2,
+        "last_used": "18:12:50",
+        "copies": 0
+      },
+      "1": {
+        "count": 3,
+        "last_used": "18:15:51",
+        "copies": 0
+      },
+      "4": {
         "count": 1,
-        "last_used": "09:19:00",
+        "last_used": "18:13:01",
+        "copies": 0
+      },
+      "8": {
+        "count": 1,
+        "last_used": "18:13:08",
+        "copies": 0
+      },
+      "9": {
+        "count": 1,
+        "last_used": "18:16:15",
+        "copies": 0
+      },
+      "7": {
+        "count": 1,
+        "last_used": "18:16:20",
+        "copies": 0
+      }
+    },
+    "визитки": {
+      "1": {
+        "count": 5,
+        "last_used": "18:57:39",
+        "copies": 0
+      },
+      "3": {
+        "count": 7,
+        "last_used": "19:01:18",
+        "copies": 1
+      },
+      "4": {
+        "count": 4,
+        "last_used": "19:01:13",
+        "copies": 0
+      },
+      "8": {
+        "count": 3,
+        "last_used": "19:01:52",
+        "copies": 1
+      },
+      "7": {
+        "count": 2,
+        "last_used": "19:01:40",
+        "copies": 0
+      },
+      "2": {
+        "count": 2,
+        "last_used": "19:01:10",
+        "copies": 0
+      },
+      "6": {
+        "count": 1,
+        "last_used": "19:01:23",
+        "copies": 0
+      }
+    },
+    "наклейки": {
+      "1": {
+        "count": 2,
+        "last_used": "18:57:23",
+        "copies": 0
+      },
+      "2": {
+        "count": 2,
+        "last_used": "18:20:23",
+        "copies": 0
+      },
+      "4": {
+        "count": 3,
+        "last_used": "18:16:48",
+        "copies": 0
+      },
+      "3": {
+        "count": 2,
+        "last_used": "18:20:03",
+        "copies": 0
+      },
+      "6": {
+        "count": 1,
+        "last_used": "17:55:21",
+        "copies": 0
+      },
+      "5": {
+        "count": 1,
+        "last_used": "18:16:29",
+        "copies": 0
+      }
+    }
+  },
+  "2025-07-03": {
+    "наклейки": {
+      "5": {
+        "count": 2,
+        "last_used": "09:41:19",
+        "copies": 0
+      },
+      "6": {
+        "count": 2,
+        "last_used": "09:40:34",
+        "copies": 0
+      }
+    },
+    "визитки": {
+      "4": {
+        "count": 1,
+        "last_used": "10:59:37",
+        "copies": 1
+      }
+    },
+    "футболки": {
+      "1": {
+        "count": 1,
+        "last_used": "14:07:22",
+        "copies": 1
+      }
+    }
+  },
+  "2025-07-04": {
+    "наклейки": {
+      "5": {
+        "count": 2,
+        "last_used": "10:31:42",
+        "copies": 0
+      },
+      "7": {
+        "count": 1,
+        "last_used": "10:33:08",
+        "copies": 0
+      },
+      "1": {
+        "count": 2,
+        "last_used": "14:58:34",
         "copies": 0
       }
     }
