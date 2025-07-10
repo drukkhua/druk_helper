@@ -247,5 +247,63 @@
         "copies": 0
       }
     }
+  },
+  "2025-07-10": {
+    "визитки": {
+      "6": {
+        "count": 1,
+        "last_used": "13:14:20",
+        "copies": 0
+      },
+      "5": {
+        "count": 1,
+        "last_used": "13:14:28",
+        "copies": 0
+      },
+      "10": {
+        "count": 1,
+        "last_used": "13:14:31",
+        "copies": 0
+      },
+      "1": {
+        "count": 1,
+        "last_used": "14:05:57",
+        "copies": 0
+      },
+      "15": {
+        "count": 1,
+        "last_used": "14:06:09",
+        "copies": 1
+      },
+      "2": {
+        "count": 1,
+        "last_used": "14:06:39",
+        "copies": 0
+      }
+    },
+    "наклейки": {
+      "5": {
+        "count": 2,
+        "last_used": "14:24:09",
+        "copies": 1
+      }
+    },
+    "листовки": {
+      "14": {
+        "count": 1,
+        "last_used": "14:34:12",
+        "copies": 0
+      },
+      "16": {
+        "count": 1,
+        "last_used": "14:34:24",
+        "copies": 0
+      },
+      "18": {
+        "count": 1,
+        "last_used": "14:34:30",
+        "copies": 0
+      }
+    }
   }
 }
