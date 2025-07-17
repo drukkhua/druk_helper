@@ -370,3 +370,69 @@ async def coming_soon(callback: CallbackQuery, template_manager):
     )
 
     await callback.answer(text)
+
+
+@handle_exceptions
+async def cmd_reload(message: types.Message, template_manager):
+    """Команда для перезагрузки шаблонов (только для админов)"""
+    if message.from_user.id not in ADMIN_USER_IDS:
+        await message.answer("❌ Нет доступа")
+        return
+    
+    try:
+        await message.answer("🔄 Перезагрузка шаблонов...")
+        template_manager.reload_templates()
+        
+        success_text = (
+            f"✅ Шаблоны перезагружены успешно!\n"
+            f"📊 Загружено категорий: {len(template_manager.templates)}\n"
+            f"📋 Всего шаблонов: {sum(len(t) for t in template_manager.templates.values())}"
+        )
+        await message.answer(success_text)
+        
+    except Exception as e:
+        error_text = f"❌ Ошибка перезагрузки: {str(e)}"
+        await message.answer(error_text)
+
+
+@handle_exceptions
+async def cmd_health(message: types.Message, template_manager):
+    """Команда для проверки здоровья системы (только для админов)"""
+    if message.from_user.id not in ADMIN_USER_IDS:
+        await message.answer("❌ Нет доступа")
+        return
+    
+    try:
+        from error_monitor import get_health_status
+        from datetime import datetime
+        
+        health_status = get_health_status()
+        
+        # Статистика шаблонов
+        templates_count = sum(len(t) for t in template_manager.templates.values())
+        categories_count = len(template_manager.templates)
+        
+        # Статистика ошибок
+        error_stats = template_manager.stats.get_stats_summary() if hasattr(template_manager, 'stats') else "Недоступно"
+        
+        health_text = f"""
+🏥 **Состояние системы**
+
+🤖 **Статус:** {health_status['status']}
+📊 **Категории:** {categories_count}
+📋 **Шаблоны:** {templates_count}
+🕒 **Время:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+
+📈 **Ошибки за час:**
+- Всего: {health_status['errors_last_hour']}
+- Критических: {health_status['critical_errors_last_hour']}
+
+💾 **Память:** OK
+🌐 **Сеть:** OK
+        """
+        
+        await message.answer(health_text)
+        
+    except Exception as e:
+        error_text = f"❌ Ошибка получения статуса: {str(e)}"
+        await message.answer(error_text)

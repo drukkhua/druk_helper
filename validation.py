@@ -138,8 +138,8 @@ class InputValidator:
                 error_message="Callback data не может быть пустым"
             )
         
-        # Базовая очистка
-        cleaned_data = self._clean_basic_input(callback_data)
+        # Упрощенная очистка для callback_data (без HTML escape)
+        cleaned_data = self._clean_callback_data(callback_data)
         
         # Проверка длины (Telegram ограничивает callback_data до 64 байт)
         if len(cleaned_data.encode('utf-8')) > 64:
@@ -154,8 +154,8 @@ class InputValidator:
         if not security_check.is_valid:
             return security_check
         
-        # Проверка формата callback_data (должен содержать только безопасные символы)
-        if not re.match(r'^[a-zA-Z0-9_\-]+$', cleaned_data):
+        # Проверка формата callback_data (должен содержать только безопасные символы, включая кириллицу)
+        if not re.match(r'^[a-zA-Zа-яА-ЯёЁії0-9_\-]+$', cleaned_data):
             return ValidationResult(
                 is_valid=False,
                 cleaned_value=cleaned_data,
@@ -265,6 +265,30 @@ class InputValidator:
         cleaned = re.sub(r'\s+', ' ', cleaned)
         
         # Удаляем управляющие символы кроме обычных пробелов и переносов
+        cleaned = re.sub(r'[\x00-\x08\x0b-\x0c\x0e-\x1f\x7f-\x9f]', '', cleaned)
+        
+        return cleaned
+    
+    def _clean_callback_data(self, text: str) -> str:
+        """
+        Упрощенная очистка для callback_data (без HTML escape)
+        
+        Args:
+            text: Исходный текст
+            
+        Returns:
+            str: Очищенный текст
+        """
+        if not text:
+            return ""
+        
+        # Удаляем ведущие и завершающие пробелы
+        cleaned = text.strip()
+        
+        # Удаляем множественные пробелы
+        cleaned = re.sub(r'\s+', ' ', cleaned)
+        
+        # Удаляем управляющие символы кроме обычных пробелов
         cleaned = re.sub(r'[\x00-\x08\x0b-\x0c\x0e-\x1f\x7f-\x9f]', '', cleaned)
         
         return cleaned
