@@ -4,3 +4,4 @@
 .idea
 *.session
 /env/
+*.xml

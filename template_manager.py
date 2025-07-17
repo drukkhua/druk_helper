@@ -23,6 +23,7 @@ class TemplateManager:
             'футболки': './converted-data/csv/futbolki_page_02.csv',
             'листовки': './converted-data/csv/listovki_page_03.csv',
             'наклейки': './converted-data/csv/nakleyki_page_04.csv',
+            'блокноты': './converted-data/csv/bloknoty_page_05.csv',
         }
 
         for category, csv_path in csv_files.items():

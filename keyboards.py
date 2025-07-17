@@ -9,7 +9,10 @@ def get_category_title(category: str, lang: str) -> str:
     titles = {
         'визитки': {'ukr': '📇 Візитки', 'rus': '📇 Визитки'},
         'футболки': {'ukr': '👕 Футболки', 'rus': '👕 Футболки'},
-        'листовки': {'ukr': '📄 Листівки', 'rus': '📄 Листовки'}
+        'листовки': {'ukr': '📄 Листівки', 'rus': '📄 Листовки'},
+        'наклейки': {'ukr': '🔖 Наліпки', 'rus': '🔖 Каклейки'},
+        'блокноты': {'ukr': '📋 Блокноти', 'rus': '📋 Блокноты'},
+
     }
 
     return titles.get(category, {}).get(lang, f"📦 {category.title()}")
@@ -30,7 +33,8 @@ def create_main_menu_keyboard(user_id: int, template_manager) -> InlineKeyboardM
                                      callback_data="category_листовки"))
     builder.row(InlineKeyboardButton(text="🔖 Наліпки" if lang == 'ukr' else "🔖 Наклейки",
                                      callback_data="category_наклейки"))
-
+    builder.row(InlineKeyboardButton(text="📋 Блокноти" if lang == 'ukr' else "📋 Блокноты",
+                                     callback_data="category_блокноты"))
     # Дополнительные функции
     builder.row(InlineKeyboardButton(text="🔍 Пошук" if lang == 'ukr' else "🔍 Поиск",
                                      callback_data="search"))

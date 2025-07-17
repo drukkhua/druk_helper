@@ -18,7 +18,7 @@ dp = Dispatcher(storage=storage)
 
 # Глобальный менеджер шаблонов
 template_manager = TemplateManager()
-BOT_VERSION = "1.02"  # Увеличивайте эту версию при изменениях
+BOT_VERSION = "1.04"  # Увеличивайте эту версию при изменениях
 
 
 # Регистрация обработчиков
