@@ -380,18 +380,34 @@ async def cmd_reload(message: types.Message, template_manager):
         return
     
     try:
-        await message.answer("🔄 Перезагрузка шаблонов...")
+        await message.answer("🔄 Начинаем обновление данных...")
+        
+        # Импортируем функцию обновления из Google Sheets
+        from google_sheets_updater import update_templates_from_sheets
+        
+        # Сначала обновляем данные из Google Sheets
+        await message.answer("📊 Загружаем актуальные данные из Google Sheets...")
+        sheets_updated = update_templates_from_sheets()
+        
+        if sheets_updated:
+            await message.answer("✅ Данные из Google Sheets обновлены успешно!")
+        else:
+            await message.answer("⚠️ Не удалось обновить данные из Google Sheets, используем локальные файлы")
+        
+        # Затем перезагружаем шаблоны в память
+        await message.answer("🔄 Перезагружаем шаблоны в память...")
         template_manager.reload_templates()
         
         success_text = (
-            f"✅ Шаблоны перезагружены успешно!\n"
-            f"📊 Загружено категорий: {len(template_manager.templates)}\n"
-            f"📋 Всего шаблонов: {sum(len(t) for t in template_manager.templates.values())}"
+            f"✅ Обновление завершено успешно!\n"
+            f"📊 Google Sheets: {'✅ Обновлено' if sheets_updated else '⚠️ Ошибка'}\n"
+            f"📋 Загружено категорий: {len(template_manager.templates)}\n"
+            f"📄 Всего шаблонов: {sum(len(t) for t in template_manager.templates.values())}"
         )
         await message.answer(success_text)
         
     except Exception as e:
-        error_text = f"❌ Ошибка перезагрузки: {str(e)}"
+        error_text = f"❌ Ошибка при обновлении: {str(e)}"
         await message.answer(error_text)
 
 

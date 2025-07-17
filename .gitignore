@@ -1,7 +1,50 @@
-/.env
+# Environment variables and secrets
+.env
+.env.local
+.env.production
+
+# Virtual environments
 /.venv/
-/dialogs/
-.idea
-*.session
 /env/
+/venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Logs and runtime files
+*.log
+error_log.json
+bot.log
+logs/
+
+# Statistics and user data
+data/stats.json
+stats.json
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Session files
+*.session
+
+# Development and testing
+/dialogs/
 *.xml
+*.tmp
+
+# Legacy converted data (not needed in git)
+converted-data/
+
+# Backup files
+*.bak
+*.backup
+*.orig

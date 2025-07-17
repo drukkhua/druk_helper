@@ -1,5 +1,7 @@
 import csv
 import logging
+import os
+import shutil
 from typing import Dict, List, Optional
 
 from models import Template
@@ -21,12 +23,14 @@ class TemplateManager:
 
     def load_templates(self):
         """Загружает шаблоны из CSV файлов"""
+        import os
+        
         csv_files = {
-            'визитки': './converted-data/csv/vizitki_page_01.csv',
-            'футболки': './converted-data/csv/futbolki_page_02.csv',
-            'листовки': './converted-data/csv/listovki_page_03.csv',
-            'наклейки': './converted-data/csv/nakleyki_page_04.csv',
-            'блокноты': './converted-data/csv/bloknoty_page_05.csv',
+            'визитки': os.getenv('VISITKI_CSV_PATH', './data/visitki_templates.csv'),
+            'футболки': os.getenv('FUTBOLKI_CSV_PATH', './data/futbolki_templates.csv'),
+            'листовки': os.getenv('LISTOVKI_CSV_PATH', './data/listovki_templates.csv'),
+            'наклейки': os.getenv('NAKLEYKI_CSV_PATH', './data/nakleyki_templates.csv'),
+            'блокноты': os.getenv('BLOKNOTY_CSV_PATH', './data/bloknoty_templates.csv'),
         }
 
         loaded_categories = 0
@@ -222,11 +226,60 @@ class TemplateManager:
         """Получение списка всех доступных категорий"""
         return list(self.templates.keys())
 
+    def copy_csv_files(self) -> None:
+        """Копирует CSV файлы из converted-data/csv/ в data/"""
+        source_dir = "./converted-data/csv/"
+        target_dir = "./data/"
+        
+        # Создаем папку data, если она не существует
+        os.makedirs(target_dir, exist_ok=True)
+        
+        # Мапинг файлов из converted-data/csv/ в data/
+        file_mapping = {
+            'vizitki_01.csv': 'visitki_templates.csv',
+            'futbolki_02.csv': 'futbolki_templates.csv',
+            'listovki_03.csv': 'listovki_templates.csv',
+            'nakleiki_04.csv': 'nakleyki_templates.csv',
+            'bloknoty_05.csv': 'bloknoty_templates.csv'
+        }
+        
+        copied_files = []
+        errors = []
+        
+        for source_file, target_file in file_mapping.items():
+            source_path = os.path.join(source_dir, source_file)
+            target_path = os.path.join(target_dir, target_file)
+            
+            try:
+                if os.path.exists(source_path):
+                    shutil.copy2(source_path, target_path)
+                    copied_files.append(f"{source_file} -> {target_file}")
+                    logger.info(f"Скопирован файл: {source_path} -> {target_path}")
+                else:
+                    logger.warning(f"Файл не найден: {source_path}")
+                    
+            except Exception as e:
+                error_msg = f"Ошибка копирования {source_file}: {str(e)}"
+                logger.error(error_msg)
+                errors.append(error_msg)
+        
+        if copied_files:
+            logger.info(f"Успешно скопировано файлов: {len(copied_files)}")
+        
+        if errors:
+            logger.error(f"Ошибки при копировании: {len(errors)}")
+            for error in errors:
+                logger.error(error)
+
     def reload_templates(self) -> None:
         """Перезагрузка шаблонов с обработкой ошибок"""
         try:
             old_templates = self.templates.copy()
             self.templates.clear()
+            
+            # Копируем CSV файлы из converted-data/csv/ в data/ перед перезагрузкой
+            logger.info("Копирование CSV файлов перед перезагрузкой...")
+            self.copy_csv_files()
             
             self.load_templates()
             logger.info("Шаблоны успешно перезагружены")
