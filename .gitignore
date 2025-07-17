@@ -48,3 +48,12 @@ converted-data/
 *.bak
 *.backup
 *.orig
+
+# Testing
+.pytest_cache/
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+.hypothesis/
