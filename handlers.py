@@ -8,8 +8,11 @@ from keyboards import create_category_menu_keyboard, create_main_menu_keyboard, 
     get_category_title
 from models import UserStates
 from validation import validator
+from exceptions import *
+from error_handler import handle_exceptions
 
 
+@handle_exceptions
 async def cmd_start(message: types.Message, state: FSMContext, template_manager):
     """Обработчик команды /start"""
     user_id = message.from_user.id
@@ -17,8 +20,7 @@ async def cmd_start(message: types.Message, state: FSMContext, template_manager)
     # Валидация user_id
     user_validation = validator.validate_user_id(user_id)
     if not user_validation.is_valid:
-        logger.error(f"Неверный user_id: {user_id}")
-        return
+        raise ValidationError(f"Неверный user_id: {user_id}")
 
     welcome_text = (
         "👋 Привіт! Я бот-помічник для швидких відповідей клієнтам.\n\n"
@@ -87,20 +89,17 @@ async def process_category_selection(callback: CallbackQuery, state: FSMContext,
     await state.set_state(UserStates.category_menu)
 
 
+@handle_exceptions
 async def process_template_selection(callback: CallbackQuery, state: FSMContext, template_manager):
     """Обработчик выбора конкретного шаблона"""
     # Валидация callback_data
     callback_validation = validator.validate_callback_data(callback.data)
     if not callback_validation.is_valid:
-        logger.error(f"Неверный callback_data: {callback.data}")
-        await callback.answer("❌ Ошибка обработки запроса")
-        return
+        raise ValidationError(f"Неверный callback_data: {callback.data}")
     
     parts = callback_validation.cleaned_value.split("_")
     if len(parts) < 3:
-        logger.error(f"Неверный формат callback_data: {callback.data}")
-        await callback.answer("❌ Ошибка обработки запроса")
-        return
+        raise ValidationError(f"Неверный формат callback_data: {callback.data}")
     
     category = parts[1]
     subcategory = "_".join(parts[2:])
@@ -109,16 +108,10 @@ async def process_template_selection(callback: CallbackQuery, state: FSMContext,
     # Валидация user_id
     user_validation = validator.validate_user_id(user_id)
     if not user_validation.is_valid:
-        logger.error(f"Неверный user_id: {user_id}")
-        return
+        raise ValidationError(f"Неверный user_id: {user_id}")
 
-    # Находим нужный шаблон
-    template = None
-    if category in template_manager.templates:
-        for t in template_manager.templates[category]:
-            if t.subcategory == subcategory:
-                template = t
-                break
+    # Находим нужный шаблон используя безопасный метод
+    template = template_manager.get_template_by_subcategory(category, subcategory)
 
     if template:
         template_text = template_manager.get_template_text(template, user_id)
@@ -305,6 +298,7 @@ async def start_search(callback: CallbackQuery, state: FSMContext, template_mana
     await state.set_state(UserStates.search_mode)
 
 
+@handle_exceptions
 async def process_search_query(message: types.Message, state: FSMContext, template_manager):
     """Обработка поискового запроса"""
     user_id = message.from_user.id
@@ -312,8 +306,7 @@ async def process_search_query(message: types.Message, state: FSMContext, templa
     # Валидация user_id
     user_validation = validator.validate_user_id(user_id)
     if not user_validation.is_valid:
-        logger.error(f"Неверный user_id: {user_id}")
-        return
+        raise ValidationError(f"Неверный user_id: {user_id}")
     
     # Валидация поискового запроса
     search_validation = validator.validate_search_query(message.text)
@@ -329,7 +322,7 @@ async def process_search_query(message: types.Message, state: FSMContext, templa
     
     query = search_validation.cleaned_value
 
-    # Поиск шаблонов
+    # Поиск шаблонов (теперь с proper error handling)
     found_templates = template_manager.search_templates(query)
 
     if not found_templates:

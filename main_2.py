@@ -1,5 +1,6 @@
 import asyncio
 import os
+import sys
 
 from aiogram import Bot, Dispatcher
 from aiogram.filters import Command, StateFilter
@@ -9,16 +10,26 @@ import handlers
 from config import BOT_TOKEN, logger
 from models import UserStates
 from template_manager import TemplateManager
+from exceptions import *
+from error_handler import error_handler
 
 
 # Инициализация бота
-bot = Bot(token=BOT_TOKEN)
-storage = MemoryStorage()
-dp = Dispatcher(storage=storage)
-
-# Глобальный менеджер шаблонов
-template_manager = TemplateManager()
-BOT_VERSION = "1.04"  # Увеличивайте эту версию при изменениях
+try:
+    if not BOT_TOKEN:
+        raise ConfigurationError("BOT_TOKEN не задан в переменных окружения")
+    
+    bot = Bot(token=BOT_TOKEN)
+    storage = MemoryStorage()
+    dp = Dispatcher(storage=storage)
+    
+    # Глобальный менеджер шаблонов
+    template_manager = TemplateManager()
+    BOT_VERSION = "1.05"  # Увеличивайте эту версию при изменениях
+    
+except Exception as e:
+    logger.critical(f"Критическая ошибка инициализации бота: {e}")
+    sys.exit(1)
 
 
 # Регистрация обработчиков
@@ -100,14 +111,36 @@ async def coming_soon_wrapper(callback):
     await handlers.coming_soon(callback, template_manager)
 
 
+async def global_error_handler(event, exception):
+    """Глобальный обработчик ошибок для dispatcher"""
+    logger.error(f"Глобальная ошибка: {exception}")
+    await error_handler.handle_error(exception, event)
+    return True  # Помечаем как обработанную
+
+
 async def main():
     """Главная функция для запуска бота"""
-    # Создаем директорию для данных, если её нет
-    os.makedirs('./data', exist_ok=True)
+    try:
+        # Создаем директорию для данных, если её нет
+        os.makedirs('./data', exist_ok=True)
+        os.makedirs('./logs', exist_ok=True)
 
-    logger.info("Запуск бота...")
-    logger.info(f"Загружены категории: {list(template_manager.templates.keys())}")
-    await dp.start_polling(bot)
+        logger.info("Запуск бота...")
+        logger.info(f"Загружены категории: {list(template_manager.templates.keys())}")
+        
+        # Настраиваем глобальный обработчик ошибок для dispatcher
+        dp.errors.register(global_error_handler)
+        
+        await dp.start_polling(bot)
+        
+    except KeyboardInterrupt:
+        logger.info("Бот остановлен пользователем")
+    except Exception as e:
+        logger.critical(f"Критическая ошибка: {e}")
+        await error_handler.handle_error(e)
+        sys.exit(1)
+    finally:
+        logger.info("Завершение работы бота...")
 
 
 if __name__ == '__main__':
