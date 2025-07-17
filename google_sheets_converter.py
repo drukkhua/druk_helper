@@ -12,10 +12,7 @@ from typing import Any, Dict, List, Tuple
 
 import pandas as pd
 import requests
-
-
-# Константы
-GOOGLE_SHEETS_API_KEY = "AIzaSyDzDspWPn07MQxNm3iJ1ZXPlJruWO1tzK4"
+from config import GOOGLE_SHEETS_API_KEY
 URL_TEST = "https://docs.google.com/spreadsheets/d/1RagVK40gWitjfQE-_wBD8HnSaeDGGMZJ2uWfICLRqFQ/edit?usp=sharing"
 
 

@@ -50,7 +50,7 @@ def save_xlsx(self, df, sheet_name, page_num):
 # Новый формат = добавление метода в класс + изменение save_all_formats()
 
 # ❌ ПРОБЛЕМА 5: Конфигурация захардкожена
-GOOGLE_SHEETS_API_KEY = "AIzaSyDzDspWPn07MQxNm3iJ1ZXPlJruWO1tzK4"
+# GOOGLE_SHEETS_API_KEY перенесен в переменные окружения (config.py)
 FILE_PATH = "../converted-data"
 CACHE_FILE = "../converted-data/.cache.json"
 

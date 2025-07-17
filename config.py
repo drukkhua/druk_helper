@@ -22,3 +22,6 @@ logger = logging.getLogger(__name__)
 BOT_TOKEN = os.getenv('BOT_TOKEN')
 ADMIN_USER_IDS = [int(x) for x in os.getenv('ADMIN_USER_IDS', '').split(',') if x]
 PORTFOLIO_LINK = os.getenv('PORTFOLIO_LINK', 'https://t.me/druk_portfolio')
+
+# Google API конфигурация
+GOOGLE_SHEETS_API_KEY = os.getenv('GOOGLE_SHEETS_API_KEY')

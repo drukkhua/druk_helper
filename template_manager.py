@@ -4,6 +4,7 @@ from typing import Dict, List
 
 from models import Template
 from stats import StatsManager
+from validation import validator
 
 
 logger = logging.getLogger(__name__)
@@ -72,8 +73,14 @@ class TemplateManager:
 
     def search_templates(self, query: str) -> List[Template]:
         """Поиск шаблонов по ключевым словам"""
+        # Валидация поискового запроса
+        search_validation = validator.validate_search_query(query)
+        if not search_validation.is_valid:
+            logger.warning(f"Неверный поисковый запрос: {query}")
+            return []
+        
         results = []
-        query_lower = query.lower()
+        query_lower = search_validation.cleaned_value.lower()
 
         for category_templates in self.templates.values():
             for template in category_templates:

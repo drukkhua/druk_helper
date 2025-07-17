@@ -3,15 +3,22 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery, InlineKeyboardButton
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-from config import ADMIN_USER_IDS
+from config import ADMIN_USER_IDS, logger
 from keyboards import create_category_menu_keyboard, create_main_menu_keyboard, create_template_keyboard, \
     get_category_title
 from models import UserStates
+from validation import validator
 
 
 async def cmd_start(message: types.Message, state: FSMContext, template_manager):
     """Обработчик команды /start"""
     user_id = message.from_user.id
+    
+    # Валидация user_id
+    user_validation = validator.validate_user_id(user_id)
+    if not user_validation.is_valid:
+        logger.error(f"Неверный user_id: {user_id}")
+        return
 
     welcome_text = (
         "👋 Привіт! Я бот-помічник для швидких відповідей клієнтам.\n\n"
@@ -39,8 +46,21 @@ async def cmd_stats(message: types.Message, template_manager):
 
 async def process_category_selection(callback: CallbackQuery, state: FSMContext, template_manager):
     """Обработчик выбора категории"""
-    category = callback.data.replace("category_", "")
+    # Валидация callback_data
+    callback_validation = validator.validate_callback_data(callback.data)
+    if not callback_validation.is_valid:
+        logger.error(f"Неверный callback_data: {callback.data}")
+        await callback.answer("❌ Ошибка обработки запроса")
+        return
+    
+    category = callback_validation.cleaned_value.replace("category_", "")
     user_id = callback.from_user.id
+    
+    # Валидация user_id
+    user_validation = validator.validate_user_id(user_id)
+    if not user_validation.is_valid:
+        logger.error(f"Неверный user_id: {user_id}")
+        return
 
     lang = template_manager.get_user_language(user_id)
 
@@ -69,10 +89,28 @@ async def process_category_selection(callback: CallbackQuery, state: FSMContext,
 
 async def process_template_selection(callback: CallbackQuery, state: FSMContext, template_manager):
     """Обработчик выбора конкретного шаблона"""
-    parts = callback.data.split("_")
+    # Валидация callback_data
+    callback_validation = validator.validate_callback_data(callback.data)
+    if not callback_validation.is_valid:
+        logger.error(f"Неверный callback_data: {callback.data}")
+        await callback.answer("❌ Ошибка обработки запроса")
+        return
+    
+    parts = callback_validation.cleaned_value.split("_")
+    if len(parts) < 3:
+        logger.error(f"Неверный формат callback_data: {callback.data}")
+        await callback.answer("❌ Ошибка обработки запроса")
+        return
+    
     category = parts[1]
     subcategory = "_".join(parts[2:])
     user_id = callback.from_user.id
+    
+    # Валидация user_id
+    user_validation = validator.validate_user_id(user_id)
+    if not user_validation.is_valid:
+        logger.error(f"Неверный user_id: {user_id}")
+        return
 
     # Находим нужный шаблон
     template = None
@@ -115,6 +153,12 @@ async def process_template_selection(callback: CallbackQuery, state: FSMContext,
 
 async def copy_template_text(callback: CallbackQuery, state: FSMContext, template_manager):
     """Отправляет текст шаблона отдельным сообщением для удобного копирования"""
+    # Валидация user_id
+    user_validation = validator.validate_user_id(callback.from_user.id)
+    if not user_validation.is_valid:
+        logger.error(f"Неверный user_id: {callback.from_user.id}")
+        return
+    
     user_data = await state.get_data()
     template_text = user_data.get('current_template_text', '')
     current_category = user_data.get('current_category', 'визитки')
@@ -154,6 +198,12 @@ async def copy_template_text(callback: CallbackQuery, state: FSMContext, templat
 
 async def admin_stats(callback: CallbackQuery, template_manager):
     """Показ статистики для админов"""
+    # Валидация user_id
+    user_validation = validator.validate_user_id(callback.from_user.id)
+    if not user_validation.is_valid:
+        logger.error(f"Неверный user_id: {callback.from_user.id}")
+        return
+    
     if callback.from_user.id not in ADMIN_USER_IDS:
         await callback.answer("❌ Нет доступа")
         return
@@ -165,6 +215,12 @@ async def admin_stats(callback: CallbackQuery, template_manager):
 async def back_to_main_menu(callback: CallbackQuery, state: FSMContext, template_manager):
     """Возврат в главное меню"""
     user_id = callback.from_user.id
+    
+    # Валидация user_id
+    user_validation = validator.validate_user_id(user_id)
+    if not user_validation.is_valid:
+        logger.error(f"Неверный user_id: {user_id}")
+        return
     lang = template_manager.get_user_language(user_id)
 
     welcome_text = (
@@ -201,6 +257,12 @@ async def back_to_category_menu(callback: CallbackQuery, state: FSMContext, temp
 async def switch_language(callback: CallbackQuery, state: FSMContext, template_manager):
     """Переключение языка"""
     user_id = callback.from_user.id
+    
+    # Валидация user_id
+    user_validation = validator.validate_user_id(user_id)
+    if not user_validation.is_valid:
+        logger.error(f"Неверный user_id: {user_id}")
+        return
     current_lang = template_manager.get_user_language(user_id)
     new_lang = 'rus' if current_lang == 'ukr' else 'ukr'
 
@@ -245,17 +307,27 @@ async def start_search(callback: CallbackQuery, state: FSMContext, template_mana
 
 async def process_search_query(message: types.Message, state: FSMContext, template_manager):
     """Обработка поискового запроса"""
-    query = message.text.strip()
     user_id = message.from_user.id
-
-    if len(query) < 2:
+    
+    # Валидация user_id
+    user_validation = validator.validate_user_id(user_id)
+    if not user_validation.is_valid:
+        logger.error(f"Неверный user_id: {user_id}")
+        return
+    
+    # Валидация поискового запроса
+    search_validation = validator.validate_search_query(message.text)
+    if not search_validation.is_valid:
+        lang = template_manager.get_user_language(user_id)
         error_text = (
-            "❌ Запит занадто короткий. Введіть мінімум 2 символи."
-            if template_manager.get_user_language(user_id) == 'ukr' else
-            "❌ Запрос слишком короткий. Введите минимум 2 символа."
+            f"❌ {search_validation.error_message}"
+            if lang == 'ukr' else
+            f"❌ {search_validation.error_message}"
         )
         await message.answer(error_text)
         return
+    
+    query = search_validation.cleaned_value
 
     # Поиск шаблонов
     found_templates = template_manager.search_templates(query)

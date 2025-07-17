@@ -16,6 +16,7 @@ from typing import Any, Dict, List, Tuple
 import pandas as pd
 import requests
 import yaml
+from config import GOOGLE_SHEETS_API_KEY
 
 # Опциональные импорты
 try:
@@ -31,7 +32,6 @@ except ImportError:
     SLUGIFY_AVAILABLE = False
 
 # Константы
-GOOGLE_SHEETS_API_KEY = "AIzaSyDzDspWPn07MQxNm3iJ1ZXPlJruWO1tzK4"
 URL_TEST = "https://docs.google.com/spreadsheets/d/1RagVK40gWitjfQE-_wBD8HnSaeDGGMZJ2uWfICLRqFQ/edit?usp=sharing"
 FILE_PATH = "../converted-data"
 CACHE_FILE = "../converted-data/.cache.json"

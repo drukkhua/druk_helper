@@ -4,7 +4,7 @@
 Все модули включены в один файл для простоты запуска
 
 Ваши данные:
-- API ключ: AIzaSyDzDspWPn07MQxNm3iJ1ZXPlJruWO1tzK4
+- API ключ: из переменных окружения
 - Документ: https://docs.google.com/spreadsheets/d/1RagVK40gWitjfQE-_wBD8HnSaeDGGMZJ2uWfICLRqFQ/edit
 - Папка: data/
 
@@ -23,9 +23,11 @@ from typing import Any, Dict, List, Optional, Tuple
 import pandas as pd
 import requests
 import yaml
+sys.path.append('..')
+from config import GOOGLE_SHEETS_API_KEY
 
 # Ваши данные
-API_KEY = "AIzaSyDzDspWPn07MQxNm3iJ1ZXPlJruWO1tzK4"
+API_KEY = GOOGLE_SHEETS_API_KEY
 SHEET_URL = "https://docs.google.com/spreadsheets/d/1RagVK40gWitjfQE-_wBD8HnSaeDGGMZJ2uWfICLRqFQ/edit?usp=sharing"
 OUTPUT_DIR = "data"
 
