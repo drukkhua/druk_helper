@@ -1,7 +1,7 @@
 from dataclasses import dataclass
-from typing import List
 
 from aiogram.fsm.state import State, StatesGroup
+from typing import List
 
 
 @dataclass

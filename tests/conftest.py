@@ -3,18 +3,19 @@
 Общие фикстуры и настройки для всех тестов
 """
 
-import pytest
-import os
-import sys
-import tempfile
 import shutil
+import tempfile
+
+import os
+import pytest
+import sys
 from unittest.mock import Mock, patch
 
 # Добавляем корневую директорию в путь
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from template_manager import TemplateManager
 from config import Config
+from template_manager import TemplateManager
 
 
 @pytest.fixture
@@ -49,23 +50,23 @@ def sample_templates():
     """Пример списка шаблонов"""
     return [
         {
-            'category': 'визитки',
-            'subcategory': '1',
-            'button_text': '💰 Тест цена',
-            'keywords': 'цена,тест',
-            'answer_ukr': 'Тестовий текст українською',
-            'answer_rus': 'Тестовый текст на русском',
-            'sort_order': '1'
+            "category": "визитки",
+            "subcategory": "1",
+            "button_text": "💰 Тест цена",
+            "keywords": "цена,тест",
+            "answer_ukr": "Тестовий текст українською",
+            "answer_rus": "Тестовый текст на русском",
+            "sort_order": "1",
         },
         {
-            'category': 'визитки',
-            'subcategory': '2',
-            'button_text': '🎨 Тест макет',
-            'keywords': 'макет,дизайн',
-            'answer_ukr': 'Тестовий макет',
-            'answer_rus': 'Тестовый макет',
-            'sort_order': '2'
-        }
+            "category": "визитки",
+            "subcategory": "2",
+            "button_text": "🎨 Тест макет",
+            "keywords": "макет,дизайн",
+            "answer_ukr": "Тестовий макет",
+            "answer_rus": "Тестовый макет",
+            "sort_order": "2",
+        },
     ]
 
 

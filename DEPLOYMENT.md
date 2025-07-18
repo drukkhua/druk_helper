@@ -297,10 +297,10 @@ sudo certbot certonly --standalone -d yourdomain.com
    ```bash
    # Проверка конфигурации
    python cli.py status
-   
+
    # Проверка зависимостей
    pip list
-   
+
    # Проверка логов
    sudo journalctl -u telegram-bot -n 50
    ```
@@ -309,7 +309,7 @@ sudo certbot certonly --standalone -d yourdomain.com
    ```bash
    # Проверка файлов
    ls -la converted-data/csv/
-   
+
    # Перезагрузка шаблонов
    python cli.py reload
    ```
@@ -318,7 +318,7 @@ sudo certbot certonly --standalone -d yourdomain.com
    ```bash
    # Мониторинг памяти
    free -h
-   
+
    # Перезапуск бота
    sudo systemctl restart telegram-bot
    ```

@@ -118,10 +118,10 @@ class TestNewComponent:
     def test_new_functionality(self):
         # Arrange
         component = NewComponent()
-        
+
         # Act
         result = component.do_something()
-        
+
         # Assert
         assert result is not None
 ```
@@ -133,10 +133,10 @@ class TestNewComponent:
 async def test_async_handler(mock_telegram_message):
     # Мок async методов
     mock_telegram_message.answer = AsyncMock()
-    
+
     # Тестируем async функцию
     await some_async_handler(mock_telegram_message)
-    
+
     # Проверяем вызовы
     mock_telegram_message.answer.assert_called_once()
 ```
@@ -150,10 +150,10 @@ def test_external_api_call(mock_get):
     mock_response = Mock()
     mock_response.json.return_value = {'status': 'ok'}
     mock_get.return_value = mock_response
-    
+
     # Тестируем функцию
     result = call_external_api()
-    
+
     assert result['status'] == 'ok'
 ```
 

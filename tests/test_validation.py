@@ -5,7 +5,8 @@
 
 import pytest
 from unittest.mock import patch
-from validation import ValidationResult, InputValidator, validator
+
+from validation import InputValidator, ValidationResult, validator
 
 
 class TestValidation:
@@ -18,9 +19,9 @@ class TestValidation:
             "Text with numbers 123",
             "Текст с эмоджи 😀",
             "Short",
-            "Символы: .,!?-"
+            "Символы: .,!?-",
         ]
-        
+
         for text in valid_inputs:
             result = validator.validate_user_message(text)
             assert result.is_valid is True
@@ -30,7 +31,7 @@ class TestValidation:
         # Только пустая строка считается невалидной
         result = validator.validate_user_message("")
         assert result.is_valid is False
-        
+
         # Строки с только пробелами после очистки становятся пустыми, но validate_user_message
         # проверяет исходное сообщение, поэтому они проходят валидацию
         # Это нормальное поведение - пробелы очищаются, но сообщение не считается пустым
@@ -48,13 +49,13 @@ class TestValidation:
             "<script>alert('xss')</script>",
             "javascript:alert(1)",
             "DROP TABLE users",
-            "'; DROP TABLE users; --"
+            "'; DROP TABLE users; --",
         ]
-        
+
         for text in malicious_inputs:
             result = validator.validate_user_message(text)
             assert result.is_valid is False
-        
+
         # Эти строки могут не считаться вредоносными в текущей реализации
         # "SELECT * FROM users" - может быть валидным текстом в сообщении
         # "' OR '1'='1" - может быть валидным текстом
@@ -89,7 +90,7 @@ class TestValidation:
     def test_validate_user_id_valid(self):
         """Тест валидации валидного user_id"""
         valid_ids = [123456789, 987654321, 1, 999999999]
-        
+
         for user_id in valid_ids:
             result = validator.validate_user_id(user_id)
             assert result.is_valid is True
@@ -97,7 +98,7 @@ class TestValidation:
     def test_validate_user_id_invalid(self):
         """Тест валидации невалидного user_id"""
         invalid_ids = [0, -1, "123", None, 9007199254740993]
-        
+
         for user_id in invalid_ids:
             result = validator.validate_user_id(user_id)
             assert result.is_valid is False
@@ -109,9 +110,9 @@ class TestValidation:
             "template_футболки_1",
             "back_to_main",
             "copy_text_визитки_2",
-            "search_results_page_1"
+            "search_results_page_1",
         ]
-        
+
         for callback in valid_callbacks:
             result = validator.validate_callback_data(callback)
             assert result.is_valid is True
@@ -124,23 +125,17 @@ class TestValidation:
             "category_<script>",
             "template_'; DROP TABLE",
             "../../etc/passwd",
-            "javascript:alert(1)"
+            "javascript:alert(1)",
         ]
-        
+
         for callback in invalid_callbacks:
             result = validator.validate_callback_data(callback)
             assert result.is_valid is False
 
     def test_validate_search_query_valid(self):
         """Тест валидации корректного поискового запроса"""
-        valid_queries = [
-            "цена",
-            "футболки цена",
-            "макет визитки",
-            "123",
-            "test query"
-        ]
-        
+        valid_queries = ["цена", "футболки цена", "макет визитки", "123", "test query"]
+
         for query in valid_queries:
             result = validator.validate_search_query(query)
             assert result.is_valid is True
@@ -148,7 +143,7 @@ class TestValidation:
     def test_validate_search_query_too_short(self):
         """Тест валидации слишком короткого запроса"""
         short_queries = ["", "a", " ", "\t"]
-        
+
         for query in short_queries:
             result = validator.validate_search_query(query)
             assert result.is_valid is False
@@ -164,9 +159,9 @@ class TestValidation:
         malicious_queries = [
             "<script>alert('xss')</script>",
             "'; SELECT * FROM",
-            "../../../etc/passwd"
+            "../../../etc/passwd",
         ]
-        
+
         for query in malicious_queries:
             result = validator.validate_search_query(query)
             assert result.is_valid is False
@@ -191,7 +186,7 @@ class TestValidation:
     def test_edge_cases_numeric_strings(self):
         """Тест обработки числовых строк"""
         numeric_inputs = ["123", "0", "-456", "3.14", "1,000"]
-        
+
         for num_str in numeric_inputs:
             result = validator.validate_user_message(num_str)
             assert result.is_valid is True
@@ -205,9 +200,9 @@ class TestValidation:
             ("file<with>bad:chars", "file_with_bad_chars"),
             ("", "default"),
             ("a" * 150, "a" * 100),  # Ограничение длины
-            ("..dangerous", "dangerous")
+            ("..dangerous", "dangerous"),
         ]
-        
+
         for input_name, expected in test_cases:
             result = validator.sanitize_filename(input_name)
             assert result == expected
@@ -219,9 +214,11 @@ class TestValidation:
         assert result.is_valid is True
         assert result.cleaned_value == "test"
         assert result.error_message is None
-        
+
         # Неуспешный результат
-        result = ValidationResult(is_valid=False, cleaned_value="", error_message="Error")
+        result = ValidationResult(
+            is_valid=False, cleaned_value="", error_message="Error"
+        )
         assert result.is_valid is False
         assert result.cleaned_value == ""
         assert result.error_message == "Error"
@@ -230,7 +227,7 @@ class TestValidation:
         """Тест создания InputValidator"""
         validator_instance = InputValidator()
         assert validator_instance is not None
-        assert hasattr(validator_instance, 'validate_search_query')
-        assert hasattr(validator_instance, 'validate_callback_data')
-        assert hasattr(validator_instance, 'validate_user_message')
-        assert hasattr(validator_instance, 'validate_user_id')
+        assert hasattr(validator_instance, "validate_search_query")
+        assert hasattr(validator_instance, "validate_callback_data")
+        assert hasattr(validator_instance, "validate_user_message")
+        assert hasattr(validator_instance, "validate_user_id")

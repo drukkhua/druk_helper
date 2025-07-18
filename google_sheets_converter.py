@@ -4,26 +4,33 @@ Google Sheets to CSV/JSON Converter
 Конвертирует все страницы Google Таблицы в CSV и JSON с правильной обработкой переносов строк
 """
 
+import re
+
 import json
 import os
-import re
+import pandas as pd
+import requests
 import sys
 from typing import Any, Dict, List, Tuple
 
-import pandas as pd
-import requests
 from config import GOOGLE_SHEETS_API_KEY
+
 URL_TEST = "https://docs.google.com/spreadsheets/d/1RagVK40gWitjfQE-_wBD8HnSaeDGGMZJ2uWfICLRqFQ/edit?usp=sharing"
 
 
 class GoogleSheetsConverter:
     def __init__(self):
         self.expected_headers = [
-            'category', 'subcategory', 'button_text',
-            'keywords', 'answer_ukr', 'answer_rus', 'sort_order'
+            "category",
+            "subcategory",
+            "button_text",
+            "keywords",
+            "answer_ukr",
+            "answer_rus",
+            "sort_order",
         ]
         # Поля где ожидаем многострочный текст
-        self.text_fields = ['answer_ukr', 'answer_rus', 'keywords']
+        self.text_fields = ["answer_ukr", "answer_rus", "keywords"]
         self.output_dir = "data/converted-data/"
         self.api_key = GOOGLE_SHEETS_API_KEY
 
@@ -34,7 +41,7 @@ class GoogleSheetsConverter:
 
     def extract_sheet_id(self, url: str) -> str:
         """Извлекает ID таблицы из URL"""
-        pattern = r'/spreadsheets/d/([a-zA-Z0-9-_]+)'
+        pattern = r"/spreadsheets/d/([a-zA-Z0-9-_]+)"
         match = re.search(pattern, url)
         if not match:
             raise ValueError("Неверная ссылка на Google Таблицу")
@@ -51,12 +58,10 @@ class GoogleSheetsConverter:
             # Добавляем API key если он есть
             params = {}
             if self.api_key:
-                params['key'] = self.api_key
+                params["key"] = self.api_key
                 print(f"🔑 Используем API key: {self.api_key[:20]}...")
 
-            headers = {
-                'User-Agent': 'GoogleSheetsConverter/1.0'
-            }
+            headers = {"User-Agent": "GoogleSheetsConverter/1.0"}
 
             response = requests.get(api_url, params=params, headers=headers, timeout=15)
 
@@ -65,17 +70,14 @@ class GoogleSheetsConverter:
                 sheets_info = []
 
                 # Извлекаем информацию о листах из ответа API
-                sheets = data.get('sheets', [])
+                sheets = data.get("sheets", [])
 
                 for sheet in sheets:
-                    sheet_properties = sheet.get('properties', {})
-                    sheet_id_num = sheet_properties.get('sheetId', 0)
-                    sheet_title = sheet_properties.get('title', f'Sheet{sheet_id_num}')
+                    sheet_properties = sheet.get("properties", {})
+                    sheet_id_num = sheet_properties.get("sheetId", 0)
+                    sheet_title = sheet_properties.get("title", f"Sheet{sheet_id_num}")
 
-                    sheets_info.append({
-                        'gid': str(sheet_id_num),
-                        'name': sheet_title
-                    })
+                    sheets_info.append({"gid": str(sheet_id_num), "name": sheet_title})
 
                 if sheets_info:
                     print(f"📄 Найдено страниц через API: {len(sheets_info)}")
@@ -84,32 +86,38 @@ class GoogleSheetsConverter:
                     return sheets_info
                 else:
                     print("⚠️ API вернул пустой список листов")
-                    return [{'gid': '0', 'name': 'Sheet1'}]
+                    return [{"gid": "0", "name": "Sheet1"}]
 
             elif response.status_code == 403:
                 print(f"❌ Ошибка доступа (HTTP 403): {response.text}")
-                if 'API key' in response.text:
-                    print("💡 Проверьте правильность API ключа и что Google Sheets API включен")
+                if "API key" in response.text:
+                    print(
+                        "💡 Проверьте правильность API ключа и что Google Sheets API включен"
+                    )
                 else:
-                    print("💡 Возможно таблица не публичная. Проверьте настройки доступа")
-                return [{'gid': '0', 'name': 'Sheet1'}]
+                    print(
+                        "💡 Возможно таблица не публичная. Проверьте настройки доступа"
+                    )
+                return [{"gid": "0", "name": "Sheet1"}]
 
             elif response.status_code == 404:
                 print(f"❌ Таблица не найдена (HTTP 404)")
                 print("💡 Проверьте правильность ID таблицы")
-                return [{'gid': '0', 'name': 'Sheet1'}]
+                return [{"gid": "0", "name": "Sheet1"}]
 
             else:
-                print(f"❌ API вернул ошибку HTTP {response.status_code}: {response.text}")
-                return [{'gid': '0', 'name': 'Sheet1'}]
+                print(
+                    f"❌ API вернул ошибку HTTP {response.status_code}: {response.text}"
+                )
+                return [{"gid": "0", "name": "Sheet1"}]
 
         except requests.RequestException as e:
             print(f"❌ Ошибка сети при обращении к API: {e}")
-            return [{'gid': '0', 'name': 'Sheet1'}]
+            return [{"gid": "0", "name": "Sheet1"}]
 
         except Exception as e:
             print(f"❌ Неожиданная ошибка при работе с API: {e}")
-            return [{'gid': '0', 'name': 'Sheet1'}]
+            return [{"gid": "0", "name": "Sheet1"}]
 
     def get_csv_url(self, sheet_id: str, gid: str) -> str:
         """Формирует URL для экспорта страницы в CSV"""
@@ -122,12 +130,17 @@ class GoogleSheetsConverter:
         # Проверяем точное соответствие
         if len(actual_headers) != len(self.expected_headers):
             print(
-                f"❌ [{sheet_name}] Неверное количество колонок: {len(actual_headers)} вместо {len(self.expected_headers)}")
+                f"❌ [{sheet_name}] Неверное количество колонок: {len(actual_headers)} вместо {len(self.expected_headers)}"
+            )
             return False
 
-        for i, (actual, expected) in enumerate(zip(actual_headers, self.expected_headers)):
+        for i, (actual, expected) in enumerate(
+            zip(actual_headers, self.expected_headers)
+        ):
             if actual.strip().lower() != expected.lower():
-                print(f"❌ [{sheet_name}] Неверный заголовок в колонке {i + 1}: '{actual}' вместо '{expected}'")
+                print(
+                    f"❌ [{sheet_name}] Неверный заголовок в колонке {i + 1}: '{actual}' вместо '{expected}'"
+                )
                 return False
 
         print(f"✅ [{sheet_name}] Формат заголовков корректный")
@@ -140,12 +153,20 @@ class GoogleSheetsConverter:
         for field in self.text_fields:
             if field in df_processed.columns:
                 # Заменяем реальные переносы строк на \\n
-                df_processed[field] = df_processed[field].astype(str).str.replace('\n', '\\n', regex=False)
-                df_processed[field] = df_processed[field].str.replace('\r', '', regex=False)
+                df_processed[field] = (
+                    df_processed[field]
+                    .astype(str)
+                    .str.replace("\n", "\\n", regex=False)
+                )
+                df_processed[field] = df_processed[field].str.replace(
+                    "\r", "", regex=False
+                )
 
         return df_processed
 
-    def load_sheet_data(self, sheet_id: str, gid: str, sheet_name: str) -> Tuple[pd.DataFrame, bool]:
+    def load_sheet_data(
+        self, sheet_id: str, gid: str, sheet_name: str
+    ) -> Tuple[pd.DataFrame, bool]:
         """Загружает данные одной страницы"""
         try:
             csv_url = self.get_csv_url(sheet_id, gid)
@@ -154,7 +175,7 @@ class GoogleSheetsConverter:
             df = pd.read_csv(csv_url)
 
             # Удаляем пустые строки
-            df = df.dropna(how='all')
+            df = df.dropna(how="all")
 
             print(f"📊 [{sheet_name}] Загружено {len(df)} строк")
             return df, True
@@ -166,19 +187,75 @@ class GoogleSheetsConverter:
     def transliterate_russian(self, text: str) -> str:
         """Транслитерирует русский текст в латиницу"""
         translit_dict = {
-            'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'ё': 'yo',
-            'ж': 'zh', 'з': 'z', 'и': 'i', 'й': 'y', 'к': 'k', 'л': 'l', 'м': 'm',
-            'н': 'n', 'о': 'o', 'п': 'p', 'р': 'r', 'с': 's', 'т': 't', 'у': 'u',
-            'ф': 'f', 'х': 'h', 'ц': 'ts', 'ч': 'ch', 'ш': 'sh', 'щ': 'sch',
-            'ъ': '', 'ы': 'y', 'ь': '', 'э': 'e', 'ю': 'yu', 'я': 'ya',
-            'А': 'A', 'Б': 'B', 'В': 'V', 'Г': 'G', 'Д': 'D', 'Е': 'E', 'Ё': 'Yo',
-            'Ж': 'Zh', 'З': 'Z', 'И': 'I', 'Й': 'Y', 'К': 'K', 'Л': 'L', 'М': 'M',
-            'Н': 'N', 'О': 'O', 'П': 'P', 'Р': 'R', 'С': 'S', 'Т': 'T', 'У': 'U',
-            'Ф': 'F', 'Х': 'H', 'Ц': 'Ts', 'Ч': 'Ch', 'Ш': 'Sh', 'Щ': 'Sch',
-            'Ъ': '', 'Ы': 'Y', 'Ь': '', 'Э': 'E', 'Ю': 'Yu', 'Я': 'Ya'
+            "а": "a",
+            "б": "b",
+            "в": "v",
+            "г": "g",
+            "д": "d",
+            "е": "e",
+            "ё": "yo",
+            "ж": "zh",
+            "з": "z",
+            "и": "i",
+            "й": "y",
+            "к": "k",
+            "л": "l",
+            "м": "m",
+            "н": "n",
+            "о": "o",
+            "п": "p",
+            "р": "r",
+            "с": "s",
+            "т": "t",
+            "у": "u",
+            "ф": "f",
+            "х": "h",
+            "ц": "ts",
+            "ч": "ch",
+            "ш": "sh",
+            "щ": "sch",
+            "ъ": "",
+            "ы": "y",
+            "ь": "",
+            "э": "e",
+            "ю": "yu",
+            "я": "ya",
+            "А": "A",
+            "Б": "B",
+            "В": "V",
+            "Г": "G",
+            "Д": "D",
+            "Е": "E",
+            "Ё": "Yo",
+            "Ж": "Zh",
+            "З": "Z",
+            "И": "I",
+            "Й": "Y",
+            "К": "K",
+            "Л": "L",
+            "М": "M",
+            "Н": "N",
+            "О": "O",
+            "П": "P",
+            "Р": "R",
+            "С": "S",
+            "Т": "T",
+            "У": "U",
+            "Ф": "F",
+            "Х": "H",
+            "Ц": "Ts",
+            "Ч": "Ch",
+            "Ш": "Sh",
+            "Щ": "Sch",
+            "Ъ": "",
+            "Ы": "Y",
+            "Ь": "",
+            "Э": "E",
+            "Ю": "Yu",
+            "Я": "Ya",
         }
 
-        result = ''
+        result = ""
         for char in text:
             result += translit_dict.get(char, char)
 
@@ -190,15 +267,15 @@ class GoogleSheetsConverter:
         clean_name = self.transliterate_russian(sheet_name)
 
         # Заменяем все что НЕ латинские буквы, цифры, дефисы на подчеркивания
-        clean_name = re.sub(r'[^a-zA-Z0-9\-]', '_', clean_name)
+        clean_name = re.sub(r"[^a-zA-Z0-9\-]", "_", clean_name)
 
         # Убираем множественные подчеркивания
-        clean_name = re.sub(r'_+', '_', clean_name)
+        clean_name = re.sub(r"_+", "_", clean_name)
 
         # Убираем подчеркивания в начале и конце
-        clean_name = clean_name.strip('_').lower()
+        clean_name = clean_name.strip("_").lower()
 
-        return clean_name if clean_name else 'sheet'
+        return clean_name if clean_name else "sheet"
 
     def save_txt(self, df: pd.DataFrame, sheet_name: str, page_num: int):
         """Сохраняет DataFrame в TXT для удобного просмотра"""
@@ -206,7 +283,7 @@ class GoogleSheetsConverter:
         filename = f"{clean_name}_page_{page_num:02d}.txt"
         filepath = os.path.join(self.output_dir, filename)
 
-        with open(filepath, 'w', encoding='utf-8') as f:
+        with open(filepath, "w", encoding="utf-8") as f:
             f.write(f"📋 {sheet_name} - Страница {page_num}\n")
             f.write("=" * 60 + "\n\n")
 
@@ -222,27 +299,27 @@ class GoogleSheetsConverter:
                 # Текст кнопки и ключевые слова
                 f.write(f"🔘 Кнопка: {row.get('button_text', 'N/A')}\n")
 
-                keywords = str(row.get('keywords', ''))
-                if keywords and keywords != 'nan':
+                keywords = str(row.get("keywords", ""))
+                if keywords and keywords != "nan":
                     # Заменяем \\n на реальные переносы для удобного чтения
-                    keywords = keywords.replace('\\n', '\n')
+                    keywords = keywords.replace("\\n", "\n")
                     f.write(f"🔍 Ключевые слова: {keywords}\n")
 
                 f.write("\n")
 
                 # Ответ на украинском
-                answer_ukr = str(row.get('answer_ukr', ''))
-                if answer_ukr and answer_ukr != 'nan':
+                answer_ukr = str(row.get("answer_ukr", ""))
+                if answer_ukr and answer_ukr != "nan":
                     # Заменяем \\n на реальные переносы строк
-                    answer_ukr = answer_ukr.replace('\\n', '\n')
+                    answer_ukr = answer_ukr.replace("\\n", "\n")
                     f.write("🇺🇦 ОТВЕТ НА УКРАИНСКОМ:\n")
                     f.write(f"{answer_ukr}\n\n")
 
                 # Ответ на русском
-                answer_rus = str(row.get('answer_rus', ''))
-                if answer_rus and answer_rus != 'nan':
+                answer_rus = str(row.get("answer_rus", ""))
+                if answer_rus and answer_rus != "nan":
                     # Заменяем \\n на реальные переносы строк
-                    answer_rus = answer_rus.replace('\\n', '\n')
+                    answer_rus = answer_rus.replace("\\n", "\n")
                     f.write("🇷🇺 ОТВЕТ НА РУССКОМ:\n")
                     f.write(f"{answer_rus}\n\n")
 
@@ -258,7 +335,7 @@ class GoogleSheetsConverter:
         filename = f"{clean_name}_page_{page_num:02d}.csv"
         filepath = os.path.join(self.output_dir, filename)
 
-        df.to_csv(filepath, index=False, sep=';', encoding='utf-8', quoting=1)
+        df.to_csv(filepath, index=False, sep=";", encoding="utf-8", quoting=1)
         print(f"💾 CSV сохранен: {filename}")
 
     def save_json(self, df: pd.DataFrame, sheet_name: str, page_num: int):
@@ -268,10 +345,10 @@ class GoogleSheetsConverter:
         filepath = os.path.join(self.output_dir, filename)
 
         # Конвертируем DataFrame в список словарей
-        data = df.to_dict('records')
+        data = df.to_dict("records")
 
         # Сохраняем с отступами в 4 пробела
-        with open(filepath, 'w', encoding='utf-8') as f:
+        with open(filepath, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=4)
 
         print(f"💾 JSON сохранен: {filename}")
@@ -303,8 +380,8 @@ class GoogleSheetsConverter:
 
             # Обрабатываем каждую страницу
             for page_num, sheet_info in enumerate(sheets_info, 1):
-                gid = sheet_info['gid']
-                sheet_name = sheet_info['name']
+                gid = sheet_info["gid"]
+                sheet_name = sheet_info["name"]
 
                 print(f"\n📄 Обрабатываем страницу {page_num}: '{sheet_name}'")
                 print("-" * 30)
@@ -319,7 +396,9 @@ class GoogleSheetsConverter:
 
                 # Проверяем заголовки
                 if not self.validate_headers(df, sheet_name):
-                    print(f"⏭️ [{sheet_name}] Пропускаем из-за несоответствия заголовков")
+                    print(
+                        f"⏭️ [{sheet_name}] Пропускаем из-за несоответствия заголовков"
+                    )
                     skipped_count += 1
                     continue
 
@@ -379,7 +458,9 @@ def main():
         print("=" * 40)
         print("🔧 Интерактивный режим")
         print("\nОжидаемый формат заголовков:")
-        print("  category;subcategory;button_text;keywords;answer_ukr;answer_rus;sort_order")
+        print(
+            "  category;subcategory;button_text;keywords;answer_ukr;answer_rus;sort_order"
+        )
         print(f"\n🧪 Тестовая таблица: {URL_TEST}")
         print("-" * 40)
 
@@ -398,8 +479,10 @@ def main():
                         print("⚠️ Пустая строка. Введите корректный URL.")
                         continue
 
-                    if 'docs.google.com/spreadsheets' not in url:
-                        print("⚠️ Некорректный URL. Должен содержать 'docs.google.com/spreadsheets'")
+                    if "docs.google.com/spreadsheets" not in url:
+                        print(
+                            "⚠️ Некорректный URL. Должен содержать 'docs.google.com/spreadsheets'"
+                        )
                         continue
 
                 elif choice == "2":
@@ -427,10 +510,14 @@ def main():
 
                 # Предлагаем обработать еще одну таблицу
                 while True:
-                    continue_choice = input("\n❓ Хотите обработать еще одну таблицу? (y/n): ").strip().lower()
-                    if continue_choice in ['y', 'yes', 'д', 'да']:
+                    continue_choice = (
+                        input("\n❓ Хотите обработать еще одну таблицу? (y/n): ")
+                        .strip()
+                        .lower()
+                    )
+                    if continue_choice in ["y", "yes", "д", "да"]:
                         break
-                    elif continue_choice in ['n', 'no', 'н', 'нет']:
+                    elif continue_choice in ["n", "no", "н", "нет"]:
                         print("👋 До свидания!")
                         return
                     else:
