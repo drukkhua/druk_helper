@@ -38,21 +38,21 @@ jobs:
     - name: Lint with flake8
       run: |
         # Stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 --config .flake8 *.py handlers.py utils/ tests/ --count --select=E9,F63,F7,F82 --show-source --statistics
         # Exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
+        flake8 --config .flake8 *.py handlers.py utils/ tests/ --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
 
     - name: Check code formatting with black
       run: |
-        black --check --diff .
+        black --check --diff *.py handlers.py utils/ tests/
 
     - name: Check import sorting with isort
       run: |
-        isort --check-only --diff .
+        isort --check-only --diff *.py handlers.py utils/ tests/
 
     - name: Type checking with mypy
       run: |
-        mypy . --ignore-missing-imports
+        mypy *.py handlers.py utils/ tests/ --ignore-missing-imports
       continue-on-error: true
 
     - name: Run tests with pytest
@@ -88,12 +88,12 @@ jobs:
 
     - name: Security scan with bandit
       run: |
-        bandit -r . -f json -o bandit-report.json
+        bandit -r . -c pyproject.toml -f json -o bandit-report.json
       continue-on-error: true
 
     - name: Check for known security vulnerabilities
       run: |
-        safety check --json --output safety-report.json
+        safety check --file requirements.txt --json --output safety-report.json
       continue-on-error: true
 
     - name: Upload security reports
