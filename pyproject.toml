@@ -179,4 +179,6 @@ exclude_dirs = ["tests", "venv", ".venv", "converted-data"]
 skips = [
     "B101",  # Skip assert_used test
     "B601",  # Skip paramiko calls
+    "B404",  # Skip subprocess import warnings
+    "B602",  # Skip shell=True warnings for utility scripts
 ]

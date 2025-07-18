@@ -18,6 +18,8 @@ __pycache__/
 error_log.json
 bot.log
 logs/
+bandit-report.json
+safety-report.json
 
 # Statistics and user data
 data/stats.json

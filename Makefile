@@ -29,6 +29,8 @@ help:
 	@echo "  $(GREEN)security$(NC)    - Run security checks"
 	@echo "  $(GREEN)debug$(NC)       - Check PyCharm configuration"
 	@echo "  $(GREEN)test-cov$(NC)    - Run tests with coverage"
+	@echo "  $(GREEN)lint-check$(NC)  - Run all linters locally (matches CI/CD)"
+	@echo "  $(GREEN)lint-fix$(NC)    - Auto-fix all linting issues"
 
 # Create virtual environment if it doesn't exist
 $(VENV):
@@ -136,6 +138,18 @@ update:
 	pip install --upgrade pip
 	pip install -r requirements.txt --upgrade
 	@echo "$(GREEN)Dependencies updated!$(NC)"
+
+# Run all linters locally (matches CI/CD)
+lint-check: dev
+	@echo "$(YELLOW)Running all linters locally...$(NC)"
+	$(ACTIVATE) python lint_check.py
+	@echo "$(GREEN)Linting check completed!$(NC)"
+
+# Auto-fix all linting issues
+lint-fix: dev
+	@echo "$(YELLOW)Auto-fixing all linting issues...$(NC)"
+	$(ACTIVATE) python lint_fix.py
+	@echo "$(GREEN)Auto-fix completed!$(NC)"
 
 # Show project stats
 stats:
