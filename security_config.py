@@ -60,8 +60,6 @@ def get_security_config() -> SecurityConfig:
 
 def update_security_config(**kwargs) -> None:
     """Обновить конфигурацию безопасности"""
-    global security_config
-
     for key, value in kwargs.items():
         if hasattr(security_config, key):
             setattr(security_config, key, value)
