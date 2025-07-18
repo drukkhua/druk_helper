@@ -52,6 +52,7 @@ exclude =
     __pycache__,
     venv,
     .venv,
+    test_env,
     build,
     dist,
     converted-data,
