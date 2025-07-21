@@ -16,7 +16,7 @@ else:
     activate_cmd = ""
 
 # Файлы для проверки
-FILES_TO_CHECK = "*.py handlers.py tests/"
+FILES_TO_CHECK = "*.py tests/"
 
 
 def run_command(name, cmd):
