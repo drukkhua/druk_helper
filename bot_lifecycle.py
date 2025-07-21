@@ -10,11 +10,7 @@ import sys
 from aiogram import Bot, Dispatcher
 from typing import Optional
 
-from bot_factory import (
-    cleanup_bot_resources,
-    create_bot_instance,
-    validate_bot_configuration,
-)
+from bot_factory import cleanup_bot_resources, create_bot_instance, validate_bot_configuration
 from config import logger
 from error_handler import error_handler
 from error_monitor import cleanup_old_errors

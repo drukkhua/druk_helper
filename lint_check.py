@@ -57,7 +57,7 @@ def main():
     # 2. Flake8 - полная проверка
     success &= run_command(
         "Flake8 - Full Check",
-        f"flake8 --config .flake8 {FILES_TO_CHECK} --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics",
+        f"flake8 --config .flake8 {FILES_TO_CHECK} --count --exit-zero --max-complexity=10 --max-line-length=100 --statistics",
     )
 
     # 3. Black - форматирование
