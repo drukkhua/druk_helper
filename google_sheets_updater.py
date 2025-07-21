@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 class GoogleSheetsUpdater:
     """Класс для обновления CSV данных из Google Sheets"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.api_key = GOOGLE_SHEETS_API_KEY
         self.output_dir = "./data"
 
@@ -217,7 +217,7 @@ class GoogleSheetsUpdater:
 sheets_updater = GoogleSheetsUpdater()
 
 
-async def update_templates_from_sheets(spreadsheet_url: str = None) -> bool:
+async def update_templates_from_sheets(spreadsheet_url: Optional[str] = None) -> bool:
     """
     Функция-обертка для обновления шаблонов
     Если URL не указан, используется URL по умолчанию
@@ -231,7 +231,7 @@ async def update_templates_from_sheets(spreadsheet_url: str = None) -> bool:
 
 if __name__ == "__main__":
     # Тестирование модуля
-    async def test_module():
+    async def test_module() -> None:
         test_url = "https://docs.google.com/spreadsheets/d/1RagVK40gWitjfQE-_wBD8HnSaeDGGMZJ2uWfICLRqFQ/edit?usp=sharing"
         success = await update_templates_from_sheets(test_url)
         print(f"Результат обновления: {'✅ Успешно' if success else '❌ Ошибка'}")

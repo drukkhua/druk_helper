@@ -10,7 +10,7 @@ from config import logger
 from exceptions import ConfigurationError
 
 
-async def main():
+async def main() -> None:
     """Главная функция запуска бота"""
     try:
         logger.info("🚀 Запуск Telegram-бота 'Яскравий друк'")

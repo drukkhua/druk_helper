@@ -4,7 +4,7 @@
 
 from dataclasses import dataclass
 
-from typing import Dict, List
+from typing import Any, Dict, List
 
 
 @dataclass
@@ -38,13 +38,13 @@ class SecurityConfig:
     AUTO_BLOCK_DURATION: int = 3600  # секунд
 
     # Разрешенные домены для ссылок (если потребуется)
-    ALLOWED_DOMAINS: List[str] = None
+    ALLOWED_DOMAINS: List[str] = None  # type: ignore
 
     # Максимальные значения для защиты от DoS
     MAX_CONCURRENT_REQUESTS: int = 100
     MAX_MEMORY_USAGE_MB: int = 256
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         if self.ALLOWED_DOMAINS is None:
             self.ALLOWED_DOMAINS = ["t.me", "telegram.org", "docs.google.com"]
 
@@ -58,7 +58,7 @@ def get_security_config() -> SecurityConfig:
     return security_config
 
 
-def update_security_config(**kwargs) -> None:
+def update_security_config(**kwargs: Any) -> None:
     """Обновить конфигурацию безопасности"""
     for key, value in kwargs.items():
         if hasattr(security_config, key):
@@ -68,7 +68,7 @@ def update_security_config(**kwargs) -> None:
 
 
 # Настройки для разработки (менее строгие)
-def enable_dev_mode():
+def enable_dev_mode() -> None:
     """Включить режим разработки с менее строгими настройками"""
     update_security_config(
         DEFAULT_RATE_LIMIT=100,
@@ -80,7 +80,7 @@ def enable_dev_mode():
 
 
 # Настройки для продакшена (более строгие)
-def enable_production_mode():
+def enable_production_mode() -> None:
     """Включить продакшн режим с более строгими настройками"""
     update_security_config(
         DEFAULT_RATE_LIMIT=20,

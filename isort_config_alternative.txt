@@ -1,0 +1,18 @@
+# Альтернативный вариант: сделать isort информационным
+
+# В lint_check.py:
+# 4. Isort - сортировка импортов (информационная, не блокирует)
+run_command(
+    "Isort - Import Sorting (informational)",
+    f"isort --check-only --diff {FILES_TO_CHECK}",
+    ignore_errors=True,
+)
+
+# В CI/CD:
+- name: Check import sorting with isort (informational)
+  run: |
+    isort --check-only --diff *.py tests/
+  continue-on-error: true
+
+# В lint_fix.py оставляем isort для автоисправления:
+run_command("Isort - Auto Sort Imports", f"isort {FILES_TO_CHECK}")

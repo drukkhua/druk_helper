@@ -175,7 +175,7 @@ test = [
 ]
 
 [tool.bandit]
-exclude_dirs = ["tests", "venv", ".venv", "converted-data"]
+exclude_dirs = ["tests", "venv", ".venv", "test_env", "converted-data", "__pycache__", ".git"]
 skips = [
     "B101",  # Skip assert_used test
     "B601",  # Skip paramiko calls

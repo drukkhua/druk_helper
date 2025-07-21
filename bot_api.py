@@ -14,7 +14,7 @@ from error_monitor import generate_error_report, get_error_statistics, get_healt
 class BotAPI:
     """API для управления ботом"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.lifecycle = bot_lifecycle
 
     async def get_status(self) -> Dict[str, Any]:
@@ -178,7 +178,7 @@ async def execute_api_command(command: str, **kwargs) -> Dict[str, Any]:
     return await bot_api.execute_command(command, **kwargs)
 
 
-def create_cli_script():
+def create_cli_script() -> None:
     """Создание CLI скрипта для управления ботом"""
     cli_script = """#!/usr/bin/env python3
 \"\"\"

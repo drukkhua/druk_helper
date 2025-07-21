@@ -8,7 +8,7 @@ import asyncio
 import os
 import sys
 from aiogram import Bot, Dispatcher
-from typing import Optional
+from typing import Any, Optional
 
 from bot_factory import cleanup_bot_resources, create_bot_instance, validate_bot_configuration
 from config import logger
@@ -22,7 +22,7 @@ from template_manager import TemplateManager
 class BotLifecycle:
     """Управление жизненным циклом бота"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.bot: Optional[Bot] = None
         self.dp: Optional[Dispatcher] = None
         self.template_manager: Optional[TemplateManager] = None
@@ -30,7 +30,7 @@ class BotLifecycle:
         self.is_running = False
         self.shutdown_event = asyncio.Event()
 
-    async def initialize(self):
+    async def initialize(self) -> None:
         """Инициализация бота"""
         try:
             logger.info("Начало инициализации бота...")
@@ -61,7 +61,7 @@ class BotLifecycle:
             await self.cleanup()
             raise
 
-    async def _create_directories(self):
+    async def _create_directories(self) -> None:
         """Создание необходимых директорий"""
         directories = ["./data", "./logs", "./converted-data", "./converted-data/csv"]
 
@@ -72,7 +72,7 @@ class BotLifecycle:
             except Exception as e:
                 logger.error(f"Ошибка создания директории {directory}: {e}")
 
-    async def start(self):
+    async def start(self) -> None:
         """Запуск бота"""
         if self.is_running:
             logger.warning("Бот уже запущен")
@@ -102,7 +102,7 @@ class BotLifecycle:
         finally:
             self.is_running = False
 
-    async def shutdown(self):
+    async def shutdown(self) -> None:
         """Graceful shutdown бота"""
         if not self.is_running:
             logger.info("Бот уже остановлен")
@@ -128,7 +128,7 @@ class BotLifecycle:
         finally:
             self.is_running = False
 
-    async def cleanup(self):
+    async def cleanup(self) -> None:
         """Очистка ресурсов"""
         try:
             logger.info("Очистка ресурсов...")
@@ -150,10 +150,10 @@ class BotLifecycle:
         except Exception as e:
             logger.error(f"Ошибка очистки ресурсов: {e}")
 
-    def _setup_signal_handlers(self):
+    def _setup_signal_handlers(self) -> None:
         """Настройка обработчиков сигналов"""
 
-        def signal_handler(signum, frame):
+        def signal_handler(signum: int, frame: Any) -> None:
             logger.info(f"Получен сигнал {signum}")
             # Создаем задачу для graceful shutdown
             asyncio.create_task(self.shutdown())
@@ -163,7 +163,7 @@ class BotLifecycle:
             signal.signal(signal.SIGINT, signal_handler)
             signal.signal(signal.SIGTERM, signal_handler)
 
-    async def restart(self):
+    async def restart(self) -> None:
         """Перезапуск бота"""
         logger.info("Перезапуск бота...")
 
@@ -203,7 +203,7 @@ class BotLifecycle:
                 "timestamp": __import__("datetime").datetime.now().isoformat(),
             }
 
-    async def reload_templates(self):
+    async def reload_templates(self) -> None:
         """Перезагрузка шаблонов"""
         if self.template_manager:
             try:
@@ -218,26 +218,26 @@ class BotLifecycle:
 bot_lifecycle = BotLifecycle()
 
 
-async def start_bot():
+async def start_bot() -> None:
     """Запуск бота"""
     await bot_lifecycle.start()
 
 
-async def stop_bot():
+async def stop_bot() -> None:
     """Остановка бота"""
     await bot_lifecycle.shutdown()
 
 
-async def restart_bot():
+async def restart_bot() -> None:
     """Перезапуск бота"""
     await bot_lifecycle.restart()
 
 
-async def get_bot_health():
+async def get_bot_health() -> dict:
     """Получение статуса здоровья бота"""
     return await bot_lifecycle.health_check()
 
 
-async def reload_bot_templates():
+async def reload_bot_templates() -> None:
     """Перезагрузка шаблонов бота"""
     await bot_lifecycle.reload_templates()

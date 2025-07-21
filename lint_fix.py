@@ -16,10 +16,10 @@ else:
     activate_cmd = ""
 
 # Файлы для проверки
-FILES_TO_CHECK = "*.py handlers.py tests/"
+FILES_TO_CHECK = "*.py tests/"
 
 
-def run_command(name, cmd, ignore_errors=False):
+def run_command(name: str, cmd: str, ignore_errors: bool = False) -> bool:
     """Запуск команды с выводом результата"""
     print(f"\n{'=' * 60}")
     print(f"🔧 {name}")
@@ -41,13 +41,13 @@ def run_command(name, cmd, ignore_errors=False):
         return False
 
 
-def main():
+def main() -> int:
     """Основная функция"""
     print("🛠️  Автоматическое исправление кода")
     print("🔧 Применяем все форматирования и исправления")
 
     # 1. Black - автоматическое форматирование
-    run_command("Black - Auto Format", f"black {FILES_TO_CHECK}")
+    run_command("Black - Auto Format", f"black --line-length 100 {FILES_TO_CHECK}")
 
     # 2. Isort - автоматическая сортировка импортов
     run_command("Isort - Auto Sort Imports", f"isort {FILES_TO_CHECK}")
@@ -61,7 +61,7 @@ def main():
     ):
         run_command(
             "Autopep8 - Fix PEP8 Issues",
-            f"autopep8 --in-place --aggressive --aggressive {FILES_TO_CHECK}",
+            f"autopep8 --in-place --aggressive --aggressive --max-line-length 100 {FILES_TO_CHECK}",
             ignore_errors=True,
         )
 

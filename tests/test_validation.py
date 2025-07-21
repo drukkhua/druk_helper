@@ -12,7 +12,7 @@ from validation import InputValidator, ValidationResult, validator
 class TestValidation:
     """Тесты для модуля валидации"""
 
-    def test_validate_user_message_valid_text(self):
+    def test_validate_user_message_valid_text(self) -> None:
         """Тест валидации корректного текста"""
         valid_inputs = [
             "Нормальный текст",
@@ -26,7 +26,7 @@ class TestValidation:
             result = validator.validate_user_message(text)
             assert result.is_valid is True
 
-    def test_validate_user_message_empty(self):
+    def test_validate_user_message_empty(self) -> None:
         """Тест валидации пустого текста"""
         # Только пустая строка считается невалидной
         result = validator.validate_user_message("")
@@ -36,13 +36,13 @@ class TestValidation:
         # проверяет исходное сообщение, поэтому они проходят валидацию
         # Это нормальное поведение - пробелы очищаются, но сообщение не считается пустым
 
-    def test_validate_user_message_too_long(self):
+    def test_validate_user_message_too_long(self) -> None:
         """Тест валидации слишком длинного текста"""
         long_text = "a" * 4001  # Больше лимита
         result = validator.validate_user_message(long_text)
         assert result.is_valid is False
 
-    def test_validate_user_message_malicious_content(self):
+    def test_validate_user_message_malicious_content(self) -> None:
         """Тест валидации вредоносного контента"""
         # Тестируем паттерны, которые действительно отлавливаются
         malicious_inputs = [
@@ -61,33 +61,33 @@ class TestValidation:
         # "' OR '1'='1" - может быть валидным текстом
         # "../../../etc/passwd" - может быть валидным текстом в сообщении
 
-    def test_clean_basic_input_html_tags(self):
+    def test_clean_basic_input_html_tags(self) -> None:
         """Тест очистки HTML тегов"""
         input_text = "<script>alert('test')</script>Hello World"
         sanitized = validator._clean_basic_input(input_text)
         assert "<script>" not in sanitized
         assert "Hello World" in sanitized
 
-    def test_validate_user_message_sql_injection(self):
+    def test_validate_user_message_sql_injection(self) -> None:
         """Тест обнаружения SQL инъекций"""
         input_text = "'; DROP TABLE users; --"
         result = validator.validate_user_message(input_text)
         assert result.is_valid is False
 
-    def test_clean_basic_input_normal_text(self):
+    def test_clean_basic_input_normal_text(self) -> None:
         """Тест очистки обычного текста"""
         input_text = "Нормальный текст с числами 123"
         sanitized = validator._clean_basic_input(input_text)
         assert "Нормальный текст" in sanitized
 
-    def test_clean_basic_input_special_chars(self):
+    def test_clean_basic_input_special_chars(self) -> None:
         """Тест очистки специальных символов"""
         input_text = "Текст с символами: .,!?-()[]"
         sanitized = validator._clean_basic_input(input_text)
         # Безопасные символы должны остаться
         assert "Текст с символами" in sanitized
 
-    def test_validate_user_id_valid(self):
+    def test_validate_user_id_valid(self) -> None:
         """Тест валидации валидного user_id"""
         valid_ids = [123456789, 987654321, 1, 999999999]
 
@@ -95,7 +95,7 @@ class TestValidation:
             result = validator.validate_user_id(user_id)
             assert result.is_valid is True
 
-    def test_validate_user_id_invalid(self):
+    def test_validate_user_id_invalid(self) -> None:
         """Тест валидации невалидного user_id"""
         invalid_ids = [0, -1, "123", None, 9007199254740993]
 
@@ -103,7 +103,7 @@ class TestValidation:
             result = validator.validate_user_id(user_id)
             assert result.is_valid is False
 
-    def test_validate_callback_data_valid(self):
+    def test_validate_callback_data_valid(self) -> None:
         """Тест валидации корректных callback данных"""
         valid_callbacks = [
             "category_визитки",
@@ -117,7 +117,7 @@ class TestValidation:
             result = validator.validate_callback_data(callback)
             assert result.is_valid is True
 
-    def test_validate_callback_data_invalid(self):
+    def test_validate_callback_data_invalid(self) -> None:
         """Тест валидации некорректных callback данных"""
         invalid_callbacks = [
             "",
@@ -132,7 +132,7 @@ class TestValidation:
             result = validator.validate_callback_data(callback)
             assert result.is_valid is False
 
-    def test_validate_search_query_valid(self):
+    def test_validate_search_query_valid(self) -> None:
         """Тест валидации корректного поискового запроса"""
         valid_queries = ["цена", "футболки цена", "макет визитки", "123", "test query"]
 
@@ -140,7 +140,7 @@ class TestValidation:
             result = validator.validate_search_query(query)
             assert result.is_valid is True
 
-    def test_validate_search_query_too_short(self):
+    def test_validate_search_query_too_short(self) -> None:
         """Тест валидации слишком короткого запроса"""
         short_queries = ["", "a", " ", "\t"]
 
@@ -148,13 +148,13 @@ class TestValidation:
             result = validator.validate_search_query(query)
             assert result.is_valid is False
 
-    def test_validate_search_query_too_long(self):
+    def test_validate_search_query_too_long(self) -> None:
         """Тест валидации слишком длинного запроса"""
         long_query = "a" * 101  # Больше лимита для поиска
         result = validator.validate_search_query(long_query)
         assert result.is_valid is False
 
-    def test_validate_search_query_malicious(self):
+    def test_validate_search_query_malicious(self) -> None:
         """Тест валидации вредоносного поискового запроса"""
         malicious_queries = [
             "<script>alert('xss')</script>",
@@ -166,7 +166,7 @@ class TestValidation:
             result = validator.validate_search_query(query)
             assert result.is_valid is False
 
-    def test_edge_cases_unicode(self):
+    def test_edge_cases_unicode(self) -> None:
         """Тест обработки Unicode символов"""
         unicode_text = "Текст с юникодом: 🇺🇦 emoji и спецсимволы ñáéíóú"
         result = validator.validate_user_message(unicode_text)
@@ -174,7 +174,7 @@ class TestValidation:
         sanitized = validator._clean_basic_input(unicode_text)
         assert "🇺🇦" in sanitized
 
-    def test_edge_cases_mixed_languages(self):
+    def test_edge_cases_mixed_languages(self) -> None:
         """Тест обработки смешанных языков"""
         mixed_text = "English Українська Русский 中文"
         result = validator.validate_user_message(mixed_text)
@@ -183,7 +183,7 @@ class TestValidation:
         assert "English" in sanitized
         assert "Українська" in sanitized
 
-    def test_edge_cases_numeric_strings(self):
+    def test_edge_cases_numeric_strings(self) -> None:
         """Тест обработки числовых строк"""
         numeric_inputs = ["123", "0", "-456", "3.14", "1,000"]
 
@@ -193,7 +193,7 @@ class TestValidation:
             sanitized = validator._clean_basic_input(num_str)
             assert num_str in sanitized  # Очищенный текст содержит исходную строку
 
-    def test_sanitize_filename(self):
+    def test_sanitize_filename(self) -> None:
         """Тест очистки имен файлов"""
         test_cases = [
             ("normal_file.txt", "normal_file.txt"),
@@ -207,7 +207,7 @@ class TestValidation:
             result = validator.sanitize_filename(input_name)
             assert result == expected
 
-    def test_validation_result_creation(self):
+    def test_validation_result_creation(self) -> None:
         """Тест создания ValidationResult"""
         # Успешный результат
         result = ValidationResult(is_valid=True, cleaned_value="test")
@@ -223,7 +223,7 @@ class TestValidation:
         assert result.cleaned_value == ""
         assert result.error_message == "Error"
 
-    def test_input_validator_creation(self):
+    def test_input_validator_creation(self) -> None:
         """Тест создания InputValidator"""
         validator_instance = InputValidator()
         assert validator_instance is not None

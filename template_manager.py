@@ -16,13 +16,13 @@ logger = logging.getLogger(__name__)
 
 
 class TemplateManager:
-    def __init__(self):
+    def __init__(self) -> None:
         self.templates: Dict[str, List[Template]] = {}
         self.user_languages: Dict[int, str] = {}  # user_id -> 'ukr' or 'rus'
         self.stats = StatsManager()
         self.load_templates()
 
-    def load_templates(self):
+    def load_templates(self) -> None:
         """Загружает шаблоны из CSV файлов"""
         import os
 
@@ -175,7 +175,7 @@ class TemplateManager:
     def get_user_language(self, user_id: int) -> str:
         return self.user_languages.get(user_id, "ukr")
 
-    def set_user_language(self, user_id: int, language: str):
+    def set_user_language(self, user_id: int, language: str) -> None:
         self.user_languages[user_id] = language
 
     def get_template_text(self, template: Template, user_id: int) -> str:

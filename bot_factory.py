@@ -16,7 +16,7 @@ from template_manager import TemplateManager
 class BotFactory:
     """Фабрика для создания экземпляров бота"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.bot = None
         self.dp = None
         self.template_manager = None
@@ -123,7 +123,7 @@ class BotFactory:
             logger.error(f"Ошибка валидации конфигурации: {e}")
             return False
 
-    def cleanup(self):
+    def cleanup(self) -> None:
         """Очистка ресурсов"""
         try:
             if self.bot:
@@ -159,6 +159,6 @@ def validate_bot_configuration() -> bool:
     return bot_factory.validate_configuration()
 
 
-def cleanup_bot_resources():
+def cleanup_bot_resources() -> None:
     """Очистка ресурсов бота"""
     bot_factory.cleanup()

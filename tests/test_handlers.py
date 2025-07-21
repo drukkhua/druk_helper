@@ -20,7 +20,7 @@ class TestHandlers:
     """Тесты для обработчиков бота"""
 
     @pytest.mark.asyncio
-    async def test_cmd_start_new_user(self, mock_telegram_message):
+    async def test_cmd_start_new_user(self, mock_telegram_message) -> None:
         """Тест команды /start для нового пользователя"""
         mock_telegram_message.answer = AsyncMock()
 
@@ -36,7 +36,9 @@ class TestHandlers:
             assert "reply_markup" in call_args.kwargs
 
     @pytest.mark.asyncio
-    async def test_cmd_start_admin_user(self, mock_telegram_message, mock_config):
+    async def test_cmd_start_admin_user(
+        self, mock_telegram_message, mock_config
+    ) -> None:
         """Тест команды /start для админа"""
         mock_telegram_message.from_user.id = 123456789  # ID админа
         mock_telegram_message.answer = AsyncMock()
@@ -50,7 +52,7 @@ class TestHandlers:
             mock_telegram_message.answer.assert_called_once()
 
     @pytest.mark.asyncio
-    async def test_cmd_stats_admin(self, mock_telegram_message, mock_config):
+    async def test_cmd_stats_admin(self, mock_telegram_message, mock_config) -> None:
         """Тест команды /stats для админа"""
         mock_telegram_message.from_user.id = 123456789  # ID админа
         mock_telegram_message.answer = AsyncMock()
@@ -70,7 +72,9 @@ class TestHandlers:
             assert "Статистика" in call_args
 
     @pytest.mark.asyncio
-    async def test_cmd_stats_non_admin(self, mock_telegram_message, mock_config):
+    async def test_cmd_stats_non_admin(
+        self, mock_telegram_message, mock_config
+    ) -> None:
         """Тест команды /stats для обычного пользователя"""
         mock_telegram_message.from_user.id = 999999999  # Не админ
         mock_telegram_message.answer = AsyncMock()
@@ -82,7 +86,9 @@ class TestHandlers:
             mock_telegram_message.answer.assert_not_called()
 
     @pytest.mark.asyncio
-    async def test_cmd_reload_admin_success(self, mock_telegram_message, mock_config):
+    async def test_cmd_reload_admin_success(
+        self, mock_telegram_message, mock_config
+    ) -> None:
         """Тест команды /reload для админа - успешно"""
         mock_telegram_message.from_user.id = 123456789  # ID админа
         mock_telegram_message.answer = AsyncMock()
@@ -104,7 +110,9 @@ class TestHandlers:
             assert mock_telegram_message.answer.call_count >= 2
 
     @pytest.mark.asyncio
-    async def test_cmd_reload_admin_failure(self, mock_telegram_message, mock_config):
+    async def test_cmd_reload_admin_failure(
+        self, mock_telegram_message, mock_config
+    ) -> None:
         """Тест команды /reload для админа - ошибка"""
         mock_telegram_message.from_user.id = 123456789  # ID админа
         mock_telegram_message.answer = AsyncMock()
@@ -121,7 +129,7 @@ class TestHandlers:
             mock_telegram_message.answer.assert_called()
 
     @pytest.mark.asyncio
-    async def test_callback_category_valid(self, mock_callback_query):
+    async def test_callback_category_valid(self, mock_callback_query) -> None:
         """Тест callback для валидной категории"""
         mock_callback_query.data = "category_визитки"
         mock_callback_query.answer = AsyncMock()
@@ -160,7 +168,7 @@ class TestHandlers:
             mock_callback_query.message.edit_text.assert_called_once()
 
     @pytest.mark.asyncio
-    async def test_callback_category_empty(self, mock_callback_query):
+    async def test_callback_category_empty(self, mock_callback_query) -> None:
         """Тест callback для категории без шаблонов"""
         mock_callback_query.data = "category_пустая"
         mock_callback_query.answer = AsyncMock()
@@ -178,7 +186,7 @@ class TestHandlers:
         mock_callback_query.answer.assert_called_once()
 
     @pytest.mark.asyncio
-    async def test_callback_template_found(self, mock_callback_query):
+    async def test_callback_template_found(self, mock_callback_query) -> None:
         """Тест callback для существующего шаблона"""
         mock_callback_query.data = "template_визитки_1"
         mock_callback_query.answer = AsyncMock()
@@ -208,7 +216,7 @@ class TestHandlers:
             mock_tm.stats.log_template_usage.assert_called_once()
 
     @pytest.mark.asyncio
-    async def test_callback_template_not_found(self, mock_callback_query):
+    async def test_callback_template_not_found(self, mock_callback_query) -> None:
         """Тест callback для несуществующего шаблона"""
         mock_callback_query.data = "template_визитки_999"
         mock_callback_query.answer = AsyncMock()
@@ -227,7 +235,9 @@ class TestHandlers:
         mock_callback_query.answer.assert_called_once()
 
     @pytest.mark.asyncio
-    async def test_callback_template_language_preference(self, mock_callback_query):
+    async def test_callback_template_language_preference(
+        self, mock_callback_query
+    ) -> None:
         """Тест отображения шаблона с учетом языковых предпочтений"""
         mock_callback_query.data = "template_визитки_1"
         mock_callback_query.from_user.language_code = "uk"

@@ -67,7 +67,7 @@ class InputValidator:
     # Разрешенные символы для поиска
     ALLOWED_SEARCH_CHARS = re.compile(r"^[a-zA-Zа-яА-ЯёЁії\s\d\-_.,!?()]+$")
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.logger = logger
 
     def validate_search_query(self, query: str) -> ValidationResult:

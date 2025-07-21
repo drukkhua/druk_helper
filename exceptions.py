@@ -13,7 +13,7 @@ class BotException(Exception):
         message: str,
         details: Optional[Dict[str, Any]] = None,
         user_id: Optional[int] = None,
-    ):
+    ) -> None:
         super().__init__(message)
         self.details = details or {}
         self.user_id = user_id

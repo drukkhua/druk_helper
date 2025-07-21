@@ -17,7 +17,9 @@ from validation import validator
 
 
 @handle_exceptions
-async def cmd_start(message: types.Message, state: FSMContext, template_manager):
+async def cmd_start(
+    message: types.Message, state: FSMContext, template_manager
+) -> None:
     """Обработчик команды /start"""
     user_id = message.from_user.id
 
@@ -40,7 +42,7 @@ async def cmd_start(message: types.Message, state: FSMContext, template_manager)
     await state.set_state(UserStates.main_menu)
 
 
-async def cmd_stats(message: types.Message, template_manager):
+async def cmd_stats(message: types.Message, template_manager) -> None:
     """Команда для просмотра статистики (только для админов)"""
     if message.from_user.id not in ADMIN_USER_IDS:
         return
@@ -51,7 +53,7 @@ async def cmd_stats(message: types.Message, template_manager):
 
 async def process_category_selection(
     callback: CallbackQuery, state: FSMContext, template_manager
-):
+) -> None:
     """Обработчик выбора категории"""
     # Валидация callback_data
     callback_validation = validator.validate_callback_data(callback.data)
@@ -100,7 +102,7 @@ async def process_category_selection(
 @handle_exceptions
 async def process_template_selection(
     callback: CallbackQuery, state: FSMContext, template_manager
-):
+) -> None:
     """Обработчик выбора конкретного шаблона"""
     # Валидация callback_data
     callback_validation = validator.validate_callback_data(callback.data)
@@ -167,7 +169,7 @@ async def process_template_selection(
 
 async def copy_template_text(
     callback: CallbackQuery, state: FSMContext, template_manager
-):
+) -> None:
     """Отправляет текст шаблона отдельным сообщением для удобного копирования"""
     # Валидация user_id
     user_validation = validator.validate_user_id(callback.from_user.id)
@@ -219,7 +221,7 @@ async def copy_template_text(
         await callback.answer(error_text)
 
 
-async def admin_stats(callback: CallbackQuery, template_manager):
+async def admin_stats(callback: CallbackQuery, template_manager) -> None:
     """Показ статистики для админов"""
     # Валидация user_id
     user_validation = validator.validate_user_id(callback.from_user.id)
@@ -237,7 +239,7 @@ async def admin_stats(callback: CallbackQuery, template_manager):
 
 async def back_to_main_menu(
     callback: CallbackQuery, state: FSMContext, template_manager
-):
+) -> None:
     """Возврат в главное меню"""
     user_id = callback.from_user.id
 
@@ -262,7 +264,7 @@ async def back_to_main_menu(
 
 async def back_to_category_menu(
     callback: CallbackQuery, state: FSMContext, template_manager
-):
+) -> None:
     """Возврат в меню категории"""
     user_data = await state.get_data()
     category = user_data.get("current_category", "визитки")
@@ -280,7 +282,9 @@ async def back_to_category_menu(
     await state.set_state(UserStates.category_menu)
 
 
-async def switch_language(callback: CallbackQuery, state: FSMContext, template_manager):
+async def switch_language(
+    callback: CallbackQuery, state: FSMContext, template_manager
+) -> None:
     """Переключение языка"""
     user_id = callback.from_user.id
 
@@ -313,7 +317,9 @@ async def switch_language(callback: CallbackQuery, state: FSMContext, template_m
     )
 
 
-async def start_search(callback: CallbackQuery, state: FSMContext, template_manager):
+async def start_search(
+    callback: CallbackQuery, state: FSMContext, template_manager
+) -> None:
     """Начало поиска"""
     user_id = callback.from_user.id
     lang = template_manager.get_user_language(user_id)
@@ -337,7 +343,7 @@ async def start_search(callback: CallbackQuery, state: FSMContext, template_mana
 @handle_exceptions
 async def process_search_query(
     message: types.Message, state: FSMContext, template_manager
-):
+) -> None:
     """Обработка поискового запроса"""
     user_id = message.from_user.id
 
@@ -398,7 +404,7 @@ async def process_search_query(
     await message.answer(results_text, reply_markup=builder.as_markup())
 
 
-async def coming_soon(callback: CallbackQuery, template_manager):
+async def coming_soon(callback: CallbackQuery, template_manager) -> None:
     """Обработчик для функций, которые скоро появятся"""
     user_id = callback.from_user.id
     lang = template_manager.get_user_language(user_id)
@@ -413,7 +419,7 @@ async def coming_soon(callback: CallbackQuery, template_manager):
 
 
 @handle_exceptions
-async def cmd_reload(message: types.Message, template_manager):
+async def cmd_reload(message: types.Message, template_manager) -> None:
     """Команда для перезагрузки шаблонов (только для админов)"""
     if message.from_user.id not in ADMIN_USER_IDS:
         await message.answer("❌ Нет доступа")
@@ -454,7 +460,7 @@ async def cmd_reload(message: types.Message, template_manager):
 
 
 @handle_exceptions
-async def cmd_health(message: types.Message, template_manager):
+async def cmd_health(message: types.Message, template_manager) -> None:
     """Команда для проверки здоровья системы (только для админов)"""
     if message.from_user.id not in ADMIN_USER_IDS:
         await message.answer("❌ Нет доступа")

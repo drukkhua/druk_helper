@@ -7,11 +7,11 @@ logger = logging.getLogger(__name__)
 
 
 class StatsManager:
-    def __init__(self):
+    def __init__(self) -> None:
         self.stats_file = "./data/stats.json"
         self.ensure_stats_file()
 
-    def ensure_stats_file(self):
+    def ensure_stats_file(self) -> None:
         """Создает файл статистики если его нет"""
         if not os.path.exists(self.stats_file):
             with open(self.stats_file, "w", encoding="utf-8") as f:
@@ -19,7 +19,7 @@ class StatsManager:
 
     def log_template_usage(
         self, category: str, template_number: int, user_id: int, action: str = "view"
-    ):
+    ) -> None:
         """Записывает использование шаблона"""
         try:
             # Читаем существующую статистику

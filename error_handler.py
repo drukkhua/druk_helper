@@ -19,7 +19,7 @@ from exceptions import *
 class ErrorHandler:
     """Обработчик ошибок бота"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.error_stats = {}
         self.error_log_file = "error_log.json"
 
@@ -242,7 +242,7 @@ class CircuitBreaker:
     Паттерн Circuit Breaker для защиты от каскадных ошибок
     """
 
-    def __init__(self, failure_threshold: int = 5, recovery_timeout: int = 60):
+    def __init__(self, failure_threshold: int = 5, recovery_timeout: int = 60) -> None:
         self.failure_threshold = failure_threshold
         self.recovery_timeout = recovery_timeout
         self.failure_count = 0
@@ -274,12 +274,12 @@ class CircuitBreaker:
             datetime.now() - self.last_failure_time
         ).seconds >= self.recovery_timeout
 
-    def _on_success(self):
+    def _on_success(self) -> None:
         """Обработка успешного вызова"""
         self.failure_count = 0
         self.state = "CLOSED"
 
-    def _on_failure(self):
+    def _on_failure(self) -> None:
         """Обработка неудачного вызова"""
         self.failure_count += 1
         self.last_failure_time = datetime.now()

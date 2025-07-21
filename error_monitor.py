@@ -15,7 +15,7 @@ from config import logger
 class ErrorMonitor:
     """Монитор ошибок для анализа и отчетности"""
 
-    def __init__(self, log_file: str = "error_log.json"):
+    def __init__(self, log_file: str = "error_log.json") -> None:
         self.log_file = log_file
         self.error_patterns = defaultdict(int)
         self.error_trends = defaultdict(list)
@@ -120,7 +120,7 @@ class ErrorMonitor:
 
         return report
 
-    def clear_old_errors(self, days: int = 30):
+    def clear_old_errors(self, days: int = 30) -> None:
         """Очистка старых ошибок"""
         if not os.path.exists(self.log_file):
             return
@@ -196,6 +196,6 @@ def generate_error_report(hours: int = 24) -> str:
     return error_monitor.get_error_report(hours)
 
 
-def cleanup_old_errors(days: int = 30):
+def cleanup_old_errors(days: int = 30) -> None:
     """Очистка старых ошибок"""
     error_monitor.clear_old_errors(days)

@@ -18,7 +18,7 @@ class TestStats:
     """Тесты для модуля статистики"""
 
     @pytest.fixture
-    def temp_stats_file(self):
+    def temp_stats_file(self) -> str:
         """Временный файл для статистики"""
         temp_file = tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".json")
         temp_file.close()
@@ -26,7 +26,7 @@ class TestStats:
         os.unlink(temp_file.name)
 
     @pytest.fixture
-    def stats_manager(self, temp_stats_file):
+    def stats_manager(self, temp_stats_file) -> StatsManager:
         """Fixture для StatsManager с временным файлом"""
         # Инициализируем пустой JSON файл
         with open(temp_stats_file, "w", encoding="utf-8") as f:
@@ -38,7 +38,7 @@ class TestStats:
         return manager
 
     @pytest.fixture
-    def sample_stats_data(self):
+    def sample_stats_data(self) -> dict:
         """Образец данных статистики"""
         today = datetime.now().strftime("%Y-%m-%d")
         return {
@@ -51,7 +51,7 @@ class TestStats:
             }
         }
 
-    def test_log_template_usage_new_file(self, stats_manager, temp_stats_file):
+    def test_log_template_usage_new_file(self, stats_manager, temp_stats_file) -> None:
         """Тест записи использования шаблона в новом файле"""
         stats_manager.log_template_usage("визитки", 1, 123456789)
 
@@ -69,7 +69,7 @@ class TestStats:
 
     def test_log_template_usage_existing_entry(
         self, stats_manager, temp_stats_file, sample_stats_data
-    ):
+    ) -> None:
         """Тест записи использования существующего шаблона"""
         # Записываем начальные данные
         with open(temp_stats_file, "w", encoding="utf-8") as f:
@@ -86,7 +86,7 @@ class TestStats:
 
     def test_log_template_usage_new_category(
         self, stats_manager, temp_stats_file, sample_stats_data
-    ):
+    ) -> None:
         """Тест добавления новой категории в статистику"""
         with open(temp_stats_file, "w", encoding="utf-8") as f:
             json.dump(sample_stats_data, f)
@@ -100,7 +100,9 @@ class TestStats:
         assert "наклейки" in data[today]
         assert data[today]["наклейки"]["1"]["count"] == 1
 
-    def test_log_template_copy(self, stats_manager, temp_stats_file, sample_stats_data):
+    def test_log_template_copy(
+        self, stats_manager, temp_stats_file, sample_stats_data
+    ) -> None:
         """Тест записи копирования шаблона"""
         with open(temp_stats_file, "w", encoding="utf-8") as f:
             json.dump(sample_stats_data, f)
@@ -114,7 +116,7 @@ class TestStats:
         # Количество копирований должно увеличиться с 5 до 6
         assert data[today]["визитки"]["1"]["copies"] == 6
 
-    def test_log_template_copy_new_entry(self, stats_manager, temp_stats_file):
+    def test_log_template_copy_new_entry(self, stats_manager, temp_stats_file) -> None:
         """Тест копирования для новой записи"""
         stats_manager.log_template_usage("визитки", 1, 123456789, "copy")
 
@@ -127,7 +129,7 @@ class TestStats:
 
     def test_get_stats_summary_with_data(
         self, stats_manager, temp_stats_file, sample_stats_data
-    ):
+    ) -> None:
         """Тест получения сводки статистики с данными"""
         with open(temp_stats_file, "w", encoding="utf-8") as f:
             json.dump(sample_stats_data, f)
@@ -144,7 +146,7 @@ class TestStats:
         assert "15 просмотров" in stats_text
         assert "7 копирований" in stats_text
 
-    def test_get_stats_summary_empty_file(self, stats_manager, temp_stats_file):
+    def test_get_stats_summary_empty_file(self, stats_manager, temp_stats_file) -> None:
         """Тест получения статистики из пустого файла"""
         with open(temp_stats_file, "w", encoding="utf-8") as f:
             json.dump({}, f)
@@ -153,7 +155,7 @@ class TestStats:
 
         assert isinstance(stats_text, str)  # Должен возвращать строку
 
-    def test_get_stats_summary_nonexistent_file(self):
+    def test_get_stats_summary_nonexistent_file(self) -> None:
         """Тест получения статистики из несуществующего файла"""
         stats_manager = StatsManager()
         stats_manager.stats_file = "/nonexistent/path/stats.json"
@@ -161,7 +163,9 @@ class TestStats:
 
         assert "ошибка" in stats_text.lower() or "Статистика" in stats_text
 
-    def test_stats_manager_basic_functionality(self, stats_manager, temp_stats_file):
+    def test_stats_manager_basic_functionality(
+        self, stats_manager, temp_stats_file
+    ) -> None:
         """Тест базовой функциональности StatsManager"""
         # Тест записи статистики
         stats_manager.log_template_usage("визитки", 1, 123456789)
@@ -174,7 +178,9 @@ class TestStats:
         assert isinstance(stats_text, str)
         assert len(stats_text) > 0
 
-    def test_stats_manager_with_empty_data(self, stats_manager, temp_stats_file):
+    def test_stats_manager_with_empty_data(
+        self, stats_manager, temp_stats_file
+    ) -> None:
         """Тест StatsManager с пустыми данными"""
         with open(temp_stats_file, "w", encoding="utf-8") as f:
             json.dump({}, f)
@@ -182,7 +188,9 @@ class TestStats:
         stats_text = stats_manager.get_stats_summary()
         assert isinstance(stats_text, str)
 
-    def test_stats_manager_with_multiple_days(self, stats_manager, temp_stats_file):
+    def test_stats_manager_with_multiple_days(
+        self, stats_manager, temp_stats_file
+    ) -> None:
         """Тест StatsManager с данными за несколько дней"""
         from datetime import datetime, timedelta
 
@@ -210,7 +218,7 @@ class TestStats:
         assert isinstance(stats_text, str)
         assert len(stats_text) > 0
 
-    def test_stats_file_corruption_handling(self):
+    def test_stats_file_corruption_handling(self) -> None:
         """Тест обработки поврежденного файла статистики"""
         stats_manager = StatsManager()
         stats_manager.stats_file = "test_stats.json"
@@ -224,7 +232,7 @@ class TestStats:
 
             assert isinstance(stats_text, str)
 
-    def test_concurrent_stats_updates(self, temp_stats_file):
+    def test_concurrent_stats_updates(self, temp_stats_file) -> None:
         """Тест параллельных обновлений статистики"""
         import threading
 
@@ -232,7 +240,7 @@ class TestStats:
         with open(temp_stats_file, "w", encoding="utf-8") as f:
             json.dump({}, f)
 
-        def update_stats_worker(stats_manager, category, subcategory, user_id):
+        def update_stats_worker(stats_manager, category, subcategory, user_id) -> None:
             for _ in range(10):
                 stats_manager.log_template_usage(category, subcategory, user_id)
 
@@ -263,7 +271,7 @@ class TestStats:
         assert data[today]["визитки"]["1"]["count"] > 0
         assert data[today]["визитки"]["1"]["count"] <= 30
 
-    def test_stats_performance_with_large_data(self, temp_stats_file):
+    def test_stats_performance_with_large_data(self, temp_stats_file) -> None:
         """Тест производительности с большим объемом данных"""
         import time
 
