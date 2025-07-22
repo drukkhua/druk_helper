@@ -74,7 +74,9 @@ class GoogleSheetsUpdater:
     async def download_csv_data(self, sheet_id: str, gid: str) -> Optional[str]:
         """Загружает CSV данные одного листа"""
         try:
-            csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv&gid={gid}"
+            csv_url = (
+                f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv&gid={gid}"
+            )
 
             timeout = aiohttp.ClientTimeout(total=30)
             async with aiohttp.ClientSession(timeout=timeout) as session:
@@ -120,9 +122,7 @@ class GoogleSheetsUpdater:
 
             # Создаем выходной буфер
             output_buffer = StringIO()
-            output_writer = csv.writer(
-                output_buffer, delimiter=";", quoting=csv.QUOTE_MINIMAL
-            )
+            output_writer = csv.writer(output_buffer, delimiter=";", quoting=csv.QUOTE_MINIMAL)
 
             # Конвертируем каждую строку
             for row in input_reader:
@@ -193,13 +193,9 @@ class GoogleSheetsUpdater:
                         else:
                             logger.warning(f"⚠️ Не удалось сохранить файл: {filename}")
                     else:
-                        logger.warning(
-                            f"⚠️ Не удалось загрузить данные для листа: {sheet_title}"
-                        )
+                        logger.warning(f"⚠️ Не удалось загрузить данные для листа: {sheet_title}")
                 else:
-                    logger.info(
-                        f"⏭️ Пропускаем лист: {sheet_title} (не найден в маппинге)"
-                    )
+                    logger.info(f"⏭️ Пропускаем лист: {sheet_title} (не найден в маппинге)")
 
             if updated_count > 0:
                 logger.info(f"✅ Успешно обновлено файлов: {updated_count}")

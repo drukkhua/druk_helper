@@ -52,9 +52,7 @@ class BotLifecycle:
             cleanup_old_errors(days=30)
 
             logger.info("Бот успешно инициализирован")
-            logger.info(
-                f"Загружены категории: {list(self.template_manager.templates.keys())}"
-            )
+            logger.info(f"Загружены категории: {list(self.template_manager.templates.keys())}")
 
         except Exception as e:
             logger.critical(f"Критическая ошибка инициализации: {e}")

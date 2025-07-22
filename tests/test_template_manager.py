@@ -194,9 +194,7 @@ class TestTemplateManager:
             category = list(tm.templates.keys())[0]
             if tm.templates[category]:
                 template = tm.templates[category][0]
-                found_template = tm.get_template_by_subcategory(
-                    category, template.subcategory
-                )
+                found_template = tm.get_template_by_subcategory(category, template.subcategory)
 
                 assert found_template is not None
                 assert found_template.subcategory == template.subcategory

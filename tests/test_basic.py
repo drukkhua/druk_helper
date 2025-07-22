@@ -79,9 +79,7 @@ class TestBasicFunctionality:
         from validation import ValidationResult
 
         # Тест создания ValidationResult
-        result = ValidationResult(
-            is_valid=True, cleaned_value="test", error_message=None
-        )
+        result = ValidationResult(is_valid=True, cleaned_value="test", error_message=None)
         assert result.is_valid is True
         assert result.cleaned_value == "test"
         assert result.error_message is None

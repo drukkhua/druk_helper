@@ -30,9 +30,7 @@ def create_main_menu_keyboard(user_id: int, template_manager) -> InlineKeyboardM
             callback_data="category_визитки",
         )
     )
-    builder.row(
-        InlineKeyboardButton(text="👕 Футболки", callback_data="category_футболки")
-    )
+    builder.row(InlineKeyboardButton(text="👕 Футболки", callback_data="category_футболки"))
     builder.row(
         InlineKeyboardButton(
             text="📄 Листівки" if lang == "ukr" else "📄 Листовки",
@@ -53,9 +51,7 @@ def create_main_menu_keyboard(user_id: int, template_manager) -> InlineKeyboardM
     )
     # Дополнительные функции
     builder.row(
-        InlineKeyboardButton(
-            text="🔍 Пошук" if lang == "ukr" else "🔍 Поиск", callback_data="search"
-        )
+        InlineKeyboardButton(text="🔍 Пошук" if lang == "ukr" else "🔍 Поиск", callback_data="search")
     )
 
     # Переключатель языка
@@ -64,9 +60,7 @@ def create_main_menu_keyboard(user_id: int, template_manager) -> InlineKeyboardM
 
     # Админ-функции (если пользователь админ)
     if user_id in ADMIN_USER_IDS:
-        builder.row(
-            InlineKeyboardButton(text="📊 Статистика", callback_data="admin_stats")
-        )
+        builder.row(InlineKeyboardButton(text="📊 Статистика", callback_data="admin_stats"))
 
     return builder.as_markup()
 
@@ -107,9 +101,7 @@ def create_template_keyboard(
     # Кнопка "Копировать" - отправляет текст отдельным сообщением
     if template_data:
         copy_text = "📋 Копіювати" if lang == "ukr" else "📋 Копировать"
-        builder.add(
-            InlineKeyboardButton(text=copy_text, callback_data=f"copy_template")
-        )
+        builder.add(InlineKeyboardButton(text=copy_text, callback_data=f"copy_template"))
 
     # Кнопка "Назад"
     back_text = "⬅️ Назад" if lang == "ukr" else "⬅️ Назад"

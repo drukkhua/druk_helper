@@ -89,9 +89,7 @@ class TemplateManager:
         with open(csv_path, "r", encoding="utf-8") as file:
             reader = csv.DictReader(file, delimiter=";")
 
-            for row_num, row in enumerate(
-                reader, start=2
-            ):  # Начинаем с 2, так как 1 - заголовок
+            for row_num, row in enumerate(reader, start=2):  # Начинаем с 2, так как 1 - заголовок
                 try:
                     # Валидация обязательных полей
                     required_fields = [
@@ -103,9 +101,7 @@ class TemplateManager:
                         "answer_rus",
                         "sort_order",
                     ]
-                    missing_fields = [
-                        field for field in required_fields if not row.get(field)
-                    ]
+                    missing_fields = [field for field in required_fields if not row.get(field)]
 
                     if missing_fields:
                         logger.warning(
@@ -127,11 +123,7 @@ class TemplateManager:
                         category=row["category"].strip(),
                         subcategory=row["subcategory"].strip(),
                         button_text=row["button_text"].strip(),
-                        keywords=[
-                            kw.strip()
-                            for kw in row["keywords"].split(",")
-                            if kw.strip()
-                        ],
+                        keywords=[kw.strip() for kw in row["keywords"].split(",") if kw.strip()],
                         answer_ukr=row["answer_ukr"].strip(),
                         answer_rus=row["answer_rus"].strip(),
                         sort_order=sort_order,
@@ -139,9 +131,7 @@ class TemplateManager:
 
                     # Валидация шаблона
                     if not self._validate_template(template):
-                        logger.warning(
-                            f"Невалидный шаблон в строке {row_num} файла {csv_path}"
-                        )
+                        logger.warning(f"Невалидный шаблон в строке {row_num} файла {csv_path}")
                         continue
 
                     if template.category not in self.templates:
@@ -150,9 +140,7 @@ class TemplateManager:
                     templates_count += 1
 
                 except Exception as e:
-                    logger.error(
-                        f"Ошибка обработки строки {row_num} в файле {csv_path}: {str(e)}"
-                    )
+                    logger.error(f"Ошибка обработки строки {row_num} в файле {csv_path}: {str(e)}")
                     continue
 
         return templates_count
@@ -223,9 +211,7 @@ class TemplateManager:
             logger.error(f"Неожиданная ошибка при поиске шаблонов: {str(e)}")
             raise TemplateError(f"Ошибка поиска шаблонов: {str(e)}")
 
-    def get_template_by_subcategory(
-        self, category: str, subcategory: str
-    ) -> Optional[Template]:
+    def get_template_by_subcategory(self, category: str, subcategory: str) -> Optional[Template]:
         """Безопасное получение шаблона по категории и подкатегории"""
         try:
             if category not in self.templates:

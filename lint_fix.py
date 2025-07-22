@@ -49,14 +49,12 @@ def main() -> int:
     # 1. Black - автоматическое форматирование
     run_command("Black - Auto Format", f"black --line-length 100 {FILES_TO_CHECK}")
 
-    # 2. Isort - автоматическая сортировка импортов
-    run_command("Isort - Auto Sort Imports", f"isort {FILES_TO_CHECK}")
+    # 2. Isort - убран из автоматических исправлений (слишком капризный)
+    # run_command("Isort - Auto Sort Imports", f"isort {FILES_TO_CHECK}")
 
     # 3. Autopep8 - исправление PEP8 (если установлен)
     if (
-        subprocess.run(
-            activate_cmd + "which autopep8", shell=True, capture_output=True
-        ).returncode
+        subprocess.run(activate_cmd + "which autopep8", shell=True, capture_output=True).returncode
         == 0
     ):
         run_command(

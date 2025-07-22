@@ -66,16 +66,12 @@ class BotRouters:
         @self.dp.callback_query(lambda c: c.data.startswith("category_"))
         async def process_category_selection_wrapper(callback, state) -> None:
             """Обработчик выбора категории"""
-            await handlers.process_category_selection(
-                callback, state, self.template_manager
-            )
+            await handlers.process_category_selection(callback, state, self.template_manager)
 
         @self.dp.callback_query(lambda c: c.data.startswith("template_"))
         async def process_template_selection_wrapper(callback, state) -> None:
             """Обработчик выбора шаблона"""
-            await handlers.process_template_selection(
-                callback, state, self.template_manager
-            )
+            await handlers.process_template_selection(callback, state, self.template_manager)
 
         @self.dp.callback_query(lambda c: c.data == "copy_template")
         async def copy_template_text_wrapper(callback, state) -> None:

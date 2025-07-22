@@ -17,9 +17,7 @@ from validation import validator
 
 
 @handle_exceptions
-async def cmd_start(
-    message: types.Message, state: FSMContext, template_manager
-) -> None:
+async def cmd_start(message: types.Message, state: FSMContext, template_manager) -> None:
     """Обработчик команды /start"""
     user_id = message.from_user.id
 
@@ -74,10 +72,7 @@ async def process_category_selection(
     lang = template_manager.get_user_language(user_id)
 
     # Проверяем, есть ли шаблоны для этой категории
-    if (
-        category not in template_manager.templates
-        or not template_manager.templates[category]
-    ):
+    if category not in template_manager.templates or not template_manager.templates[category]:
         error_text = (
             f"⏳ Шаблони для категорії '{category}' ще не додані.\nЗ'являться найближчим часом!"
             if lang == "ukr"
@@ -130,15 +125,9 @@ async def process_template_selection(
         lang = template_manager.get_user_language(user_id)
 
         # Логируем использование шаблона
-        template_manager.stats.log_template_usage(
-            category, template.sort_order, user_id, "view"
-        )
+        template_manager.stats.log_template_usage(category, template.sort_order, user_id, "view")
 
-        header = (
-            "📋 Готовий шаблон відповіді:"
-            if lang == "ukr"
-            else "📋 Готовый шаблон ответа:"
-        )
+        header = "📋 Готовий шаблон відповіді:" if lang == "ukr" else "📋 Готовый шаблон ответа:"
         footer = "\n\n💡 Виберіть дію:" if lang == "ukr" else "\n\n💡 Выберите действие:"
 
         full_message = f"{header}\n\n{template_text}{footer}"
@@ -154,9 +143,7 @@ async def process_template_selection(
 
         await callback.message.edit_text(
             full_message,
-            reply_markup=create_template_keyboard(
-                user_id, template_manager, template_text
-            ),
+            reply_markup=create_template_keyboard(user_id, template_manager, template_text),
         )
     else:
         error_text = (
@@ -167,9 +154,7 @@ async def process_template_selection(
         await callback.answer(error_text)
 
 
-async def copy_template_text(
-    callback: CallbackQuery, state: FSMContext, template_manager
-) -> None:
+async def copy_template_text(callback: CallbackQuery, state: FSMContext, template_manager) -> None:
     """Отправляет текст шаблона отдельным сообщением для удобного копирования"""
     # Валидация user_id
     user_validation = validator.validate_user_id(callback.from_user.id)
@@ -237,9 +222,7 @@ async def admin_stats(callback: CallbackQuery, template_manager) -> None:
     await callback.message.answer(stats_text)
 
 
-async def back_to_main_menu(
-    callback: CallbackQuery, state: FSMContext, template_manager
-) -> None:
+async def back_to_main_menu(callback: CallbackQuery, state: FSMContext, template_manager) -> None:
     """Возврат в главное меню"""
     user_id = callback.from_user.id
 
@@ -251,9 +234,7 @@ async def back_to_main_menu(
     lang = template_manager.get_user_language(user_id)
 
     welcome_text = (
-        "🎯 Оберіть категорію товару:"
-        if lang == "ukr"
-        else "🎯 Выберите категорию товара:"
+        "🎯 Оберіть категорію товару:" if lang == "ukr" else "🎯 Выберите категорию товара:"
     )
 
     await callback.message.edit_text(
@@ -282,9 +263,7 @@ async def back_to_category_menu(
     await state.set_state(UserStates.category_menu)
 
 
-async def switch_language(
-    callback: CallbackQuery, state: FSMContext, template_manager
-) -> None:
+async def switch_language(callback: CallbackQuery, state: FSMContext, template_manager) -> None:
     """Переключение языка"""
     user_id = callback.from_user.id
 
@@ -299,17 +278,13 @@ async def switch_language(
     template_manager.set_user_language(user_id, new_lang)
 
     success_text = (
-        "✅ Мова змінена на українську"
-        if new_lang == "ukr"
-        else "✅ Язык изменен на русский"
+        "✅ Мова змінена на українську" if new_lang == "ukr" else "✅ Язык изменен на русский"
     )
     await callback.answer(success_text)
 
     # Обновляем главное меню
     welcome_text = (
-        "🎯 Оберіть категорію товару:"
-        if new_lang == "ukr"
-        else "🎯 Выберите категорию товара:"
+        "🎯 Оберіть категорію товару:" if new_lang == "ukr" else "🎯 Выберите категорию товара:"
     )
 
     await callback.message.edit_text(
@@ -317,16 +292,13 @@ async def switch_language(
     )
 
 
-async def start_search(
-    callback: CallbackQuery, state: FSMContext, template_manager
-) -> None:
+async def start_search(callback: CallbackQuery, state: FSMContext, template_manager) -> None:
     """Начало поиска"""
     user_id = callback.from_user.id
     lang = template_manager.get_user_language(user_id)
 
     search_text = (
-        "🔍 Введіть ключове слово для пошуку шаблонів:\n\n"
-        "Наприклад: ціна, макет, терміни, якість"
+        "🔍 Введіть ключове слово для пошуку шаблонів:\n\n" "Наприклад: ціна, макет, терміни, якість"
         if lang == "ukr"
         else "🔍 Введите ключевое слово для поиска шаблонов:\n\n"
         "Например: цена, макет, сроки, качество"
@@ -341,9 +313,7 @@ async def start_search(
 
 
 @handle_exceptions
-async def process_search_query(
-    message: types.Message, state: FSMContext, template_manager
-) -> None:
+async def process_search_query(message: types.Message, state: FSMContext, template_manager) -> None:
     """Обработка поискового запроса"""
     user_id = message.from_user.id
 
@@ -371,8 +341,7 @@ async def process_search_query(
 
     if not found_templates:
         no_results_text = (
-            f"❌ За запитом '{query}' нічого не знайдено.\n\n"
-            "Спробуйте інші ключові слова."
+            f"❌ За запитом '{query}' нічого не знайдено.\n\n" "Спробуйте інші ключові слова."
             if template_manager.get_user_language(user_id) == "ukr"
             else f"❌ По запросу '{query}' ничего не найдено.\n\n"
             "Попробуйте другие ключевые слова."

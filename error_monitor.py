@@ -78,10 +78,7 @@ class ErrorMonitor:
                         error_data = json.loads(line.strip())
                         error_time = datetime.fromisoformat(error_data["timestamp"])
 
-                        if (
-                            error_time >= cutoff_time
-                            and error_data["error_type"] in critical_types
-                        ):
+                        if error_time >= cutoff_time and error_data["error_type"] in critical_types:
                             critical_errors.append(error_data)
 
                     except (json.JSONDecodeError, KeyError, ValueError):

@@ -221,9 +221,7 @@ class TestGoogleSheetsUpdater:
         from google_sheets_updater import update_templates_from_sheets
 
         # Мок асинхронного метода
-        mock_sheets_updater.update_templates_from_google_sheets = AsyncMock(
-            return_value=True
-        )
+        mock_sheets_updater.update_templates_from_google_sheets = AsyncMock(return_value=True)
 
         # Тест с URL
         result = await update_templates_from_sheets("test_url")

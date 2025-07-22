@@ -23,9 +23,7 @@ class ErrorHandler:
         self.error_stats = {}
         self.error_log_file = "error_log.json"
 
-    def log_error(
-        self, error: Exception, context: Optional[Dict[str, Any]] = None
-    ) -> None:
+    def log_error(self, error: Exception, context: Optional[Dict[str, Any]] = None) -> None:
         """
         Логирование ошибки
 
@@ -57,9 +55,7 @@ class ErrorHandler:
             self.error_stats[error_type] = 0
         self.error_stats[error_type] += 1
 
-    async def handle_error(
-        self, error: Exception, update: Optional[types.Update] = None
-    ) -> None:
+    async def handle_error(self, error: Exception, update: Optional[types.Update] = None) -> None:
         """
         Обработка ошибки с отправкой уведомления пользователю
 
@@ -128,9 +124,7 @@ class ErrorHandler:
         except Exception as e:
             logger.error(f"Не удалось отправить уведомление пользователю: {e}")
 
-    async def _send_admin_notification(
-        self, error: Exception, context: Dict[str, Any]
-    ) -> None:
+    async def _send_admin_notification(self, error: Exception, context: Dict[str, Any]) -> None:
         """Отправка уведомления админам о критических ошибках"""
         if not ADMIN_USER_IDS:
             return
@@ -270,9 +264,7 @@ class CircuitBreaker:
         if self.last_failure_time is None:
             return True
 
-        return (
-            datetime.now() - self.last_failure_time
-        ).seconds >= self.recovery_timeout
+        return (datetime.now() - self.last_failure_time).seconds >= self.recovery_timeout
 
     def _on_success(self) -> None:
         """Обработка успешного вызова"""

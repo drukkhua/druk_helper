@@ -91,13 +91,9 @@ class GoogleSheetsConverter:
             elif response.status_code == 403:
                 print(f"❌ Ошибка доступа (HTTP 403): {response.text}")
                 if "API key" in response.text:
-                    print(
-                        "💡 Проверьте правильность API ключа и что Google Sheets API включен"
-                    )
+                    print("💡 Проверьте правильность API ключа и что Google Sheets API включен")
                 else:
-                    print(
-                        "💡 Возможно таблица не публичная. Проверьте настройки доступа"
-                    )
+                    print("💡 Возможно таблица не публичная. Проверьте настройки доступа")
                 return [{"gid": "0", "name": "Sheet1"}]
 
             elif response.status_code == 404:
@@ -106,9 +102,7 @@ class GoogleSheetsConverter:
                 return [{"gid": "0", "name": "Sheet1"}]
 
             else:
-                print(
-                    f"❌ API вернул ошибку HTTP {response.status_code}: {response.text}"
-                )
+                print(f"❌ API вернул ошибку HTTP {response.status_code}: {response.text}")
                 return [{"gid": "0", "name": "Sheet1"}]
 
         except requests.RequestException as e:
@@ -134,9 +128,7 @@ class GoogleSheetsConverter:
             )
             return False
 
-        for i, (actual, expected) in enumerate(
-            zip(actual_headers, self.expected_headers)
-        ):
+        for i, (actual, expected) in enumerate(zip(actual_headers, self.expected_headers)):
             if actual.strip().lower() != expected.lower():
                 print(
                     f"❌ [{sheet_name}] Неверный заголовок в колонке {i + 1}: '{actual}' вместо '{expected}'"
@@ -154,13 +146,9 @@ class GoogleSheetsConverter:
             if field in df_processed.columns:
                 # Заменяем реальные переносы строк на \\n
                 df_processed[field] = (
-                    df_processed[field]
-                    .astype(str)
-                    .str.replace("\n", "\\n", regex=False)
+                    df_processed[field].astype(str).str.replace("\n", "\\n", regex=False)
                 )
-                df_processed[field] = df_processed[field].str.replace(
-                    "\r", "", regex=False
-                )
+                df_processed[field] = df_processed[field].str.replace("\r", "", regex=False)
 
         return df_processed
 
@@ -396,9 +384,7 @@ class GoogleSheetsConverter:
 
                 # Проверяем заголовки
                 if not self.validate_headers(df, sheet_name):
-                    print(
-                        f"⏭️ [{sheet_name}] Пропускаем из-за несоответствия заголовков"
-                    )
+                    print(f"⏭️ [{sheet_name}] Пропускаем из-за несоответствия заголовков")
                     skipped_count += 1
                     continue
 
@@ -458,9 +444,7 @@ def main():
         print("=" * 40)
         print("🔧 Интерактивный режим")
         print("\nОжидаемый формат заголовков:")
-        print(
-            "  category;subcategory;button_text;keywords;answer_ukr;answer_rus;sort_order"
-        )
+        print("  category;subcategory;button_text;keywords;answer_ukr;answer_rus;sort_order")
         print(f"\n🧪 Тестовая таблица: {URL_TEST}")
         print("-" * 40)
 
@@ -511,9 +495,7 @@ def main():
                 # Предлагаем обработать еще одну таблицу
                 while True:
                     continue_choice = (
-                        input("\n❓ Хотите обработать еще одну таблицу? (y/n): ")
-                        .strip()
-                        .lower()
+                        input("\n❓ Хотите обработать еще одну таблицу? (y/n): ").strip().lower()
                     )
                     if continue_choice in ["y", "yes", "д", "да"]:
                         break

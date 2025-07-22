@@ -36,9 +36,7 @@ class TestHandlers:
             assert "reply_markup" in call_args.kwargs
 
     @pytest.mark.asyncio
-    async def test_cmd_start_admin_user(
-        self, mock_telegram_message, mock_config
-    ) -> None:
+    async def test_cmd_start_admin_user(self, mock_telegram_message, mock_config) -> None:
         """Тест команды /start для админа"""
         mock_telegram_message.from_user.id = 123456789  # ID админа
         mock_telegram_message.answer = AsyncMock()
@@ -72,9 +70,7 @@ class TestHandlers:
             assert "Статистика" in call_args
 
     @pytest.mark.asyncio
-    async def test_cmd_stats_non_admin(
-        self, mock_telegram_message, mock_config
-    ) -> None:
+    async def test_cmd_stats_non_admin(self, mock_telegram_message, mock_config) -> None:
         """Тест команды /stats для обычного пользователя"""
         mock_telegram_message.from_user.id = 999999999  # Не админ
         mock_telegram_message.answer = AsyncMock()
@@ -86,9 +82,7 @@ class TestHandlers:
             mock_telegram_message.answer.assert_not_called()
 
     @pytest.mark.asyncio
-    async def test_cmd_reload_admin_success(
-        self, mock_telegram_message, mock_config
-    ) -> None:
+    async def test_cmd_reload_admin_success(self, mock_telegram_message, mock_config) -> None:
         """Тест команды /reload для админа - успешно"""
         mock_telegram_message.from_user.id = 123456789  # ID админа
         mock_telegram_message.answer = AsyncMock()
@@ -110,9 +104,7 @@ class TestHandlers:
             assert mock_telegram_message.answer.call_count >= 2
 
     @pytest.mark.asyncio
-    async def test_cmd_reload_admin_failure(
-        self, mock_telegram_message, mock_config
-    ) -> None:
+    async def test_cmd_reload_admin_failure(self, mock_telegram_message, mock_config) -> None:
         """Тест команды /reload для админа - ошибка"""
         mock_telegram_message.from_user.id = 123456789  # ID админа
         mock_telegram_message.answer = AsyncMock()
@@ -161,9 +153,7 @@ class TestHandlers:
             mock_keyboard.return_value = Mock()
             mock_title.return_value = "📇 Візитки"
 
-            await process_category_selection(
-                mock_callback_query, mock_state, mock_template_manager
-            )
+            await process_category_selection(mock_callback_query, mock_state, mock_template_manager)
 
             mock_callback_query.message.edit_text.assert_called_once()
 
@@ -179,9 +169,7 @@ class TestHandlers:
         mock_template_manager.templates = {}
         mock_template_manager.get_user_language.return_value = "ukr"
 
-        await process_category_selection(
-            mock_callback_query, mock_state, mock_template_manager
-        )
+        await process_category_selection(mock_callback_query, mock_state, mock_template_manager)
 
         mock_callback_query.answer.assert_called_once()
 
@@ -235,9 +223,7 @@ class TestHandlers:
         mock_callback_query.answer.assert_called_once()
 
     @pytest.mark.asyncio
-    async def test_callback_template_language_preference(
-        self, mock_callback_query
-    ) -> None:
+    async def test_callback_template_language_preference(self, mock_callback_query) -> None:
         """Тест отображения шаблона с учетом языковых предпочтений"""
         mock_callback_query.data = "template_визитки_1"
         mock_callback_query.from_user.language_code = "uk"

@@ -216,9 +216,7 @@ class TestValidation:
         assert result.error_message is None
 
         # Неуспешный результат
-        result = ValidationResult(
-            is_valid=False, cleaned_value="", error_message="Error"
-        )
+        result = ValidationResult(is_valid=False, cleaned_value="", error_message="Error")
         assert result.is_valid is False
         assert result.cleaned_value == ""
         assert result.error_message == "Error"

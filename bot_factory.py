@@ -61,9 +61,7 @@ class BotFactory:
             logger.critical(f"Ошибка создания менеджера шаблонов: {e}")
             raise ConfigurationError(f"Не удалось создать менеджер шаблонов: {e}")
 
-    def create_bot_instance(
-        self, token: str = None, storage: BaseStorage = None
-    ) -> tuple:
+    def create_bot_instance(self, token: str = None, storage: BaseStorage = None) -> tuple:
         """
         Создание полного экземпляра бота с диспетчером и менеджером шаблонов
 

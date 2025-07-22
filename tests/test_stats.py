@@ -100,9 +100,7 @@ class TestStats:
         assert "наклейки" in data[today]
         assert data[today]["наклейки"]["1"]["count"] == 1
 
-    def test_log_template_copy(
-        self, stats_manager, temp_stats_file, sample_stats_data
-    ) -> None:
+    def test_log_template_copy(self, stats_manager, temp_stats_file, sample_stats_data) -> None:
         """Тест записи копирования шаблона"""
         with open(temp_stats_file, "w", encoding="utf-8") as f:
             json.dump(sample_stats_data, f)
@@ -163,9 +161,7 @@ class TestStats:
 
         assert "ошибка" in stats_text.lower() or "Статистика" in stats_text
 
-    def test_stats_manager_basic_functionality(
-        self, stats_manager, temp_stats_file
-    ) -> None:
+    def test_stats_manager_basic_functionality(self, stats_manager, temp_stats_file) -> None:
         """Тест базовой функциональности StatsManager"""
         # Тест записи статистики
         stats_manager.log_template_usage("визитки", 1, 123456789)
@@ -178,9 +174,7 @@ class TestStats:
         assert isinstance(stats_text, str)
         assert len(stats_text) > 0
 
-    def test_stats_manager_with_empty_data(
-        self, stats_manager, temp_stats_file
-    ) -> None:
+    def test_stats_manager_with_empty_data(self, stats_manager, temp_stats_file) -> None:
         """Тест StatsManager с пустыми данными"""
         with open(temp_stats_file, "w", encoding="utf-8") as f:
             json.dump({}, f)
@@ -188,9 +182,7 @@ class TestStats:
         stats_text = stats_manager.get_stats_summary()
         assert isinstance(stats_text, str)
 
-    def test_stats_manager_with_multiple_days(
-        self, stats_manager, temp_stats_file
-    ) -> None:
+    def test_stats_manager_with_multiple_days(self, stats_manager, temp_stats_file) -> None:
         """Тест StatsManager с данными за несколько дней"""
         from datetime import datetime, timedelta
 
@@ -200,15 +192,9 @@ class TestStats:
         today = datetime.now().strftime("%Y-%m-%d")
 
         test_data = {
-            old_date: {
-                "визитки": {"1": {"count": 5, "copies": 2, "last_used": "10:00:00"}}
-            },
-            recent_date: {
-                "футболки": {"1": {"count": 8, "copies": 4, "last_used": "14:00:00"}}
-            },
-            today: {
-                "наклейки": {"1": {"count": 3, "copies": 1, "last_used": "16:00:00"}}
-            },
+            old_date: {"визитки": {"1": {"count": 5, "copies": 2, "last_used": "10:00:00"}}},
+            recent_date: {"футболки": {"1": {"count": 8, "copies": 4, "last_used": "14:00:00"}}},
+            today: {"наклейки": {"1": {"count": 3, "copies": 1, "last_used": "16:00:00"}}},
         }
 
         with open(temp_stats_file, "w", encoding="utf-8") as f:

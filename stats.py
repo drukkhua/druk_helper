@@ -52,9 +52,7 @@ class StatsManager:
             with open(self.stats_file, "w", encoding="utf-8") as f:
                 json.dump(stats, f, ensure_ascii=False, indent=2)
 
-            logger.info(
-                f"STATS: {action.upper()} - {category}:{template_number} by user {user_id}"
-            )
+            logger.info(f"STATS: {action.upper()} - {category}:{template_number} by user {user_id}")
 
         except Exception as e:
             logger.error(f"Ошибка записи статистики: {e}")
@@ -77,7 +75,9 @@ class StatsManager:
                 for category, templates in day_stats.items():
                     total_views = sum(t.get("count", 0) for t in templates.values())
                     total_copies = sum(t.get("copies", 0) for t in templates.values())
-                    summary += f"  • {category}: {total_views} просмотров, {total_copies} копирований\n"
+                    summary += (
+                        f"  • {category}: {total_views} просмотров, {total_copies} копирований\n"
+                    )
 
                 summary += "\n"
 

@@ -110,8 +110,7 @@ class BotAPI:
                 "total_categories": len(templates),
                 "total_templates": sum(len(t) for t in templates.values()),
                 "categories": {
-                    category: len(templates_list)
-                    for category, templates_list in templates.items()
+                    category: len(templates_list) for category, templates_list in templates.items()
                 },
             }
 

@@ -41,9 +41,7 @@ async def secure_start(message: types.Message, state: FSMContext, template_manag
 @validate_user_id
 @validate_callback_data
 @rate_limit(calls_per_minute=20)
-async def secure_category_selection(
-    callback: CallbackQuery, state: FSMContext, template_manager
-):
+async def secure_category_selection(callback: CallbackQuery, state: FSMContext, template_manager):
     """Безопасный обработчик выбора категории"""
     from keyboards import create_category_menu_keyboard, get_category_title
 
@@ -53,10 +51,7 @@ async def secure_category_selection(
     lang = template_manager.get_user_language(user_id)
 
     # Проверяем, есть ли шаблоны для этой категории
-    if (
-        category not in template_manager.templates
-        or not template_manager.templates[category]
-    ):
+    if category not in template_manager.templates or not template_manager.templates[category]:
         error_text = (
             f"⏳ Шаблони для категорії '{category}' ще не додані.\nЗ'являться найближчим часом!"
             if lang == "ukr"
@@ -81,9 +76,7 @@ async def secure_category_selection(
 @validate_user_id
 @validate_message_text
 @rate_limit(calls_per_minute=15)
-async def secure_search_query(
-    message: types.Message, state: FSMContext, template_manager
-):
+async def secure_search_query(message: types.Message, state: FSMContext, template_manager):
     """Безопасный обработчик поискового запроса"""
     from aiogram.types import InlineKeyboardButton
     from aiogram.utils.keyboard import InlineKeyboardBuilder
@@ -97,8 +90,7 @@ async def secure_search_query(
     if not found_templates:
         lang = template_manager.get_user_language(user_id)
         no_results_text = (
-            f"❌ За запитом '{query}' нічого не знайдено.\n\n"
-            "Спробуйте інші ключові слова."
+            f"❌ За запитом '{query}' нічого не знайдено.\n\n" "Спробуйте інші ключові слова."
             if lang == "ukr"
             else f"❌ По запросу '{query}' ничего не найдено.\n\n"
             "Попробуйте другие ключевые слова."
