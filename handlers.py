@@ -14,6 +14,8 @@ from keyboards import (
 )
 from models import UserStates
 from validation import validator
+from ai_service import process_user_query
+from business_hours import get_business_status
 
 
 @handle_exceptions
@@ -475,3 +477,144 @@ async def cmd_health(message: types.Message, template_manager) -> None:
     except Exception as e:
         error_text = f"❌ Ошибка получения статуса: {str(e)}"
         await message.answer(error_text)
+
+
+@handle_exceptions
+async def process_ai_message(message: types.Message, state: FSMContext, template_manager) -> None:
+    """Обработчик текстовых сообщений в AI-режиме"""
+    user_id = message.from_user.id
+    user_text = message.text
+
+    # Валидация
+    user_validation = validator.validate_user_id(user_id)
+    if not user_validation.is_valid:
+        logger.error(f"Неверный user_id: {user_id}")
+        return
+
+    text_validation = validator.validate_search_query(user_text)
+    if not text_validation.is_valid:
+        lang = template_manager.get_user_language(user_id)
+        error_text = (
+            f"❌ {text_validation.error_message}"
+            if lang == "ukr"
+            else f"❌ {text_validation.error_message}"
+        )
+        await message.answer(error_text)
+        return
+
+    lang = template_manager.get_user_language(user_id)
+
+    try:
+        # Показываем индикатор "печатает"
+        await message.bot.send_chat_action(chat_id=message.chat.id, action="typing")
+
+        # Обрабатываем запрос через AI
+        ai_result = await process_user_query(user_text, user_id, lang)
+
+        if ai_result["success"]:
+            # AI дал хороший ответ
+            response_text = ai_result["answer"]
+
+            # Добавляем кнопку связи с менеджером
+            builder = InlineKeyboardBuilder()
+            manager_text = (
+                "📞 Зв'язатися з менеджером" if lang == "ukr" else "📞 Связаться с менеджером"
+            )
+            builder.row(InlineKeyboardButton(text=manager_text, callback_data="contact_manager"))
+
+            back_text = "⬅️ Головне меню" if lang == "ukr" else "⬅️ Главное меню"
+            builder.row(InlineKeyboardButton(text=back_text, callback_data="back_to_main"))
+
+            await message.answer(response_text, reply_markup=builder.as_markup())
+
+        else:
+            # AI не смог помочь, отправляем fallback
+            response_text = ai_result["answer"]
+
+            builder = InlineKeyboardBuilder()
+            back_text = "⬅️ Головне меню" if lang == "ukr" else "⬅️ Главное меню"
+            builder.row(InlineKeyboardButton(text=back_text, callback_data="back_to_main"))
+
+            await message.answer(response_text, reply_markup=builder.as_markup())
+
+    except Exception as e:
+        logger.error(f"Ошибка при обработке AI сообщения от {user_id}: {e}")
+
+        # Отправляем fallback сообщение
+        fallback_text = (
+            "😔 Вибачте, сталася помилка. Спробуйте ще раз або зверніться до менеджера."
+            if lang == "ukr"
+            else "😔 Извините, произошла ошибка. Попробуйте еще раз или обратитесь к менеджеру."
+        )
+
+        builder = InlineKeyboardBuilder()
+        back_text = "⬅️ Головне меню" if lang == "ukr" else "⬅️ Главное меню"
+        builder.row(InlineKeyboardButton(text=back_text, callback_data="back_to_main"))
+
+        await message.answer(fallback_text, reply_markup=builder.as_markup())
+
+
+async def contact_manager(callback: CallbackQuery, template_manager) -> None:
+    """Обработчик кнопки 'Связаться с менеджером'"""
+    user_id = callback.from_user.id
+    lang = template_manager.get_user_language(user_id)
+
+    # Получаем статус работы
+    business_status = get_business_status(lang)
+
+    contact_info = (
+        "📞 **Контактна інформація:**\n\n"
+        "👤 Менеджер: @YourManagerUsername\n"
+        "📱 Телефон: +380XX XXX XX XX\n"
+        "⏰ Робочий час: Пн-Пт 9:00-18:00, Сб 10:00-15:00\n\n"
+        if lang == "ukr"
+        else "📞 **Контактная информация:**\n\n"
+        "👤 Менеджер: @YourManagerUsername\n"
+        "📱 Телефон: +380XX XXX XX XX\n"
+        "⏰ Рабочие часы: Пн-Пт 9:00-18:00, Сб 10:00-15:00\n\n"
+    )
+
+    full_message = business_status + "\n\n" + contact_info
+
+    builder = InlineKeyboardBuilder()
+    back_text = "⬅️ Головне меню" if lang == "ukr" else "⬅️ Главное меню"
+    builder.row(InlineKeyboardButton(text=back_text, callback_data="back_to_main"))
+
+    await callback.message.edit_text(full_message, reply_markup=builder.as_markup())
+    await callback.answer()
+
+
+async def start_ai_mode(callback: CallbackQuery, state: FSMContext, template_manager) -> None:
+    """Переход в AI-режим"""
+    user_id = callback.from_user.id
+    lang = template_manager.get_user_language(user_id)
+
+    ai_intro_text = (
+        "🤖 **AI-помічник активований!**\n\n"
+        "Тепер ви можете задати будь-яке питання про наші послуги, "
+        "і я спробую дати вам детальну відповідь на основі нашої бази знань.\n\n"
+        "📝 **Приклади запитів:**\n"
+        "• Скільки коштують візитки?\n"
+        "• Які терміни виготовлення футболок?\n"
+        "• Які формати макетів ви приймаєте?\n"
+        "• Чи можете зробити дизайн з нуля?\n\n"
+        "💡 Просто напишіть ваше питання наступним повідомленням!"
+        if lang == "ukr"
+        else "🤖 **AI-помощник активирован!**\n\n"
+        "Теперь вы можете задать любой вопрос о наших услугах, "
+        "и я попробую дать вам подробный ответ на основе нашей базы знаний.\n\n"
+        "📝 **Примеры запросов:**\n"
+        "• Сколько стоят визитки?\n"
+        "• Какие сроки изготовления футболок?\n"
+        "• Какие форматы макетов вы принимаете?\n"
+        "• Можете ли сделать дизайн с нуля?\n\n"
+        "💡 Просто напишите ваш вопрос следующим сообщением!"
+    )
+
+    builder = InlineKeyboardBuilder()
+    back_text = "⬅️ Головне меню" if lang == "ukr" else "⬅️ Главное меню"
+    builder.row(InlineKeyboardButton(text=back_text, callback_data="back_to_main"))
+
+    await callback.message.edit_text(ai_intro_text, reply_markup=builder.as_markup())
+    await state.set_state(UserStates.ai_mode)
+    await callback.answer()

@@ -38,6 +38,29 @@ class Config:
     DEBUG = os.getenv("DEBUG", "False").lower() in ("true", "1", "yes")
     LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
 
+    # AI/ML настройки
+    OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+    AI_MODEL = os.getenv("AI_MODEL", "gpt-4o-mini")
+    AI_TEMPERATURE = float(os.getenv("AI_TEMPERATURE", "0.1"))
+    AI_MAX_TOKENS = int(os.getenv("AI_MAX_TOKENS", "1000"))
+
+    # RAG настройки
+    SIMILARITY_THRESHOLD = float(os.getenv("SIMILARITY_THRESHOLD", "0.85"))
+    MAX_CONTEXT_LENGTH = int(os.getenv("MAX_CONTEXT_LENGTH", "3000"))
+    EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "text-embedding-3-small")
+
+    # Векторная база данных
+    CHROMA_PERSIST_DIR = os.getenv("CHROMA_PERSIST_DIR", "./data/vectorstore")
+    CHROMA_COLLECTION_NAME = os.getenv("CHROMA_COLLECTION_NAME", "bot_knowledge_base")
+
+    # Режим работы AI
+    AI_ENABLED = os.getenv("AI_ENABLED", "False").lower() in ("true", "1", "yes")
+    AI_FALLBACK_TO_TEMPLATES = os.getenv("AI_FALLBACK_TO_TEMPLATES", "True").lower() in (
+        "true",
+        "1",
+        "yes",
+    )
+
 
 # Backward compatibility - экспортируем переменные как раньше
 BOT_TOKEN = Config.BOT_TOKEN

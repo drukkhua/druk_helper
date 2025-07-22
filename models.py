@@ -19,3 +19,4 @@ class UserStates(StatesGroup):
     main_menu = State()
     category_menu = State()
     search_mode = State()
+    ai_mode = State()

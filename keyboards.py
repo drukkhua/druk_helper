@@ -56,6 +56,13 @@ def create_main_menu_keyboard(user_id: int, template_manager) -> InlineKeyboardM
         )
     )
 
+    # AI-режим (экспериментальный)
+    builder.row(
+        InlineKeyboardButton(
+            text="🤖 AI-помічник" if lang == "ukr" else "🤖 AI-помощник", callback_data="ai_mode"
+        )
+    )
+
     # Переключатель языка
     lang_text = "🇷🇺 Русский" if lang == "ukr" else "🇺🇦 Українська"
     builder.row(InlineKeyboardButton(text=lang_text, callback_data="switch_language"))

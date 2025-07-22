@@ -108,6 +108,16 @@ class BotRouters:
             """Обработчик для функций в разработке"""
             await handlers.coming_soon(callback, self.template_manager)
 
+        @self.dp.callback_query(lambda c: c.data == "ai_mode")
+        async def start_ai_mode_wrapper(callback, state) -> None:
+            """Обработчик перехода в AI-режим"""
+            await handlers.start_ai_mode(callback, state, self.template_manager)
+
+        @self.dp.callback_query(lambda c: c.data == "contact_manager")
+        async def contact_manager_wrapper(callback) -> None:
+            """Обработчик связи с менеджером"""
+            await handlers.contact_manager(callback, self.template_manager)
+
         logger.info("Обработчики callback-запросов зарегистрированы")
 
     def register_message_handlers(self) -> None:
@@ -117,6 +127,11 @@ class BotRouters:
         async def process_search_query_wrapper(message, state) -> None:
             """Обработчик поисковых запросов"""
             await handlers.process_search_query(message, state, self.template_manager)
+
+        @self.dp.message(StateFilter(UserStates.ai_mode))
+        async def process_ai_message_wrapper(message, state) -> None:
+            """Обработчик AI-сообщений"""
+            await handlers.process_ai_message(message, state, self.template_manager)
 
         logger.info("Обработчики сообщений зарегистрированы")
 
