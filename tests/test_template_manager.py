@@ -9,8 +9,8 @@ import os
 import pytest
 from unittest.mock import Mock, mock_open, patch
 
-from models import Template
-from template_manager import TemplateManager
+from src.bot.models import Template
+from src.core.template_manager import TemplateManager
 
 
 class TestTemplateManager:

@@ -12,11 +12,11 @@ from typing import Any, Optional
 
 from bot_factory import cleanup_bot_resources, create_bot_instance, validate_bot_configuration
 from config import logger
-from error_handler import error_handler
-from error_monitor import cleanup_old_errors
-from exceptions import ConfigurationError
-from routers import register_handlers
-from template_manager import TemplateManager
+from src.utils.error_handler import error_handler
+from src.utils.error_monitor import cleanup_old_errors
+from src.utils.exceptions import ConfigurationError
+from src.bot.routers import register_handlers
+from src.core.template_manager import TemplateManager
 
 
 class BotLifecycle:

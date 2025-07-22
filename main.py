@@ -7,7 +7,7 @@ import sys
 
 from bot_lifecycle import start_bot
 from config import logger
-from exceptions import ConfigurationError
+from src.utils.exceptions import ConfigurationError
 
 
 async def main() -> None:

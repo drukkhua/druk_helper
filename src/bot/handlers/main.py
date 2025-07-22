@@ -4,18 +4,18 @@ from aiogram.types import CallbackQuery, InlineKeyboardButton
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 from config import ADMIN_USER_IDS, logger
-from error_handler import handle_exceptions
-from exceptions import *
-from keyboards import (
+from src.utils.error_handler import handle_exceptions
+from src.utils.exceptions import *
+from src.bot.keyboards import (
     create_category_menu_keyboard,
     create_main_menu_keyboard,
     create_template_keyboard,
     get_category_title,
 )
-from models import UserStates
-from validation import validator
-from ai_service import process_user_query
-from business_hours import get_business_status
+from src.bot.models import UserStates
+from src.core.validation import validator
+from src.ai.service import process_user_query
+from src.core.business_hours import get_business_status
 
 
 @handle_exceptions

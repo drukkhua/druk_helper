@@ -18,7 +18,7 @@ class TestBasicImports:
 
     def test_import_template_manager(self):
         """Тест импорта TemplateManager"""
-        from template_manager import TemplateManager
+        from src.core.template_manager import TemplateManager
 
         assert TemplateManager is not None
 
@@ -30,7 +30,7 @@ class TestBasicImports:
 
     def test_import_handlers(self):
         """Тест импорта handlers"""
-        import handlers
+        from src.bot.handlers import main as handlers
 
         assert hasattr(handlers, "cmd_start")
         assert hasattr(handlers, "cmd_stats")
@@ -38,19 +38,19 @@ class TestBasicImports:
 
     def test_import_keyboards(self):
         """Тест импорта keyboards"""
-        import keyboards
+        from src.bot import keyboards
 
         assert hasattr(keyboards, "get_category_title")
 
     def test_import_validation(self):
         """Тест импорта validation"""
-        import validation
+        from src.core import validation
 
         assert hasattr(validation, "ValidationResult")
 
     def test_import_stats(self):
         """Тест импорта stats"""
-        import stats
+        from src.core import stats
 
         assert hasattr(stats, "StatsManager")
 
@@ -60,7 +60,7 @@ class TestBasicFunctionality:
 
     def test_template_manager_creation(self):
         """Тест создания TemplateManager"""
-        from template_manager import TemplateManager
+        from src.core.template_manager import TemplateManager
 
         tm = TemplateManager()
         assert tm is not None
@@ -76,7 +76,7 @@ class TestBasicFunctionality:
 
     def test_validation_functions(self):
         """Тест функций валидации"""
-        from validation import ValidationResult
+        from src.core.validation import ValidationResult
 
         # Тест создания ValidationResult
         result = ValidationResult(is_valid=True, cleaned_value="test", error_message=None)

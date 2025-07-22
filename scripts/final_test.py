@@ -4,7 +4,9 @@ Final comprehensive test of the AI system
 """
 
 import asyncio
-from ai_service import ai_service
+import sys
+sys.path.append('..')
+from src.ai.service import ai_service
 
 
 async def final_comprehensive_test():

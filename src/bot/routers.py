@@ -5,11 +5,11 @@
 from aiogram import Dispatcher
 from aiogram.filters import Command, StateFilter
 
-import handlers
+from src.bot.handlers import main as handlers
 from config import logger
-from error_handler import error_handler
-from models import UserStates
-from template_manager import TemplateManager
+from src.utils.error_handler import error_handler
+from src.bot.models import UserStates
+from src.core.template_manager import TemplateManager
 
 
 class BotRouters:

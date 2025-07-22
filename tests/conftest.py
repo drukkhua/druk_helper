@@ -15,7 +15,7 @@ from unittest.mock import Mock, patch
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from config import Config
-from template_manager import TemplateManager
+from src.core.template_manager import TemplateManager
 
 
 @pytest.fixture

@@ -8,9 +8,9 @@ from aiogram.fsm.storage.base import BaseStorage
 from aiogram.fsm.storage.memory import MemoryStorage
 
 from config import BOT_TOKEN, logger
-from error_handler import error_handler
-from exceptions import ConfigurationError
-from template_manager import TemplateManager
+from src.utils.error_handler import error_handler
+from src.utils.exceptions import ConfigurationError
+from src.core.template_manager import TemplateManager
 
 
 class BotFactory:

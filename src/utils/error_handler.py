@@ -13,7 +13,7 @@ from datetime import datetime
 from typing import Any, Callable, Dict, Optional
 
 from config import ADMIN_USER_IDS, logger
-from exceptions import *
+from src.utils.exceptions import *
 
 
 class ErrorHandler:

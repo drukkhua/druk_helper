@@ -4,9 +4,17 @@ Retrieval-Augmented Generation с векторным поиском по баз�
 """
 
 import logging
-from typing import Dict
+import asyncio
+from typing import Dict, Optional
 
-from business_hours import is_business_time
+try:
+    import openai
+    from openai import AsyncOpenAI
+except ImportError:
+    openai = None
+    AsyncOpenAI = None
+
+from src.core.business_hours import is_business_time
 from config import Config
 
 
@@ -21,13 +29,30 @@ class AIService:
         self.enabled = self.config.AI_ENABLED
         self.fallback_to_templates = self.config.AI_FALLBACK_TO_TEMPLATES
 
-        # Пока что заглушки - будем реализовывать пошагово
+        # Инициализация OpenAI клиента
+        self.openai_client: Optional[AsyncOpenAI] = None
+        self.use_real_ai = False
+
+        if self.enabled and openai and self.config.OPENAI_API_KEY:
+            try:
+                self.openai_client = AsyncOpenAI(
+                    api_key=self.config.OPENAI_API_KEY,
+                    timeout=30.0
+                )
+                self.use_real_ai = True
+                logger.info("AI Service инициализирован с реальным OpenAI API")
+            except Exception as e:
+                logger.error(f"Ошибка инициализации OpenAI: {e}")
+                self.use_real_ai = False
+                logger.info("AI Service работает в mock режиме")
+
+        # Пока что заглушки для векторной БД - будем реализовывать пошагово
         self.vector_store = None
-        self.llm = None
         self.embeddings = None
 
         if self.enabled:
-            logger.info("AI Service инициализирован в режиме: ENABLED")
+            mode = "REAL OpenAI" if self.use_real_ai else "MOCK"
+            logger.info(f"AI Service инициализирован в режиме: ENABLED ({mode})")
         else:
             logger.info("AI Service инициализирован в режиме: DISABLED (fallback to templates)")
 
@@ -36,12 +61,15 @@ class AIService:
         if not self.enabled:
             return False
 
-        # Проверяем наличие API ключа
-        if not self.config.OPENAI_API_KEY:
-            logger.warning("AI Service недоступен: отсутствует OPENAI_API_KEY")
+        # Для mock режима всегда доступен
+        if not self.use_real_ai:
+            return True
+
+        # Для реального AI проверяем клиент
+        if not self.openai_client or not self.config.OPENAI_API_KEY:
+            logger.warning("AI Service недоступен: проблемы с OpenAI API")
             return False
 
-        # В будущем здесь будем проверять векторную БД и другие компоненты
         return True
 
     async def process_query(self, user_query: str, user_id: int, language: str = "ukr") -> Dict:
@@ -70,18 +98,102 @@ class AIService:
             if not self.is_available():
                 return self._create_fallback_response(language)
 
-            # TODO: Здесь будет основная AI логика
-            # 1. Векторный поиск по базе знаний
-            # 2. Проверка релевантности
-            # 3. Генерация ответа через LLM
-            # 4. Постобработка
+            # Если используем реальный AI - пробуем его
+            if self.use_real_ai:
+                ai_result = await self._process_with_openai(user_query, language)
+                if ai_result["success"]:
+                    return ai_result
+                else:
+                    logger.warning("OpenAI запрос неуспешен, переходим на mock")
 
-            # Пока что возвращаем заглушку
+            # Fallback на mock ответы
             return self._create_mock_ai_response(user_query, language)
 
         except Exception as e:
             logger.error(f"Ошибка при обработке AI запроса: {e}")
             return self._create_fallback_response(language, error=True)
+
+    async def _process_with_openai(self, user_query: str, language: str) -> Dict:
+        """Обработка запроса через реальный OpenAI API"""
+        try:
+            # Создаем системный промпт на основе языка
+            if language == "ukr":
+                system_prompt = """Ви - помічник української друкарні та поліграфічної компанії.
+Ваша задача - відповідати на питання клієнтів про наші послуги.
+
+Наші основні послуги:
+- Візитки: від 50 грн за 100 шт, терміни 1-2 дні
+- Футболки: від 200 грн, терміни 2-3 дні, цифровий друк та шовкографія
+- Листівки: від 80 грн за 100 шт, терміни 1-2 дні
+- Наклейки: різні розміри та матеріали
+- Блокноти: корпоративні та персональні
+
+Додаткові послуги:
+- Створення макетів з нуля
+- Безкоштовна корекція макетів
+- Приймаємо файли: AI, PSD, PDF, PNG (300+ dpi)
+- Експрес-виготовлення за доплату
+
+Робочий час: Пн-Пт 9:00-18:00, Сб 10:00-15:00
+
+Відповідайте коротко, інформативно та дружньо. Завжди пропонуйте зв'язатися з менеджером для деталей."""
+            else:
+                system_prompt = """Вы - помощник украинской типографии и полиграфической компании.
+Ваша задача - отвечать на вопросы клиентов о наших услугах.
+
+Наши основные услуги:
+- Визитки: от 50 грн за 100 шт, сроки 1-2 дня
+- Футболки: от 200 грн, сроки 2-3 дня, цифровая печать и шелкография
+- Листовки: от 80 грн за 100 шт, сроки 1-2 дня
+- Наклейки: разные размеры и материалы
+- Блокноты: корпоративные и персональные
+
+Дополнительные услуги:
+- Создание макетов с нуля
+- Бесплатная коррекция макетов
+- Принимаем файлы: AI, PSD, PDF, PNG (300+ dpi)
+- Экспресс-изготовление за доплату
+
+Рабочие часы: Пн-Пт 9:00-18:00, Сб 10:00-15:00
+
+Отвечайте кратко, информативно и дружелюбно. Всегда предлагайте связаться с менеджером для деталей."""
+
+            # Выполняем запрос к OpenAI
+            response = await self.openai_client.chat.completions.create(
+                model=self.config.AI_MODEL,
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_query}
+                ],
+                max_tokens=self.config.AI_MAX_TOKENS,
+                temperature=self.config.AI_TEMPERATURE,
+                timeout=30.0
+            )
+
+            if response.choices and response.choices[0].message:
+                answer = response.choices[0].message.content.strip()
+
+                # Логируем успешный запрос
+                logger.info(f"OpenAI успешно ответил на запрос: {user_query[:50]}...")
+
+                # Добавляем эмодзи и форматирование если их нет
+                if not any(emoji in answer for emoji in ['🔸', '📋', '👕', '📄', '💰', '⏰']):
+                    answer = f"🤖 {answer}"
+
+                return {
+                    "success": True,
+                    "answer": answer,
+                    "confidence": 0.95,  # Высокая уверенность для реального AI
+                    "source": "ai",
+                    "should_contact_manager": False,
+                }
+            else:
+                logger.warning("OpenAI вернул пустой ответ")
+                return {"success": False, "answer": "", "confidence": 0.0, "source": "ai"}
+
+        except Exception as e:
+            logger.error(f"Ошибка запроса к OpenAI: {e}")
+            return {"success": False, "answer": str(e), "confidence": 0.0, "source": "ai"}
 
     def _create_mock_ai_response(self, query: str, language: str) -> Dict:
         """Временная заглушка для AI ответа"""

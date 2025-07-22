@@ -11,7 +11,7 @@ import pytest
 from datetime import datetime
 from unittest.mock import mock_open, patch
 
-from stats import StatsManager
+from src.core.stats import StatsManager
 
 
 class TestStats:

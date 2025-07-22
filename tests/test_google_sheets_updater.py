@@ -44,7 +44,7 @@ class TestGoogleSheetsUpdater:
         """Тест успешного получения информации о листах"""
         # Мок ответа API
         mock_response = AsyncMock()
-        mock_response.raise_for_status = AsyncMock()
+        mock_response.raise_for_status = Mock()
         mock_response.json = AsyncMock(
             return_value={
                 "sheets": [
@@ -53,7 +53,12 @@ class TestGoogleSheetsUpdater:
                 ]
             }
         )
-        mock_get.return_value.__aenter__.return_value = mock_response
+
+        # Правильная настройка контекст-менеджера
+        mock_context = AsyncMock()
+        mock_context.__aenter__.return_value = mock_response
+        mock_context.__aexit__.return_value = None
+        mock_get.return_value = mock_context
 
         updater = GoogleSheetsUpdater()
         sheets_info = await updater.get_all_sheets_info("test_sheet_id")
@@ -79,11 +84,16 @@ class TestGoogleSheetsUpdater:
         """Тест успешного скачивания CSV данных"""
         # Мок ответа с CSV данными
         mock_response = AsyncMock()
-        mock_response.raise_for_status = AsyncMock()
+        mock_response.raise_for_status = Mock()
         mock_response.read = AsyncMock(
             return_value=b"\xef\xbb\xbfcategory,subcategory,button_text\ntest,1,Test Button"
         )
-        mock_get.return_value.__aenter__.return_value = mock_response
+
+        # Правильная настройка контекст-менеджера
+        mock_context = AsyncMock()
+        mock_context.__aenter__.return_value = mock_response
+        mock_context.__aexit__.return_value = None
+        mock_get.return_value = mock_context
 
         updater = GoogleSheetsUpdater()
         csv_content = await updater.download_csv_data("test_sheet_id", "0")
@@ -139,10 +149,12 @@ class TestGoogleSheetsUpdater:
     @patch("aiofiles.open")
     async def test_save_csv_to_data_success(self, mock_file, mock_makedirs):
         """Тест успешного сохранения CSV файла"""
-        # Мок контекстного менеджера
-        mock_context = AsyncMock()
-        mock_context.write = AsyncMock()
-        mock_file.return_value.__aenter__.return_value = mock_context
+        # Мок контекстного менеджера для aiofiles
+        mock_file_context = AsyncMock()
+        mock_file_context.write = AsyncMock()
+        mock_file_context.__aenter__.return_value = mock_file_context
+        mock_file_context.__aexit__.return_value = None
+        mock_file.return_value = mock_file_context
 
         updater = GoogleSheetsUpdater()
         csv_content = "category,subcategory,button_text\ntest,1,Test Button"

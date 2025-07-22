@@ -5,12 +5,12 @@ import logging
 import os
 from typing import Dict, List, Optional
 
-from error_handler import handle_exceptions, safe_execute
-from exceptions import FileNotFoundError as BotFileNotFoundError
-from exceptions import TemplateLoadError, TemplateNotFoundError, ValidationError
-from models import Template
-from stats import StatsManager
-from validation import validator
+from src.utils.error_handler import handle_exceptions, safe_execute
+from src.utils.exceptions import FileNotFoundError as BotFileNotFoundError
+from src.utils.exceptions import TemplateLoadError, TemplateNotFoundError, ValidationError
+from src.bot.models import Template
+from src.core.stats import StatsManager
+from src.core.validation import validator
 
 logger = logging.getLogger(__name__)
 

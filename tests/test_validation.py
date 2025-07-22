@@ -6,7 +6,7 @@
 import pytest
 from unittest.mock import patch
 
-from validation import InputValidator, ValidationResult, validator
+from src.core.validation import InputValidator, ValidationResult, validator
 
 
 class TestValidation:
