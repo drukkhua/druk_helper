@@ -464,9 +464,7 @@ def main():
                         continue
 
                     if "docs.google.com/spreadsheets" not in url:
-                        print(
-                            "⚠️ Некорректный URL. Должен содержать 'docs.google.com/spreadsheets'"
-                        )
+                        print("⚠️ Некорректный URL. Должен содержать 'docs.google.com/spreadsheets'")
                         continue
 
                 elif choice == "2":

@@ -51,7 +51,9 @@ def create_main_menu_keyboard(user_id: int, template_manager) -> InlineKeyboardM
     )
     # Дополнительные функции
     builder.row(
-        InlineKeyboardButton(text="🔍 Пошук" if lang == "ukr" else "🔍 Поиск", callback_data="search")
+        InlineKeyboardButton(
+            text="🔍 Пошук" if lang == "ukr" else "🔍 Поиск", callback_data="search"
+        )
     )
 
     # Переключатель языка
