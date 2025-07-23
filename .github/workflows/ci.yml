@@ -38,22 +38,22 @@ jobs:
     - name: Lint with flake8
       run: |
         # Stop the build if there are Python syntax errors or undefined names
-        flake8 --config .flake8 *.py handlers.py tests/ --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 --config .flake8 *.py tests/ --count --select=E9,F63,F7,F82 --show-source --statistics
         # Exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 --config .flake8 *.py handlers.py tests/ --count --exit-zero --max-complexity=10 --max-line-length=100 --statistics
+        flake8 --config .flake8 *.py tests/ --count --exit-zero --max-complexity=10 --max-line-length=100 --statistics
 
     - name: Check code formatting with black
       run: |
-        black --check --diff *.py handlers.py tests/
+        black --check --diff *.py tests/
 
     # - name: Check import sorting with isort
     #   run: |
-    #     isort --check-only --diff *.py handlers.py tests/
+    #     isort --check-only --diff *.py tests/
     # isort убран из CI/CD - сортировка импортов выполняется локально
 
     - name: Type checking with mypy
       run: |
-        mypy *.py handlers.py tests/ --ignore-missing-imports
+        mypy *.py tests/ --ignore-missing-imports
       continue-on-error: true
 
     - name: Run tests with pytest
