@@ -25,6 +25,14 @@ safety-report.json
 data/stats.json
 stats.json
 
+# ChromaDB vector database (runtime generated)
+data/vectorstore/
+*.sqlite3
+*chroma*
+
+# Conversation memory (contains user data)
+data/conversations/
+
 # IDE files
 .idea/
 .vscode/

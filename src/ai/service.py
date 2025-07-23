@@ -15,6 +15,9 @@ except ImportError:
     AsyncOpenAI = None
 
 from src.core.business_hours import is_business_time
+from src.ai.knowledge_base import knowledge_base
+from src.ai.rag_service import rag_service
+from src.ai.conversation_memory import conversation_memory
 from config import Config
 
 
@@ -46,15 +49,32 @@ class AIService:
                 self.use_real_ai = False
                 logger.info("AI Service работает в mock режиме")
 
-        # Пока что заглушки для векторной БД - будем реализовывать пошагово
-        self.vector_store = None
-        self.embeddings = None
+        # Инициализация базы знаний
+        self.knowledge_base = knowledge_base
+        self.knowledge_ready = False
 
         if self.enabled:
+            # Загружаем базу знаний в фоновом режиме
+            self._init_knowledge_base()
             mode = "REAL OpenAI" if self.use_real_ai else "MOCK"
-            logger.info(f"AI Service инициализирован в режиме: ENABLED ({mode})")
+            kb_status = "with Knowledge Base" if self.knowledge_ready else "without Knowledge Base"
+            logger.info(f"AI Service инициализирован в режиме: ENABLED ({mode}) {kb_status}")
         else:
             logger.info("AI Service инициализирован в режиме: DISABLED (fallback to templates)")
+
+    def _init_knowledge_base(self):
+        """Инициализация базы знаний"""
+        try:
+            # Загружаем векторную базу знаний
+            success = self.knowledge_base.populate_vector_store()
+            if success:
+                self.knowledge_ready = True
+                stats = self.knowledge_base.get_statistics()
+                logger.info(f"База знаний готова: {stats.get('total_documents', 0)} документов")
+            else:
+                logger.warning("Не удалось инициализировать базу знаний")
+        except Exception as e:
+            logger.error(f"Ошибка инициализации базы знаний: {e}")
 
     def is_available(self) -> bool:
         """Проверяет доступность AI сервиса"""
@@ -94,77 +114,61 @@ class AIService:
         try:
             logger.info(f"Обработка AI запроса от пользователя {user_id}: {user_query[:100]}...")
 
+            # Добавляем сообщение пользователя в память
+            conversation_memory.add_user_message(user_id, user_query, language)
+
             # Если AI отключен, сразу возвращаем fallback
             if not self.is_available():
                 return self._create_fallback_response(language)
 
             # Если используем реальный AI - пробуем его
             if self.use_real_ai:
-                ai_result = await self._process_with_openai(user_query, language)
+                ai_result = await self._process_with_openai(user_query, user_id, language)
                 if ai_result["success"]:
+                    # Сохраняем ответ ассистента в память
+                    conversation_memory.add_assistant_message(user_id, ai_result["answer"])
                     return ai_result
                 else:
                     logger.warning("OpenAI запрос неуспешен, переходим на mock")
 
             # Fallback на mock ответы
-            return self._create_mock_ai_response(user_query, language)
+            mock_result = self._create_mock_ai_response(user_query, language)
+            if mock_result["success"]:
+                # Сохраняем mock ответ в память
+                conversation_memory.add_assistant_message(user_id, mock_result["answer"])
+            return mock_result
 
         except Exception as e:
             logger.error(f"Ошибка при обработке AI запроса: {e}")
             return self._create_fallback_response(language, error=True)
 
-    async def _process_with_openai(self, user_query: str, language: str) -> Dict:
-        """Обработка запроса через реальный OpenAI API"""
+    async def _process_with_openai(self, user_query: str, user_id: int, language: str) -> Dict:
+        """Обработка запроса через реальный OpenAI API с использованием базы знаний"""
         try:
-            # Создаем системный промпт на основе языка
-            if language == "ukr":
-                system_prompt = """Ви - помічник української друкарні та поліграфічної компанії.
-Ваша задача - відповідати на питання клієнтів про наші послуги.
+            context = await rag_service.get_context_for_query(user_query, language)
 
-Наші основні послуги:
-- Візитки: від 50 грн за 100 шт, терміни 1-2 дні
-- Футболки: від 200 грн, терміни 2-3 дні, цифровий друк та шовкографія
-- Листівки: від 80 грн за 100 шт, терміни 1-2 дні
-- Наклейки: різні розміри та матеріали
-- Блокноти: корпоративні та персональні
+            # Создаем системный промпт с контекстом из базы знаний
+            system_prompt = rag_service.create_system_prompt(language, context)
 
-Додаткові послуги:
-- Створення макетів з нуля
-- Безкоштовна корекція макетів
-- Приймаємо файли: AI, PSD, PDF, PNG (300+ dpi)
-- Експрес-виготовлення за доплату
+            # Получаем историю разговора
+            conversation_history = conversation_memory.get_conversation_context(user_id, max_messages=6)
 
-Робочий час: Пн-Пт 9:00-18:00, Сб 10:00-15:00
+            # Формируем сообщения для OpenAI
+            messages = [{"role": "system", "content": system_prompt}]
 
-Відповідайте коротко, інформативно та дружньо. Завжди пропонуйте зв'язатися з менеджером для деталей."""
-            else:
-                system_prompt = """Вы - помощник украинской типографии и полиграфической компании.
-Ваша задача - отвечать на вопросы клиентов о наших услугах.
+            # Добавляем историю разговора (если есть)
+            if conversation_history:
+                # Добавляем предыдущие сообщения, исключая текущий запрос пользователя
+                for msg in conversation_history[:-1]:  # Исключаем последнее сообщение (текущий запрос)
+                    messages.append(msg)
 
-Наши основные услуги:
-- Визитки: от 50 грн за 100 шт, сроки 1-2 дня
-- Футболки: от 200 грн, сроки 2-3 дня, цифровая печать и шелкография
-- Листовки: от 80 грн за 100 шт, сроки 1-2 дня
-- Наклейки: разные размеры и материалы
-- Блокноты: корпоративные и персональные
-
-Дополнительные услуги:
-- Создание макетов с нуля
-- Бесплатная коррекция макетов
-- Принимаем файлы: AI, PSD, PDF, PNG (300+ dpi)
-- Экспресс-изготовление за доплату
-
-Рабочие часы: Пн-Пт 9:00-18:00, Сб 10:00-15:00
-
-Отвечайте кратко, информативно и дружелюбно. Всегда предлагайте связаться с менеджером для деталей."""
+            # Добавляем текущий запрос
+            messages.append({"role": "user", "content": user_query})
 
             # Выполняем запрос к OpenAI
             response = await self.openai_client.chat.completions.create(
                 model=self.config.AI_MODEL,
-                messages=[
-                    {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": user_query}
-                ],
+                messages=messages,
                 max_tokens=self.config.AI_MAX_TOKENS,
                 temperature=self.config.AI_TEMPERATURE,
                 timeout=30.0

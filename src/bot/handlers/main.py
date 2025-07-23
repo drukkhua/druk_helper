@@ -14,7 +14,7 @@ from src.bot.keyboards import (
 )
 from src.bot.models import UserStates
 from src.core.validation import validator
-from src.ai.service import process_user_query
+from src.ai.service import ai_service
 from src.core.business_hours import get_business_status
 
 
@@ -509,7 +509,7 @@ async def process_ai_message(message: types.Message, state: FSMContext, template
         await message.bot.send_chat_action(chat_id=message.chat.id, action="typing")
 
         # Обрабатываем запрос через AI
-        ai_result = await process_user_query(user_text, user_id, lang)
+        ai_result = await ai_service.process_query(user_text, user_id, lang)
 
         if ai_result["success"]:
             # AI дал хороший ответ

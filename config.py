@@ -61,6 +61,13 @@ class Config:
         "yes",
     )
 
+    # Пути к CSV файлам для базы знаний
+    VISITKI_CSV_PATH = os.getenv("VISITKI_CSV_PATH", "./data/templates/visitki_templates.csv")
+    FUTBOLKI_CSV_PATH = os.getenv("FUTBOLKI_CSV_PATH", "./data/templates/futbolki_templates.csv")
+    LISTOVKI_CSV_PATH = os.getenv("LISTOVKI_CSV_PATH", "./data/templates/listovki_templates.csv")
+    NAKLEYKI_CSV_PATH = os.getenv("NAKLEYKI_CSV_PATH", "./data/templates/nakleyki_templates.csv")
+    BLOKNOTY_CSV_PATH = os.getenv("BLOKNOTY_CSV_PATH", "./data/templates/bloknoty_templates.csv")
+
 
 # Backward compatibility - экспортируем переменные как раньше
 BOT_TOKEN = Config.BOT_TOKEN
