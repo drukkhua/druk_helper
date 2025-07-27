@@ -221,7 +221,9 @@ class EnhancedAIService:
                 logger.warning("Premium pricing enhancement не доступен")
 
             # Добавляем эмодзи если их нет
-            if not any(emoji in answer for emoji in ["🔸", "📋", "👕", "📄", "💰", "⏰", "😊", "💙", "🎯"]):
+            if not any(
+                emoji in answer for emoji in ["🔸", "📋", "👕", "📄", "💰", "⏰", "😊", "💙", "🎯"]
+            ):
                 answer = f"😊 {answer}"
 
             # Рассчитываем уверенность

@@ -109,11 +109,7 @@ def create_admin_main_keyboard() -> types.InlineKeyboardMarkup:
                     text="📋 Активные чаты", callback_data="admin:active_chats"
                 ),
             ],
-            [
-                types.InlineKeyboardButton(
-                    text="🗂️ База данных", callback_data="admin:database_info"
-                )
-            ],
+            [types.InlineKeyboardButton(text="🗂️ База данных", callback_data="admin:database_info")],
         ]
     )
 
@@ -446,7 +442,11 @@ async def show_active_chats(callback: types.CallbackQuery):
 
         keyboard = types.InlineKeyboardMarkup(
             inline_keyboard=[
-                [types.InlineKeyboardButton(text="🔄 Обновить", callback_data="admin:active_chats")],
+                [
+                    types.InlineKeyboardButton(
+                        text="🔄 Обновить", callback_data="admin:active_chats"
+                    )
+                ],
                 [types.InlineKeyboardButton(text="🔙 Назад", callback_data="admin:back")],
             ]
         )

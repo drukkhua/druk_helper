@@ -56,7 +56,9 @@ async def test_knowledge_sync():
     if full_sync_result["success"]:
         print(f"   ✅ Полная синхронизация выполнена:")
         print(f"      • CSV файлов обновлено: {full_sync_result['csv_files_updated']}")
-        print(f"      • ChromaDB обновлена: {'✅' if full_sync_result['chromadb_updated'] else '❌'}")
+        print(
+            f"      • ChromaDB обновлена: {'✅' if full_sync_result['chromadb_updated'] else '❌'}"
+        )
         print(
             f"      • Аналитика записана: {'✅' if full_sync_result['analytics_recorded'] else '❌'}"
         )
