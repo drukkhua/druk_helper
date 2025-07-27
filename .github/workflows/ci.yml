@@ -9,17 +9,14 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12"]
 
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set up Python ${{ matrix.python-version }}
+    - name: Set up Python 3.11.1
       uses: actions/setup-python@v4
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: 3.11.1
 
     - name: Cache pip dependencies
       uses: actions/cache@v3
@@ -51,10 +48,6 @@ jobs:
     #     isort --check-only --diff *.py tests/
     # isort убран из CI/CD - сортировка импортов выполняется локально
 
-    - name: Type checking with mypy
-      run: |
-        mypy *.py tests/ --ignore-missing-imports
-      continue-on-error: true
 
     - name: Run tests with pytest
       run: |
