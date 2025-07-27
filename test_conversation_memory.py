@@ -3,6 +3,7 @@
 Тест системы памяти разговора
 """
 
+import pytest
 import asyncio
 import sys
 import os
@@ -14,6 +15,7 @@ from src.ai.service import ai_service
 from src.ai.conversation_memory import conversation_memory
 
 
+@pytest.mark.asyncio
 async def test_conversation_memory():
     """Тестирует память разговора с несколькими сообщениями"""
     print("🧠 ТЕСТИРОВАНИЕ ПАМЯТИ РАЗГОВОРА")
@@ -75,6 +77,7 @@ async def test_conversation_memory():
         print("  • Сессия не найдена")
 
 
+@pytest.mark.asyncio
 async def test_context_understanding():
     """Тестирует понимание контекста"""
     print("\n🎯 ТЕСТ ПОНИМАНИЯ КОНТЕКСТА")

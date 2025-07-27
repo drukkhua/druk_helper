@@ -323,7 +323,7 @@ class GoogleSheetsConverter:
         filename = f"{clean_name}_page_{page_num:02d}.csv"
         filepath = os.path.join(self.output_dir, filename)
 
-        df.to_csv(filepath, index=False, sep=";", encoding="utf-8", quoting=1)
+        df.to_csv(filepath, index=False, sep=",", encoding="utf-8", quoting=1)
         print(f"💾 CSV сохранен: {filename}")
 
     def save_json(self, df: pd.DataFrame, sheet_name: str, page_num: int):
@@ -464,7 +464,9 @@ def main():
                         continue
 
                     if "docs.google.com/spreadsheets" not in url:
-                        print("⚠️ Некорректный URL. Должен содержать 'docs.google.com/spreadsheets'")
+                        print(
+                            "⚠️ Некорректный URL. Должен содержать 'docs.google.com/spreadsheets'"
+                        )
                         continue
 
                 elif choice == "2":

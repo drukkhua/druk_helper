@@ -55,11 +55,7 @@ class KnowledgeBase:
 
             # Инициализация ChromaDB клиента
             self.chroma_client = chromadb.PersistentClient(
-                path=persist_dir,
-                settings=Settings(
-                    anonymized_telemetry=False,
-                    is_persistent=True
-                )
+                path=persist_dir, settings=Settings(anonymized_telemetry=False, is_persistent=True)
             )
 
             # Получаем или создаем коллекцию
@@ -71,7 +67,7 @@ class KnowledgeBase:
                 # Коллекция не существует, создаем новую
                 self.collection = self.chroma_client.create_collection(
                     name=collection_name,
-                    metadata={"description": "Bot knowledge base from CSV templates"}
+                    metadata={"description": "Bot knowledge base from CSV templates"},
                 )
                 logger.info(f"Создана новая коллекция: {collection_name}")
 
@@ -92,32 +88,74 @@ class KnowledgeBase:
                 continue
 
             try:
-                with open(file_path, 'r', encoding='utf-8') as file:
+                with open(file_path, "r", encoding="utf-8") as file:
                     # Определяем разделитель
                     sample = file.read(1024)
                     file.seek(0)
 
-                    delimiter = ';' if ';' in sample else ','
+                    delimiter = ";" if ";" in sample else ","
 
-                    reader = csv.DictReader(file, delimiter=delimiter)
+                    # Сначала читаем весь файл и нормализуем многострочные записи
+                    content = file.read()
+
+                    # Заменяем многострочные записи в кавычках на однострочные
+                    import re
+
+                    # Паттерн для многострочных значений в кавычках
+                    pattern = r'"([^"]*(?:""[^"]*)*)"'
+
+                    def normalize_multiline(match):
+                        value = match.group(1)
+                        # Заменяем переводы строк на пробелы
+                        value = value.replace("\n", " ").replace("\r", "")
+                        # Убираем множественные пробелы
+                        value = re.sub(r"\s+", " ", value).strip()
+                        return f'"{value}"'
+
+                    content = re.sub(pattern, normalize_multiline, content)
+
+                    # Создаем временный файл-подобный объект
+                    from io import StringIO
+
+                    file_like = StringIO(content)
+
+                    reader = csv.DictReader(file_like, delimiter=delimiter)
+                    valid_rows = 0
+                    total_rows = 0
                     for row_num, row in enumerate(reader, 1):
+                        total_rows += 1
                         if self._is_valid_row(row):
+                            valid_rows += 1
                             # Создаем уникальный ID для каждой записи
                             unique_id = f"{category}_{row_num}"
 
                             data_item = {
                                 "id": unique_id,
                                 "category": category,
-                                "subcategory": row.get("subcategory", ""),
-                                "button_text": row.get("button_text", ""),
+                                "subcategory": row.get(
+                                    "group", ""
+                                ),  # Переименовано из subcategory в group
+                                "button_text": row.get(
+                                    "upsell_trigger", row.get("button_text", "")
+                                ),  # Новый формат использует upsell_trigger
                                 "keywords": row.get("keywords", ""),
                                 "answer_ukr": row.get("answer_ukr", ""),
                                 "answer_rus": row.get("answer_rus", ""),
-                                "sort_order": row.get("sort_order", "0")
+                                "sort_order": row.get("sort_order", "0"),
                             }
                             all_data.append(data_item)
+                        else:
+                            logger.warning(
+                                f"Невалидная строка {row_num} в {category}: keywords='{row.get('keywords', '')}', answer_ukr_len={len(row.get('answer_ukr', ''))}, answer_rus_len={len(row.get('answer_rus', ''))}"
+                            )
 
-                logger.info(f"Загружено {len([d for d in all_data if d['category'] == category])} записей из {category}")
+                    logger.info(
+                        f"Файл {category}: обработано {total_rows} строк, валидных {valid_rows}"
+                    )
+
+                logger.info(
+                    f"Загружено {len([d for d in all_data if d['category'] == category])} записей из {category}"
+                )
 
             except Exception as e:
                 logger.error(f"Ошибка при загрузке CSV файла {file_path}: {e}")
@@ -158,8 +196,8 @@ class KnowledgeBase:
                     "keywords": keywords,
                     "answer_ukr": item["answer_ukr"],
                     "answer_rus": item["answer_rus"],
-                    "sort_order": item["sort_order"]
-                }
+                    "sort_order": item["sort_order"],
+                },
             }
             documents.append(doc)
 
@@ -184,7 +222,7 @@ class KnowledgeBase:
                 self.chroma_client.delete_collection(self.config.CHROMA_COLLECTION_NAME)
                 self.collection = self.chroma_client.create_collection(
                     name=self.config.CHROMA_COLLECTION_NAME,
-                    metadata={"description": "Bot knowledge base from CSV templates"}
+                    metadata={"description": "Bot knowledge base from CSV templates"},
                 )
 
             # Загружаем данные из CSV
@@ -202,11 +240,7 @@ class KnowledgeBase:
             metadatas = [doc["metadata"] for doc in documents]
 
             # Добавляем документы в коллекцию
-            self.collection.add(
-                documents=texts,
-                metadatas=metadatas,
-                ids=ids
-            )
+            self.collection.add(documents=texts, metadatas=metadatas, ids=ids)
 
             logger.info(f"Успешно добавлено {len(documents)} документов в векторную базу данных")
             return True
@@ -215,7 +249,9 @@ class KnowledgeBase:
             logger.error(f"Ошибка при заполнении векторной базы: {e}")
             return False
 
-    def search_by_keywords(self, query: str, language: str = "ukr", n_results: int = 3) -> List[Dict]:
+    def search_by_keywords(
+        self, query: str, language: str = "ukr", n_results: int = 3
+    ) -> List[Dict]:
         """Поиск по ключевым словам (точное совпадение)"""
         if not self.is_initialized or not self.collection:
             logger.error("База знаний не инициализирована")
@@ -245,14 +281,16 @@ class KnowledgeBase:
                     metadata_with_id = dict(metadata)
                     metadata_with_id["id"] = doc_id
 
-                    matches.append({
-                        "category": metadata.get("category", ""),
-                        "keywords": metadata.get("keywords", ""),
-                        "answer": answer,
-                        "relevance_score": match_score,
-                        "metadata": metadata_with_id,
-                        "search_type": "keyword"
-                    })
+                    matches.append(
+                        {
+                            "category": metadata.get("category", ""),
+                            "keywords": metadata.get("keywords", ""),
+                            "answer": answer,
+                            "relevance_score": match_score,
+                            "metadata": metadata_with_id,
+                            "search_type": "keyword",
+                        }
+                    )
 
             # Сортируем по релевантности и возвращаем топ результаты
             matches.sort(key=lambda x: x["relevance_score"], reverse=True)
@@ -277,8 +315,12 @@ class KnowledgeBase:
         # 3. Комбинируем результаты
         combined_results = self._combine_search_results(keyword_results, vector_results, n_results)
 
-        logger.info(f"Гибридный поиск: найдено {len(keyword_results)} по ключевым словам, {len(vector_results)} векторным поиском")
-        logger.info(f"Итого {len(combined_results)} релевантных документов для запроса: {query[:50]}...")
+        logger.info(
+            f"Гибридный поиск: найдено {len(keyword_results)} по ключевым словам, {len(vector_results)} векторным поиском"
+        )
+        logger.info(
+            f"Итого {len(combined_results)} релевантных документов для запроса: {query[:50]}..."
+        )
 
         return combined_results
 
@@ -289,17 +331,15 @@ class KnowledgeBase:
             results = self.collection.query(
                 query_texts=[query],
                 n_results=n_results,
-                include=["documents", "metadatas", "distances"]
+                include=["documents", "metadatas", "distances"],
             )
 
             # Обрабатываем результаты
             knowledge_items = []
             if results["documents"] and results["documents"][0]:
-                for i, (doc, metadata, distance) in enumerate(zip(
-                    results["documents"][0],
-                    results["metadatas"][0],
-                    results["distances"][0]
-                )):
+                for i, (doc, metadata, distance) in enumerate(
+                    zip(results["documents"][0], results["metadatas"][0], results["distances"][0])
+                ):
                     # Выбираем ответ на нужном языке
                     answer = metadata.get(f"answer_{language}", metadata.get("answer_ukr", ""))
 
@@ -314,7 +354,7 @@ class KnowledgeBase:
                         "answer": answer,
                         "relevance_score": 1.0 - distance,  # Преобразуем distance в score
                         "metadata": metadata_with_id,
-                        "search_type": "vector"
+                        "search_type": "vector",
                     }
                     knowledge_items.append(knowledge_item)
 
@@ -324,7 +364,9 @@ class KnowledgeBase:
             logger.error(f"Ошибка при векторном поиске: {e}")
             return []
 
-    def _combine_search_results(self, keyword_results: List[Dict], vector_results: List[Dict], n_results: int) -> List[Dict]:
+    def _combine_search_results(
+        self, keyword_results: List[Dict], vector_results: List[Dict], n_results: int
+    ) -> List[Dict]:
         """Комбинирует результаты ключевого и векторного поиска"""
         # Создаем словарь для избежания дубликатов по ID документа
         combined = {}
@@ -334,7 +376,9 @@ class KnowledgeBase:
             doc_id = result["metadata"].get("id", "")
             if doc_id:
                 # Повышаем релевантность для результатов поиска по ключевым словам
-                result["relevance_score"] = result["relevance_score"] + 0.5  # Бонус за точное совпадение
+                result["relevance_score"] = (
+                    result["relevance_score"] + 0.5
+                )  # Бонус за точное совпадение
                 combined[doc_id] = result
 
         # Затем добавляем векторные результаты (если их еще нет)
@@ -370,9 +414,8 @@ class KnowledgeBase:
                 "total_documents": collection_count,
                 "categories": category_counts,
                 "csv_files_status": {
-                    category: os.path.exists(path)
-                    for category, path in self.csv_files.items()
-                }
+                    category: os.path.exists(path) for category, path in self.csv_files.items()
+                },
             }
 
         except Exception as e:

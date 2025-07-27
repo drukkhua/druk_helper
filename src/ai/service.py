@@ -5,6 +5,7 @@ Retrieval-Augmented Generation с векторным поиском по баз�
 
 import logging
 import asyncio
+import time
 from typing import Dict, Optional
 
 try:
@@ -18,6 +19,7 @@ from src.core.business_hours import is_business_time
 from src.ai.knowledge_base import knowledge_base
 from src.ai.rag_service import rag_service
 from src.ai.conversation_memory import conversation_memory
+from src.analytics.analytics_service import analytics_service
 from config import Config
 
 
@@ -38,10 +40,7 @@ class AIService:
 
         if self.enabled and openai and self.config.OPENAI_API_KEY:
             try:
-                self.openai_client = AsyncOpenAI(
-                    api_key=self.config.OPENAI_API_KEY,
-                    timeout=30.0
-                )
+                self.openai_client = AsyncOpenAI(api_key=self.config.OPENAI_API_KEY, timeout=30.0)
                 self.use_real_ai = True
                 logger.info("AI Service инициализирован с реальным OpenAI API")
             except Exception as e:
@@ -111,15 +110,23 @@ class AIService:
                 "should_contact_manager": bool
             }
         """
+        start_time = time.time()
+        query_id = None
+
         try:
             logger.info(f"Обработка AI запроса от пользователя {user_id}: {user_query[:100]}...")
+
+            # 1. Логируем начало обработки запроса
+            query_id = analytics_service.log_user_query(user_id, user_query, language)
 
             # Добавляем сообщение пользователя в память
             conversation_memory.add_user_message(user_id, user_query, language)
 
             # Если AI отключен, сразу возвращаем fallback
             if not self.is_available():
-                return self._create_fallback_response(language)
+                result = self._create_fallback_response(language)
+                self._log_response_analytics(query_id, result, start_time)
+                return result
 
             # Если используем реальный AI - пробуем его
             if self.use_real_ai:
@@ -127,6 +134,7 @@ class AIService:
                 if ai_result["success"]:
                     # Сохраняем ответ ассистента в память
                     conversation_memory.add_assistant_message(user_id, ai_result["answer"])
+                    self._log_response_analytics(query_id, ai_result, start_time)
                     return ai_result
                 else:
                     logger.warning("OpenAI запрос неуспешен, переходим на mock")
@@ -136,14 +144,20 @@ class AIService:
             if mock_result["success"]:
                 # Сохраняем mock ответ в память
                 conversation_memory.add_assistant_message(user_id, mock_result["answer"])
+
+            self._log_response_analytics(query_id, mock_result, start_time)
             return mock_result
 
         except Exception as e:
             logger.error(f"Ошибка при обработке AI запроса: {e}")
-            return self._create_fallback_response(language, error=True)
+            result = self._create_fallback_response(language, error=True)
+            if query_id:
+                self._log_response_analytics(query_id, result, start_time)
+            return result
 
     async def _process_with_openai(self, user_query: str, user_id: int, language: str) -> Dict:
         """Обработка запроса через реальный OpenAI API с использованием базы знаний"""
+        start_time = time.time()
         try:
             context = await rag_service.get_context_for_query(user_query, language)
 
@@ -151,7 +165,9 @@ class AIService:
             system_prompt = rag_service.create_system_prompt(language, context)
 
             # Получаем историю разговора
-            conversation_history = conversation_memory.get_conversation_context(user_id, max_messages=6)
+            conversation_history = conversation_memory.get_conversation_context(
+                user_id, max_messages=6
+            )
 
             # Формируем сообщения для OpenAI
             messages = [{"role": "system", "content": system_prompt}]
@@ -159,7 +175,9 @@ class AIService:
             # Добавляем историю разговора (если есть)
             if conversation_history:
                 # Добавляем предыдущие сообщения, исключая текущий запрос пользователя
-                for msg in conversation_history[:-1]:  # Исключаем последнее сообщение (текущий запрос)
+                for msg in conversation_history[
+                    :-1
+                ]:  # Исключаем последнее сообщение (текущий запрос)
                     messages.append(msg)
 
             # Добавляем текущий запрос
@@ -171,7 +189,7 @@ class AIService:
                 messages=messages,
                 max_tokens=self.config.AI_MAX_TOKENS,
                 temperature=self.config.AI_TEMPERATURE,
-                timeout=30.0
+                timeout=30.0,
             )
 
             if response.choices and response.choices[0].message:
@@ -181,8 +199,10 @@ class AIService:
                 logger.info(f"OpenAI успешно ответил на запрос: {user_query[:50]}...")
 
                 # Добавляем эмодзи и форматирование если их нет
-                if not any(emoji in answer for emoji in ['🔸', '📋', '👕', '📄', '💰', '⏰']):
+                if not any(emoji in answer for emoji in ["🔸", "📋", "👕", "📄", "💰", "⏰"]):
                     answer = f"🤖 {answer}"
+
+                response_time_ms = int((time.time() - start_time) * 1000)
 
                 return {
                     "success": True,
@@ -190,6 +210,9 @@ class AIService:
                     "confidence": 0.95,  # Высокая уверенность для реального AI
                     "source": "ai",
                     "should_contact_manager": False,
+                    "context_used": context,
+                    "search_type": "hybrid",
+                    "response_time_ms": response_time_ms,
                 }
             else:
                 logger.warning("OpenAI вернул пустой ответ")
@@ -363,6 +386,28 @@ class AIService:
             "source": "fallback",
             "should_contact_manager": True,
         }
+
+    def _log_response_analytics(self, query_id: Optional[int], result: Dict, start_time: float):
+        """Логирует аналитику ответа"""
+        if not query_id:
+            return
+
+        try:
+            response_time_ms = int((time.time() - start_time) * 1000)
+
+            analytics_service.log_ai_response(
+                query_id=query_id,
+                ai_response=result.get("answer", ""),
+                confidence=result.get("confidence", 0.0),
+                source=result.get("source", "unknown"),
+                should_contact_manager=result.get("should_contact_manager", False),
+                context_used=result.get("context_used", ""),
+                search_type=result.get("search_type", ""),
+                relevance_scores=result.get("relevance_scores", []),
+                response_time_ms=response_time_ms,
+            )
+        except Exception as e:
+            logger.error(f"Ошибка при логировании аналитики: {e}")
 
 
 # Глобальный экземпляр для использования в приложении

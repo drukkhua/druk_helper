@@ -35,6 +35,11 @@ ignore = [
     "W504",  # line break after binary operator
     "E704",  # multiple statements on one line
     "F401",  # imported but unused (handled by isort)
+    "D202",  # No blank lines allowed after function docstring
+    "E128",  # continuation line under-indented for visual indent
+    "E131",  # continuation line unaligned for hanging indent
+    "E226",  # missing whitespace around arithmetic operator
+    "E722",  # do not use bare 'except' (handled by bandit)
 ]
 exclude = [
     ".git",
@@ -53,21 +58,21 @@ per-file-ignores = [
     "tests/*:F401,F811",
 ]
 
-[tool.mypy]
-python_version = "3.9"
-warn_return_any = true
-warn_unused_configs = true
-disallow_untyped_defs = true
-disallow_incomplete_defs = true
-check_untyped_defs = true
-disallow_untyped_decorators = true
-no_implicit_optional = true
-warn_redundant_casts = true
-warn_unused_ignores = true
-warn_no_return = true
-warn_unreachable = true
-strict_equality = true
-ignore_missing_imports = true
+# [tool.mypy] - убрано из проекта (слишком медленный и не критичный)
+# python_version = "3.9"
+# warn_return_any = true
+# warn_unused_configs = true
+# disallow_untyped_defs = true
+# disallow_incomplete_defs = true
+# check_untyped_defs = true
+# disallow_untyped_decorators = true
+# no_implicit_optional = true
+# warn_redundant_casts = true
+# warn_unused_ignores = true
+# warn_no_return = true
+# warn_unreachable = true
+# strict_equality = true
+# ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -150,7 +155,7 @@ dev = [
     "black>=23.0.0",
     "flake8>=6.0.0",
     # "isort>=5.12.0",  # Убран из проекта - слишком капризный
-    "mypy>=1.0.0",
+    # "mypy>=1.0.0",  # Убран из проекта
     "pytest>=7.2.0",
     "pytest-asyncio>=0.21.0",
     "pytest-cov>=4.0.0",

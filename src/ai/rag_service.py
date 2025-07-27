@@ -21,7 +21,9 @@ class RAGService:
         """Получает контекст из базы знаний для запроса пользователя"""
         try:
             # Ищем релевантную информацию
-            knowledge_results = self.knowledge_base.search_knowledge(user_query, language, n_results=3)
+            knowledge_results = self.knowledge_base.search_knowledge(
+                user_query, language, n_results=3
+            )
 
             if not knowledge_results:
                 return ""
@@ -49,11 +51,15 @@ class RAGService:
                     answer = item.get("answer", "").strip()
                     if answer:
                         context_parts.append(f"Информация {i}: {answer}")
-                        logger.info(f"Добавлен контекст из категории '{category}' ({search_type} поиск) с релевантностью {relevance:.3f}")
+                        logger.info(
+                            f"Добавлен контекст из категории '{category}' ({search_type} поиск) с релевантностью {relevance:.3f}"
+                        )
 
             if context_parts:
                 context = "\\n\\n".join(context_parts)
-                logger.info(f"Найдено {len(context_parts)} релевантных контекстов для запроса: {user_query[:50]}...")
+                logger.info(
+                    f"Найдено {len(context_parts)} релевантных контекстов для запроса: {user_query[:50]}..."
+                )
                 return context
             else:
                 logger.info(f"Не найдено релевантных контекстов для запроса: {user_query[:50]}...")

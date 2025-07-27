@@ -4,6 +4,7 @@
 Проверяет работу AI сервиса с настоящими запросами
 """
 
+import pytest
 import asyncio
 import sys
 import os
@@ -15,6 +16,7 @@ from src.ai.service import ai_service
 from config import Config
 
 
+@pytest.mark.asyncio
 async def test_real_ai():
     """Тестирует реальные AI запросы"""
     print("🚀 Тестирование интеграции с OpenAI API...")
@@ -57,6 +59,7 @@ async def test_real_ai():
     print("🏁 Тестирование завершено!")
 
 
+@pytest.mark.asyncio
 async def test_cost_estimation():
     """Простая оценка стоимости"""
     print("\n💰 Оценка стоимости:")

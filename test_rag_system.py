@@ -1,9 +1,9 @@
-#!/usr/bin/env python3
 """
 Тест RAG системы с базой знаний из CSV файлов
 Проверяет загрузку данных, векторный поиск и генерацию ответов
 """
 
+import pytest
 import asyncio
 import sys
 import os
@@ -15,6 +15,7 @@ from src.ai.knowledge_base import knowledge_base
 from src.ai.rag_service import rag_service
 
 
+@pytest.mark.asyncio
 async def test_knowledge_base():
     """Тестирует загрузку и поиск в базе знаний"""
     print("🗄️ Тестирование базы знаний...")
@@ -64,6 +65,7 @@ async def test_knowledge_base():
             print("   ❌ Ничего не найдено")
 
 
+@pytest.mark.asyncio
 async def test_rag_service():
     """Тестирует RAG сервис"""
     print("\n🤖 Тестирование RAG сервиса...")
@@ -99,6 +101,7 @@ async def test_rag_service():
             print(f"   📋 Базовый системный промпт создан ({len(system_prompt)} символов)")
 
 
+@pytest.mark.asyncio
 async def test_csv_data_loading():
     """Тестирует загрузку данных из CSV файлов"""
     print("\n📄 Тестирование загрузки CSV данных...")

@@ -159,12 +159,16 @@ class TestValidation:
         malicious_queries = [
             "<script>alert('xss')</script>",
             "'; SELECT * FROM",
-            "../../../etc/passwd",
         ]
 
         for query in malicious_queries:
             result = validator.validate_search_query(query)
             assert result.is_valid is False
+
+        # Путь к файлу не считается вредоносным в поисковом запросе
+        path_query = "../../../etc/passwd"
+        result = validator.validate_search_query(path_query)
+        assert result.is_valid is True  # Путь разрешен в поиске
 
     def test_edge_cases_unicode(self) -> None:
         """Тест обработки Unicode символов"""

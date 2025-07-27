@@ -6,6 +6,7 @@ from aiogram import Dispatcher
 from aiogram.filters import Command, StateFilter
 
 from src.bot.handlers import main as handlers
+from src.bot.handlers.enhanced_ai_handlers import setup_enhanced_ai_handlers
 from config import logger
 from src.utils.error_handler import error_handler
 from src.bot.models import UserStates
@@ -57,6 +58,36 @@ class BotRouters:
         async def cmd_health_wrapper(message) -> None:
             """Обработчик команды /health (проверка здоровья системы)"""
             await handlers.cmd_health(message, self.template_manager)
+
+        @self.dp.message(Command("analytics"))
+        async def cmd_analytics_wrapper(message) -> None:
+            """Обработчик команды /analytics (детальная аналитика AI)"""
+            await handlers.cmd_analytics(message, self.template_manager)
+
+        @self.dp.message(Command("sync"))
+        async def cmd_sync_wrapper(message) -> None:
+            """Обработчик команды /sync (умная синхронизация)"""
+            await handlers.cmd_sync(message, self.template_manager)
+
+        @self.dp.message(Command("suggestions"))
+        async def cmd_suggestions_wrapper(message) -> None:
+            """Обработчик команды /suggestions (предложения по улучшению)"""
+            await handlers.cmd_suggestions(message, self.template_manager)
+
+        @self.dp.message(Command("browse_kb"))
+        async def cmd_browse_kb_wrapper(message) -> None:
+            """Обработчик команды /browse_kb (просмотр базы знаний)"""
+            await handlers.cmd_browse_kb(message, self.template_manager)
+
+        @self.dp.message(Command("search_kb"))
+        async def cmd_search_kb_wrapper(message) -> None:
+            """Обработчик команды /search_kb (поиск в базе знаний)"""
+            await handlers.cmd_search_kb(message, self.template_manager)
+
+        @self.dp.message(Command("export_kb"))
+        async def cmd_export_kb_wrapper(message) -> None:
+            """Обработчик команды /export_kb (экспорт базы знаний)"""
+            await handlers.cmd_export_kb(message, self.template_manager)
 
         logger.info("Обработчики команд зарегистрированы")
 
@@ -113,10 +144,40 @@ class BotRouters:
             """Обработчик перехода в AI-режим"""
             await handlers.start_ai_mode(callback, state, self.template_manager)
 
+        @self.dp.callback_query(lambda c: c.data == "start_ai_mode")
+        async def start_ai_mode_direct_wrapper(callback, state) -> None:
+            """Обработчик прямого перехода в AI-режим"""
+            await handlers.start_ai_mode(callback, state, self.template_manager)
+
         @self.dp.callback_query(lambda c: c.data == "contact_manager")
         async def contact_manager_wrapper(callback) -> None:
             """Обработчик связи с менеджером"""
             await handlers.contact_manager(callback, self.template_manager)
+
+        @self.dp.callback_query(lambda c: c.data.startswith("correct:"))
+        async def start_answer_correction_wrapper(callback, state) -> None:
+            """Обработчик начала исправления ответа админом"""
+            await handlers.start_answer_correction(callback, state, self.template_manager)
+
+        @self.dp.callback_query(lambda c: c.data.startswith("add:"))
+        async def start_kb_addition_wrapper(callback, state) -> None:
+            """Обработчик начала добавления в базу знаний админом"""
+            await handlers.start_kb_addition(callback, state, self.template_manager)
+
+        @self.dp.callback_query(lambda c: c.data == "cancel_correction")
+        async def cancel_correction_wrapper(callback, state) -> None:
+            """Обработчик отмены исправления"""
+            await handlers.cancel_correction(callback, state, self.template_manager)
+
+        @self.dp.callback_query(lambda c: c.data == "switch_to_enhanced_ai")
+        async def switch_to_enhanced_ai_wrapper(callback, state) -> None:
+            """Обработчик переключения на персонализированный AI"""
+            await handlers.switch_to_enhanced_ai(callback, state, self.template_manager)
+
+        @self.dp.callback_query(lambda c: c.data == "switch_to_standard_ai")
+        async def switch_to_standard_ai_wrapper(callback, state) -> None:
+            """Обработчик переключения на стандартный AI"""
+            await handlers.switch_to_standard_ai(callback, state, self.template_manager)
 
         logger.info("Обработчики callback-запросов зарегистрированы")
 
@@ -133,19 +194,35 @@ class BotRouters:
             """Обработчик AI-сообщений"""
             await handlers.process_ai_message(message, state, self.template_manager)
 
+        @self.dp.message(StateFilter(UserStates.admin_correction))
+        async def process_admin_correction_wrapper(message, state) -> None:
+            """Обработчик исправлений от администратора"""
+            await handlers.process_admin_correction(message, state, self.template_manager)
+
+        @self.dp.message(StateFilter(UserStates.admin_addition))
+        async def process_admin_addition_wrapper(message, state) -> None:
+            """Обработчик добавлений в базу знаний от администратора"""
+            await handlers.process_admin_addition(message, state, self.template_manager)
+
+        @self.dp.message(StateFilter(UserStates.main_menu))
+        async def process_direct_ai_wrapper(message, state) -> None:
+            """Обработчик прямых сообщений в главном меню для AI"""
+            await handlers.process_direct_ai_message(message, state, self.template_manager)
+
         logger.info("Обработчики сообщений зарегистрированы")
 
     def register_error_handlers(self) -> None:
         """Регистрация обработчиков ошибок"""
 
-        async def global_error_handler(event, exception) -> bool:
+        async def global_error_handler(update, exception) -> None:
             """Глобальный обработчик ошибок для dispatcher"""
             logger.error(f"Глобальная ошибка: {exception}")
-            await error_handler.handle_error(exception, event)
-            return True  # Помечаем как обработанную
+            await error_handler.handle_error(exception, update)
 
-        # Регистрируем обработчик ошибок
-        self.dp.errors.register(global_error_handler)
+        # Регистрируем обработчик ошибок с правильным декоратором
+        @self.dp.error()
+        async def error_handler_wrapper(update, exception) -> None:
+            await global_error_handler(update, exception)
 
         logger.info("Обработчики ошибок зарегистрированы")
 
@@ -156,6 +233,9 @@ class BotRouters:
             self.register_callback_handlers()
             self.register_message_handlers()
             self.register_error_handlers()
+
+            # Подключаем улучшенные AI обработчики
+            setup_enhanced_ai_handlers(self.dp, self.template_manager)
 
             logger.info("Все обработчики успешно зарегистрированы")
 

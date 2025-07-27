@@ -13,6 +13,7 @@ class Template:
     answer_ukr: str
     answer_rus: str
     sort_order: int
+    has_menu_button: bool = True  # По умолчанию True для обновления существующих шаблонов
 
 
 class UserStates(StatesGroup):
@@ -20,3 +21,5 @@ class UserStates(StatesGroup):
     category_menu = State()
     search_mode = State()
     ai_mode = State()
+    admin_correction = State()
+    admin_addition = State()

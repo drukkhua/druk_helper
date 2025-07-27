@@ -14,7 +14,7 @@ import logging
 import os
 from typing import Dict, List, Optional
 
-from config import GOOGLE_SHEETS_API_KEY
+from config import GOOGLE_SHEETS_API_KEY, Config
 
 logger = logging.getLogger(__name__)
 
@@ -24,15 +24,15 @@ class GoogleSheetsUpdater:
 
     def __init__(self) -> None:
         self.api_key = GOOGLE_SHEETS_API_KEY
-        self.output_dir = "./data"
+        self.config = Config()
 
-        # Маппинг названий листов к именам файлов
-        self.sheet_mapping = {
-            "визитки": "visitki_templates.csv",
-            "футболки": "futbolki_templates.csv",
-            "листовки": "listovki_templates.csv",
-            "наклейки": "nakleyki_templates.csv",
-            "блокноты": "bloknoty_templates.csv",
+        # Получаем пути из конфигурации
+        self.csv_paths = {
+            "визитки": self.config.VISITKI_CSV_PATH,
+            "футболки": self.config.FUTBOLKI_CSV_PATH,
+            "листовки": self.config.LISTOVKI_CSV_PATH,
+            "наклейки": self.config.NAKLEYKI_CSV_PATH,
+            "блокноты": self.config.BLOKNOTY_CSV_PATH,
         }
 
     def extract_sheet_id(self, url: str) -> Optional[str]:
@@ -92,37 +92,35 @@ class GoogleSheetsUpdater:
             logger.error(f"Ошибка загрузки CSV данных для gid {gid}: {e}")
             return None
 
-    async def save_csv_to_data(self, csv_content: str, filename: str) -> bool:
-        """Сохраняет CSV содержимое в файл в папке data с правильным разделителем"""
+    async def save_csv_to_data(self, csv_content: str, file_path: str) -> bool:
+        """Сохраняет CSV содержимое в файл по указанному пути с правильным разделителем"""
         try:
-            # Создаем папку data если её нет
-            os.makedirs(self.output_dir, exist_ok=True)
+            # Создаем папку если её нет
+            os.makedirs(os.path.dirname(file_path), exist_ok=True)
 
-            file_path = os.path.join(self.output_dir, filename)
-
-            # Конвертируем CSV с запятой в CSV с точкой с запятой
+            # Сохраняем CSV с запятой как разделителем
             converted_content = self._convert_csv_delimiter(csv_content)
 
             # Сохраняем файл асинхронно
             async with aiofiles.open(file_path, "w", encoding="utf-8", newline="") as f:
                 await f.write(converted_content)
 
-            logger.info(f"✅ Сохранен файл: {filename}")
+            logger.info(f"✅ Сохранен файл: {file_path}")
             return True
 
         except Exception as e:
-            logger.error(f"Ошибка сохранения файла {filename}: {e}")
+            logger.error(f"Ошибка сохранения файла {file_path}: {e}")
             return False
 
     def _convert_csv_delimiter(self, csv_content: str) -> str:
-        """Конвертирует CSV с запятыми в CSV с точками с запятой"""
+        """Обрабатывает CSV данные и сохраняет с запятыми как разделителями"""
         try:
             # Читаем CSV с запятыми
             input_reader = csv.reader(StringIO(csv_content))
 
             # Создаем выходной буфер
             output_buffer = StringIO()
-            output_writer = csv.writer(output_buffer, delimiter=";", quoting=csv.QUOTE_MINIMAL)
+            output_writer = csv.writer(output_buffer, delimiter=",", quoting=csv.QUOTE_MINIMAL)
 
             # Конвертируем каждую строку
             for row in input_reader:
@@ -140,7 +138,7 @@ class GoogleSheetsUpdater:
         normalized = sheet_name.strip().lower()
 
         # Прямое сопоставление
-        if normalized in self.sheet_mapping:
+        if normalized in self.csv_paths:
             return normalized
 
         return sheet_name
@@ -179,19 +177,19 @@ class GoogleSheetsUpdater:
                 normalized_name = self.normalize_sheet_name(sheet_title)
 
                 # Проверяем, есть ли этот лист в нашем маппинге
-                if normalized_name in self.sheet_mapping:
-                    filename = self.sheet_mapping[normalized_name]
+                if normalized_name in self.csv_paths:
+                    file_path = self.csv_paths[normalized_name]
 
-                    logger.info(f"📄 Обрабатываем лист: {sheet_title} -> {filename}")
+                    logger.info(f"📄 Обрабатываем лист: {sheet_title} -> {file_path}")
 
                     # Загружаем CSV данные
                     csv_content = await self.download_csv_data(sheet_id, gid)
                     if csv_content:
-                        # Сохраняем в папку data
-                        if await self.save_csv_to_data(csv_content, filename):
+                        # Сохраняем по указанному пути
+                        if await self.save_csv_to_data(csv_content, file_path):
                             updated_count += 1
                         else:
-                            logger.warning(f"⚠️ Не удалось сохранить файл: {filename}")
+                            logger.warning(f"⚠️ Не удалось сохранить файл: {file_path}")
                     else:
                         logger.warning(f"⚠️ Не удалось загрузить данные для листа: {sheet_title}")
                 else:

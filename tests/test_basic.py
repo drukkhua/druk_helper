@@ -68,11 +68,12 @@ class TestBasicFunctionality:
 
     def test_google_sheets_updater_creation(self):
         """Тест создания GoogleSheetsUpdater"""
+        from unittest.mock import patch
         from google_sheets_updater import GoogleSheetsUpdater
 
         updater = GoogleSheetsUpdater()
         assert updater is not None
-        assert hasattr(updater, "sheet_mapping")
+        assert hasattr(updater, "csv_paths")
 
     def test_validation_functions(self):
         """Тест функций валидации"""

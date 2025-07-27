@@ -5,7 +5,8 @@ Final comprehensive test of the AI system
 
 import asyncio
 import sys
-sys.path.append('..')
+
+sys.path.append("..")
 from src.ai.service import ai_service
 
 

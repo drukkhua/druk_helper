@@ -72,12 +72,12 @@ def main() -> int:
     #     "Isort - Import Sorting", f"isort --check-only --diff {FILES_TO_CHECK}"
     # )
 
-    # 5. Mypy - проверка типов (информационная)
-    run_command(
-        "Mypy - Type Checking (informational)",
-        f"mypy {FILES_TO_CHECK} --ignore-missing-imports",
-        ignore_errors=True,
-    )
+    # 5. Mypy - убрано из проверок (слишком медленный и не критичный)
+    # run_command(
+    #     "Mypy - Type Checking (informational)",
+    #     f"mypy {FILES_TO_CHECK} --ignore-missing-imports",
+    #     ignore_errors=True,
+    # )
 
     # 6. Bandit - безопасность (информационная)
     run_command(

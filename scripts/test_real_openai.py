@@ -6,7 +6,8 @@
 import asyncio
 import sys
 import os
-sys.path.append('..')
+
+sys.path.append("..")
 
 import openai
 from src.ai.service import ai_service
@@ -27,11 +28,9 @@ async def test_basic_openai_request():
 
         response = await client.chat.completions.create(
             model="gpt-4o-mini",
-            messages=[
-                {"role": "user", "content": "Say 'Hello from OpenAI!' in Ukrainian"}
-            ],
+            messages=[{"role": "user", "content": "Say 'Hello from OpenAI!' in Ukrainian"}],
             max_tokens=50,
-            temperature=0.1
+            temperature=0.1,
         )
 
         if response.choices and response.choices[0].message.content:
@@ -69,15 +68,12 @@ async def test_business_query():
                 {
                     "role": "system",
                     "content": """Ти помічник компанії з друку та дизайну. Відповідай коротко та по справі на українській мові.
-                    Якщо питання про ціни, кажи що це залежить від тиражу та складності, і треба звернутися до менеджера за точним розрахунком."""
+                    Якщо питання про ціни, кажи що це залежить від тиражу та складності, і треба звернутися до менеджера за точним розрахунком.""",
                 },
-                {
-                    "role": "user",
-                    "content": "Скільки коштують візитки?"
-                }
+                {"role": "user", "content": "Скільки коштують візитки?"},
             ],
             max_tokens=200,
-            temperature=0.1
+            temperature=0.1,
         )
 
         if response.choices and response.choices[0].message.content:
@@ -105,8 +101,9 @@ async def test_cost_estimation():
     test_input_tokens = 100  # примерно
     test_output_tokens = 50  # примерно
 
-    cost_per_request = (test_input_tokens * input_cost_per_1k / 1000) + \
-        (test_output_tokens * output_cost_per_1k / 1000)
+    cost_per_request = (test_input_tokens * input_cost_per_1k / 1000) + (
+        test_output_tokens * output_cost_per_1k / 1000
+    )
 
     requests_for_10_dollars = 10 / cost_per_request
 
@@ -124,8 +121,8 @@ async def test_mock_vs_real_comparison():
 
     # Mock response
     print("🤖 Mock Response:")
-    mock_result = await ai_service.process_query(test_query, 12345, 'ukr')
-    if mock_result['success']:
+    mock_result = await ai_service.process_query(test_query, 12345, "ukr")
+    if mock_result["success"]:
         print(f"   {mock_result['answer'][:100]}...")
 
     # Real OpenAI response
@@ -140,15 +137,12 @@ async def test_mock_vs_real_comparison():
                 {
                     "role": "system",
                     "content": """Ти помічник компанії з друку та дизайну. Відповідай коротко на українській мові.
-                    Для футболок терміни виготовлення зазвичай 2-3 дні, але може варіюватися залежно від тиражу."""
+                    Для футболок терміни виготовлення зазвичай 2-3 дні, але може варіюватися залежно від тиражу.""",
                 },
-                {
-                    "role": "user",
-                    "content": test_query
-                }
+                {"role": "user", "content": test_query},
             ],
             max_tokens=150,
-            temperature=0.1
+            temperature=0.1,
         )
 
         if response.choices and response.choices[0].message.content:

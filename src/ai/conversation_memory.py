@@ -38,10 +38,7 @@ class ConversationSession:
     def add_message(self, role: str, content: str, metadata: Optional[Dict] = None):
         """Добавляет сообщение в сессию"""
         message = Message(
-            role=role,
-            content=content,
-            timestamp=time.time(),
-            metadata=metadata or {}
+            role=role, content=content, timestamp=time.time(), metadata=metadata or {}
         )
         self.messages.append(message)
         self.last_activity = time.time()
@@ -57,10 +54,7 @@ class ConversationSession:
         # Конвертируем в формат OpenAI
         context = []
         for msg in recent_messages:
-            context.append({
-                "role": msg.role,
-                "content": msg.content
-            })
+            context.append({"role": msg.role, "content": msg.content})
 
         return context
 
@@ -96,7 +90,7 @@ class ConversationMemory:
                 messages=[],
                 created_at=time.time(),
                 last_activity=time.time(),
-                language=language
+                language=language,
             )
             logger.info(f"Создана новая сессия для пользователя {user_id}")
         else:
@@ -109,12 +103,14 @@ class ConversationMemory:
                     messages=[],
                     created_at=time.time(),
                     last_activity=time.time(),
-                    language=language
+                    language=language,
                 )
 
         return self.sessions[user_id]
 
-    def add_user_message(self, user_id: int, message: str, language: str = "ukr", metadata: Optional[Dict] = None):
+    def add_user_message(
+        self, user_id: int, message: str, language: str = "ukr", metadata: Optional[Dict] = None
+    ):
         """Добавляет сообщение пользователя"""
         session = self.get_session(user_id, language)
         session.add_message("user", message, metadata)
@@ -159,7 +155,7 @@ class ConversationMemory:
             "created_at": datetime.fromtimestamp(session.created_at).isoformat(),
             "last_activity": datetime.fromtimestamp(session.last_activity).isoformat(),
             "language": session.language,
-            "age_hours": (time.time() - session.created_at) / 3600
+            "age_hours": (time.time() - session.created_at) / 3600,
         }
 
     def cleanup_expired_sessions(self):
@@ -192,13 +188,15 @@ class ConversationMemory:
                         "role": msg.role,
                         "content": msg.content,
                         "timestamp": msg.timestamp,
-                        "metadata": msg.metadata
+                        "metadata": msg.metadata,
                     }
                     for msg in session.messages
-                ][-self.max_messages_per_session:]  # Ограничиваем количество сообщений
+                ][
+                    -self.max_messages_per_session :
+                ],  # Ограничиваем количество сообщений
             }
 
-            with open(session_file, 'w', encoding='utf-8') as f:
+            with open(session_file, "w", encoding="utf-8") as f:
                 json.dump(session_data, f, ensure_ascii=False, indent=2)
 
         except Exception as e:
@@ -214,7 +212,7 @@ class ConversationMemory:
                 if filename.startswith("session_") and filename.endswith(".json"):
                     try:
                         session_file = os.path.join(self.storage_path, filename)
-                        with open(session_file, 'r', encoding='utf-8') as f:
+                        with open(session_file, "r", encoding="utf-8") as f:
                             session_data = json.load(f)
 
                         # Восстанавливаем сессию
@@ -226,7 +224,7 @@ class ConversationMemory:
                                 role=msg_data["role"],
                                 content=msg_data["content"],
                                 timestamp=msg_data["timestamp"],
-                                metadata=msg_data.get("metadata", {})
+                                metadata=msg_data.get("metadata", {}),
                             )
                             messages.append(message)
 
@@ -236,7 +234,7 @@ class ConversationMemory:
                             created_at=session_data["created_at"],
                             last_activity=session_data["last_activity"],
                             language=session_data.get("language", "ukr"),
-                            metadata=session_data.get("metadata")
+                            metadata=session_data.get("metadata"),
                         )
 
                         # Проверяем, не истекла ли сессия

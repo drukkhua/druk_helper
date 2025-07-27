@@ -15,7 +15,7 @@ flake8>=6.0.0
 
 # Профилирование и отладка
 memory-profiler>=0.60.0
-mypy>=1.0.0
+# mypy>=1.0.0  # Убран из проекта - слишком медленный
 
 # Pre-commit hooks
 pre-commit>=3.0.0

@@ -4,6 +4,7 @@
 Проверяет работу полной интеграции
 """
 
+import pytest
 import asyncio
 import sys
 import os
@@ -15,6 +16,7 @@ from src.ai.service import ai_service
 from config import Config
 
 
+@pytest.mark.asyncio
 async def test_full_rag_pipeline():
     """Тестирует полный RAG pipeline с реальным OpenAI"""
     print("🧠 Тестирование полного RAG pipeline с OpenAI...")
@@ -71,6 +73,7 @@ async def test_full_rag_pipeline():
     print("🏁 Тестирование завершено!")
 
 
+@pytest.mark.asyncio
 async def test_rag_vs_mock():
     """Сравнивает ответы RAG и mock системы"""
     print("\n🆚 Сравнение RAG vs Mock ответов...")

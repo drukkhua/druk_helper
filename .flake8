@@ -1,64 +1,8 @@
 [flake8]
 max-line-length = 100
 max-complexity = 10
-ignore =
-    E203,
-    E501,
-    W503,
-    W504,
-    E704,
-    F401,
-    D100,
-    D101,
-    D102,
-    D103,
-    D104,
-    D105,
-    D106,
-    D107,
-    D200,
-    D400,
-    D401,
-    D402,
-    D403,
-    D404,
-    D405,
-    D406,
-    D407,
-    D408,
-    D409,
-    D410,
-    D411,
-    D412,
-    D413,
-    D414,
-    D415,
-    D416,
-    D417,
-    C901,
-    F403,
-    F405,
-    F541,
-    F841,
-    F821,
-    D205,
-    D301,
-    E402,
-    B017,
-    B006,
-    B007
-exclude =
-    .git,
-    __pycache__,
-    venv,
-    .venv,
-    test_env,
-    build,
-    dist,
-    converted-data,
-    *.egg-info,
-    .tox,
-    .mypy_cache
+ignore = E203,E501,W503,W504,E704,F401,D202,E128,E131,E226,E722,E302,E305,E129,C901,F403,F405,F821,F841,F541,E402,D400
+exclude = .git,__pycache__,venv,.venv,test_env,build,dist,converted-data,*.egg-info,.tox,.mypy_cache
 per-file-ignores =
     __init__.py:F401
     tests/*:F401,F811
