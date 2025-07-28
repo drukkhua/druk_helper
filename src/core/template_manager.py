@@ -205,7 +205,199 @@ class TemplateManager:
 
         return True
 
-    def get_user_language(self, user_id: int) -> str:
+    def detect_language(self, text: str) -> str:
+        """Автоматически определяет язык текста"""
+        text_lower = text.lower().strip()
+
+        # Украинские маркеры
+        ukrainian_words = [
+            "візитки",
+            "візитка",
+            "друк",
+            "друкую",
+            "друкувати",
+            "скільки",
+            "ціна",
+            "вартість",
+            "зроблю",
+            "зробити",
+            "потрібно",
+            "треба",
+            "можна",
+            "будь ласка",
+            "дякую",
+            "дякуємо",
+            "вдячний",
+            "допоможіть",
+            "допомогти",
+            "макет",
+            "дизайн",
+            "футболки",
+            "футболка",
+            "листівки",
+            "листівка",
+            "наклейка",
+            "наклейки",
+            "блокнот",
+            "блокноти",
+            "що",
+            "як",
+            "де",
+            "коли",
+            "чому",
+            "який",
+            "яка",
+            "яке",
+            "фольгування",
+            "тиснення",
+            "тисненія",
+            "якість",
+            "розмір",
+            "час",
+            "термін",
+            "швидко",
+            "терміново",
+            "хочу",
+            "хочеться",
+            "потребую",
+            "цікавить",
+            "і",
+            "та",
+            "або",
+            "чи",
+            "ні",
+            "так",
+            "добре",
+            "погано",
+            "гарно",
+        ]
+
+        # Русские маркеры
+        russian_words = [
+            "визитки",
+            "визитка",
+            "печать",
+            "печатаю",
+            "печатать",
+            "сколько",
+            "цена",
+            "стоимость",
+            "сделаю",
+            "сделать",
+            "нужно",
+            "надо",
+            "можно",
+            "пожалуйста",
+            "спасибо",
+            "благодарю",
+            "помогите",
+            "помочь",
+            "макет",
+            "дизайн",
+            "футболки",
+            "футболка",
+            "листовки",
+            "листовка",
+            "наклейка",
+            "наклейки",
+            "блокнот",
+            "блокноты",
+            "что",
+            "как",
+            "где",
+            "когда",
+            "почему",
+            "какой",
+            "какая",
+            "какое",
+            "фольгирование",
+            "тиснение",
+            "качество",
+            "размер",
+            "время",
+            "срок",
+            "быстро",
+            "срочно",
+            "хочу",
+            "хочется",
+            "нуждаюсь",
+            "интересует",
+            "и",
+            "а",
+            "или",
+            "ли",
+            "нет",
+            "да",
+            "хорошо",
+            "плохо",
+            "красиво",
+        ]
+
+        # Уникальные украинские буквы и сочетания
+        ukrainian_chars = ["є", "і", "ї", "ґ", "'"]
+        ukrainian_patterns = ["ський", "цький", "льки", "нько", "еться", "ться"]
+
+        # Уникальные русские буквы и сочетания
+        russian_chars = ["ы", "э", "ъ"]
+        russian_patterns = ["ский", "цкий", "льно", "енно", "ется", "тся"]
+
+        ukrainian_score = 0
+        russian_score = 0
+
+        # Проверяем слова
+        words = text_lower.split()
+        for word in words:
+            if word in ukrainian_words:
+                ukrainian_score += 2
+            if word in russian_words:
+                russian_score += 2
+
+        # Проверяем уникальные символы (высокий вес)
+        for char in ukrainian_chars:
+            if char in text_lower:
+                ukrainian_score += 3
+
+        for char in russian_chars:
+            if char in text_lower:
+                russian_score += 3
+
+        # Проверяем паттерны
+        for pattern in ukrainian_patterns:
+            if pattern in text_lower:
+                ukrainian_score += 1
+
+        for pattern in russian_patterns:
+            if pattern in text_lower:
+                russian_score += 1
+
+        # Если разница не очень большая, проверяем дополнительные индикаторы
+        if abs(ukrainian_score - russian_score) < 2:
+            # Проверяем типичные окончания и предлоги
+            if any(word in text_lower for word in ["на", "в", "з", "про", "для", "без"]):
+                if "в" in text_lower and "у" in text_lower:
+                    ukrainian_score += 0.5
+
+        # Возвращаем результат
+        if ukrainian_score > russian_score:
+            return "ukr"
+        elif russian_score > ukrainian_score:
+            return "rus"
+        else:
+            # По умолчанию украинский, если не удалось определить
+            return "ukr"
+
+    def get_user_language(self, user_id: int, auto_detect_text: str = None) -> str:
+        """Получает язык пользователя с возможностью автоопределения"""
+        # Если передан текст для автоопределения
+        if auto_detect_text:
+            detected_lang = self.detect_language(auto_detect_text)
+            # Обновляем язык пользователя, если он изменился
+            current_lang = self.user_languages.get(user_id, "ukr")
+            if detected_lang != current_lang:
+                self.set_user_language(user_id, detected_lang)
+                logger.info(f"Автоопределен язык для пользователя {user_id}: {detected_lang}")
+            return detected_lang
+
         return self.user_languages.get(user_id, "ukr")
 
     def set_user_language(self, user_id: int, language: str) -> None:

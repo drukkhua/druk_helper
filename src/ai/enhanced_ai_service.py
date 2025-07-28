@@ -91,14 +91,14 @@ class EnhancedAIService:
 
         return True
 
-    async def process_query(self, user_query: str, user_id: int, language: str = "ukr") -> Dict:
+    async def process_query(self, user_query: str, user_id: int, language: str = None) -> Dict:
         """
         Обрабатывает запрос пользователя с персонализацией
 
         Args:
             user_query: Запрос пользователя
             user_id: ID пользователя
-            language: Язык ответа
+            language: Язык ответа (None для автоопределения)
 
         Returns:
             Dict с результатом обработки
@@ -106,6 +106,14 @@ class EnhancedAIService:
         start_time = time.time()
 
         try:
+            # Автоопределяем язык если не задан
+            if language is None:
+                from src.core.template_manager import TemplateManager
+
+                temp_manager = TemplateManager()
+                language = temp_manager.get_user_language(user_id, auto_detect_text=user_query)
+                logger.info(f"Автоопределен язык для запроса пользователя {user_id}: {language}")
+
             # Логируем аналитику
             query_id = analytics_service.log_user_query(user_id, user_query, language)
 

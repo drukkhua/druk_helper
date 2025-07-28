@@ -2,7 +2,8 @@
 max-line-length = 100
 max-complexity = 10
 ignore = E203,E501,W503,W504,E704,F401,D202,E128,E131,E226,E722,E302,E305,E129,C901,F403,F405,F821,F841,F541,E402,D400
-exclude = .git,__pycache__,venv,.venv,test_env,build,dist,converted-data,*.egg-info,.tox,.mypy_cache
+exclude = .git,__pycache__,venv,.venv,test_env,build,dist,converted-data,*.egg-info,.tox,.mypy_cache,*.md,*.csv,*.txt,*.json,*.yaml,*.yml
+filename = *.py
 per-file-ignores =
     __init__.py:F401
     tests/*:F401,F811

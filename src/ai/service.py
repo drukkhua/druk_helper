@@ -91,14 +91,14 @@ class AIService:
 
         return True
 
-    async def process_query(self, user_query: str, user_id: int, language: str = "ukr") -> Dict:
+    async def process_query(self, user_query: str, user_id: int, language: str = None) -> Dict:
         """
         Обрабатывает запрос пользователя
 
         Args:
             user_query: Текст запроса пользователя
             user_id: ID пользователя
-            language: Язык ответа ("ukr" или "rus")
+            language: Язык ответа ("ukr" или "rus", None для автоопределения)
 
         Returns:
             Dict с результатом обработки:
@@ -114,6 +114,14 @@ class AIService:
         query_id = None
 
         try:
+            # Автоопределяем язык если не задан
+            if language is None:
+                from src.core.template_manager import TemplateManager
+
+                temp_manager = TemplateManager()
+                language = temp_manager.get_user_language(user_id, auto_detect_text=user_query)
+                logger.info(f"Автоопределен язык для запроса пользователя {user_id}: {language}")
+
             logger.info(f"Обработка AI запроса от пользователя {user_id}: {user_query[:100]}...")
 
             # 1. Логируем начало обработки запроса
@@ -414,6 +422,6 @@ class AIService:
 ai_service = AIService()
 
 
-async def process_user_query(user_query: str, user_id: int, language: str = "ukr") -> Dict:
+async def process_user_query(user_query: str, user_id: int, language: str = None) -> Dict:
     """Упрощенная функция для обработки запросов"""
     return await ai_service.process_query(user_query, user_id, language)

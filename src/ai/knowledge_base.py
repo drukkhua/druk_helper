@@ -252,7 +252,7 @@ class KnowledgeBase:
     def search_by_keywords(
         self, query: str, language: str = "ukr", n_results: int = 3
     ) -> List[Dict]:
-        """Поиск по ключевым словам (точное совпадение)"""
+        """Поиск по ключевым словам с контекстным анализом"""
         if not self.is_initialized or not self.collection:
             logger.error("База знаний не инициализирована")
             return []
@@ -264,10 +264,21 @@ class KnowledgeBase:
             # Нормализуем запрос для поиска
             query_words = set(word.lower().strip() for word in query.replace(",", " ").split())
 
+            # Анализируем контекст запроса
+            query_intent = self._analyze_query_intent(query)
+
             # Ищем совпадения по ключевым словам
             matches = []
             for i, (doc_id, metadata) in enumerate(zip(all_docs["ids"], all_docs["metadatas"])):
                 keywords = metadata.get("keywords", "").lower()
+                answer = metadata.get(f"answer_{language}", metadata.get("answer_ukr", ""))
+
+                # Проверяем контекстное соответствие
+                context_match = self._check_context_match(query, query_intent, keywords, answer)
+
+                if not context_match:
+                    continue
+
                 keyword_words = set(word.strip() for word in keywords.replace(",", " ").split())
 
                 # Считаем количество совпадающих слов
@@ -275,7 +286,11 @@ class KnowledgeBase:
                 if intersection:
                     match_score = len(intersection) / len(query_words)  # Доля совпавших слов
 
-                    answer = metadata.get(f"answer_{language}", metadata.get("answer_ukr", ""))
+                    # Повышаем релевантность за контекстное соответствие
+                    if context_match == "exact":
+                        match_score += 0.3
+                    elif context_match == "partial":
+                        match_score += 0.1
 
                     # Добавляем ID в метаданные для комбинирования
                     metadata_with_id = dict(metadata)
@@ -289,6 +304,7 @@ class KnowledgeBase:
                             "relevance_score": match_score,
                             "metadata": metadata_with_id,
                             "search_type": "keyword",
+                            "context_match": context_match,
                         }
                     )
 
@@ -421,6 +437,149 @@ class KnowledgeBase:
         except Exception as e:
             logger.error(f"Ошибка при получении статистики: {e}")
             return {"error": str(e)}
+
+    def _analyze_query_intent(self, query: str) -> Dict:
+        """Анализирует намерение и контекст запроса"""
+        query_lower = query.lower()
+
+        intent = {
+            "main_topic": None,
+            "technology_type": None,
+            "is_negative": False,
+            "specific_terms": [],
+        }
+
+        # Определяем основную тему
+        if any(term in query_lower for term in ["фольг", "foil"]):
+            intent["main_topic"] = "foiling"
+
+            # Различаем типы фольгирования
+            if any(
+                term in query_lower
+                for term in ["тиснение", "тисне", "горяч", "гаряч", "hot", "stamp"]
+            ):
+                intent["technology_type"] = "hot_foil_stamping"
+            elif any(term in query_lower for term in ["цифр", "digital", "печат", "друк"]):
+                intent["technology_type"] = "digital_foiling"
+            else:
+                intent["technology_type"] = "general_foiling"
+
+        elif any(term in query_lower for term in ["визит", "візит", "business card"]):
+            intent["main_topic"] = "business_cards"
+        elif any(term in query_lower for term in ["футбол", "футбол", "shirt", "t-shirt"]):
+            intent["main_topic"] = "t_shirts"
+
+        # Определяем негативные конструкции
+        if any(
+            phrase in query_lower
+            for phrase in [
+                "не дела",
+                "не робим",
+                "не використов",
+                "не использу",
+                "not do",
+                "don't do",
+            ]
+        ):
+            intent["is_negative"] = True
+
+        # Извлекаем специфические термины
+        foiling_terms = [
+            "фольгирование",
+            "фольгування",
+            "тиснение фольгой",
+            "тиснення фольгою",
+            "digital foiling",
+            "hot foil stamping",
+        ]
+        for term in foiling_terms:
+            if term in query_lower:
+                intent["specific_terms"].append(term)
+
+        return intent
+
+    def _check_context_match(
+        self, query: str, query_intent: Dict, keywords: str, answer: str
+    ) -> str:
+        """Проверяет контекстное соответствие документа запросу"""
+        query_lower = query.lower()
+        keywords_lower = keywords.lower()
+        answer_lower = answer.lower()
+
+        # Специальная обработка для фольгирования
+        if query_intent.get("main_topic") == "foiling":
+            return self._check_foiling_context_match(
+                query, query_intent, keywords_lower, answer_lower
+            )
+
+        # Общая проверка
+        return self._check_general_context_match(query_lower, keywords_lower, answer_lower)
+
+    def _check_foiling_context_match(
+        self, query: str, query_intent: Dict, keywords: str, answer: str
+    ) -> str:
+        """Специальная проверка для запросов о фольгировании"""
+        query_lower = query.lower()
+
+        # Если спрашивают про цифровое фольгирование
+        if any(
+            term in query_lower
+            for term in ["фольгирование", "фольгування", "digital foil", "цифров", "цифр"]
+        ):
+            # Проверяем, говорится ли в ответе что НЕ делаем
+            if any(
+                phrase in answer
+                for phrase in ["не використовуємо", "не робимо", "не делаем", "не используем"]
+            ):
+                # Если есть упоминание цифрового фольгирования в контексте отрицания
+                if any(term in answer for term in ["цифр", "digital", "фольгир", "фольгув"]):
+                    return "exact"  # Точное соответствие - объясняем что НЕ делаем
+            return False  # Не соответствует
+
+        # Если спрашивают про тиснение фольгой
+        if any(
+            term in query_lower
+            for term in ["тиснение", "тисне", "hot foil", "stamping", "горяч", "гаряч"]
+        ):
+            # Проверяем, есть ли информация о тиснении
+            if any(
+                term in answer for term in ["тиснен", "тисне", "hot", "stamp", "температур", "тиск"]
+            ):
+                return "exact"  # Точное соответствие
+            return "partial" if "фольг" in answer else False
+
+        # Общий запрос про фольгу
+        if "фольг" in query_lower and "фольг" in answer:
+            # Если в ответе есть различение технологий
+            if any(
+                phrase in answer
+                for phrase in ["різниця", "разница", "відміну", "отличие", "технологи"]
+            ):
+                return "exact"
+            return "partial"
+
+        return False
+
+    def _check_general_context_match(self, query: str, keywords: str, answer: str) -> str:
+        """Общая проверка контекстного соответствия"""
+        # Проверяем прямые совпадения ключевых слов
+        query_words = set(query.split())
+        keyword_words = set(keywords.split())
+
+        intersection = query_words.intersection(keyword_words)
+        if intersection:
+            # Проверяем контекстную релевантность в ответе
+            relevant_words = 0
+            for word in intersection:
+                if word in answer:
+                    relevant_words += 1
+
+            if relevant_words >= len(intersection) * 0.7:  # 70% слов должны быть в ответе
+                return "exact"
+            elif relevant_words > 0:
+                return "partial"
+
+        return False
 
 
 # Глобальный экземпляр базы знаний

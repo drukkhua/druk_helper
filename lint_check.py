@@ -15,8 +15,8 @@ if os.path.exists(VENV_PATH):
 else:
     activate_cmd = ""
 
-# Файлы для проверки
-FILES_TO_CHECK = "*.py tests/"
+# Файлы для проверки (flake8 теперь использует filename в конфиге)
+FILES_TO_CHECK = ""  # flake8 сам определит файлы через конфиг
 
 
 def run_command(name: str, cmd: str, ignore_errors: bool = False) -> bool:
@@ -52,19 +52,19 @@ def main() -> int:
     # 1. Flake8 - критические ошибки (блокирующие)
     success &= run_command(
         "Flake8 - Critical Errors",
-        f"flake8 --config .flake8 {FILES_TO_CHECK} --count --select=E9,F63,F7,F82 --show-source --statistics",
+        "flake8 --config .flake8 --count --select=E9,F63,F7,F82 --show-source --statistics",
     )
 
     # 2. Flake8 - полная проверка (блокирующая)
     success &= run_command(
         "Flake8 - Full Check",
-        f"flake8 --config .flake8 {FILES_TO_CHECK} --count --exit-zero --max-complexity=10 --max-line-length=100 --statistics",
+        "flake8 --config .flake8 --count --exit-zero --max-complexity=10 --max-line-length=100 --statistics",
     )
 
     # 3. Black - форматирование (блокирующее)
     success &= run_command(
         "Black - Code Formatting",
-        f"black --check --diff --line-length 100 {FILES_TO_CHECK}",
+        "black --check --diff --line-length 100 *.py tests/",
     )
 
     # 4. Isort - убран из проверок (слишком капризный для внутреннего проекта)

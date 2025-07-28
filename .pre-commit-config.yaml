@@ -3,6 +3,7 @@ repos:
     rev: v4.4.0
     hooks:
       - id: trailing-whitespace
+        exclude: \.(csv)$
       - id: end-of-file-fixer
       - id: check-yaml
       - id: check-added-large-files
@@ -12,6 +13,7 @@ repos:
       - id: check-toml
       - id: check-xml
       - id: mixed-line-ending
+        exclude: \.(csv)$
       - id: requirements-txt-fixer
 
   - repo: https://github.com/psf/black
@@ -27,6 +29,7 @@ repos:
     hooks:
       - id: flake8
         args: [--config=.flake8]
+        files: \.(py|md)$
         # Убрали flake8-docstrings и flake8-bugbear для соответствия внутренним настройкам
 
   # - repo: https://github.com/pre-commit/mirrors-mypy
